@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { cn, getEmbedUrl, getYoutubeId } from "@/lib/utils";
 import YouTube from "react-youtube";
 import {
@@ -73,6 +73,20 @@ export function CourseViewer({
   const [player, setPlayer] = useState<any>(null);
   const [watchProgress, setWatchProgress] = useState(0);
   const [showMuteNotice, setShowMuteNotice] = useState(false);
+
+  const youtubeOpts = useMemo(() => ({
+    width: '100%',
+    height: '100%',
+    playerVars: {
+      autoplay: autoPlay ? 1 : 0,
+      mute: 0, 
+      controls: 0,
+      disablekb: 1,
+      rel: 0,
+      modestbranding: 1,
+      origin: typeof window !== 'undefined' ? window.location.origin : undefined,
+    },
+  }), [autoPlay]);
 
   // Resume progress on load
   useEffect(() => {
@@ -290,7 +304,7 @@ export function CourseViewer({
   );
 
   // ─── Main Content ─────────────────────────────────────────────────────────
-  const MainContent = () => {
+  const renderMainContent = () => {
     if (!activeLessonId || !activeLesson) {
       return (
         <div className="flex items-center justify-center h-full p-8">
@@ -331,6 +345,7 @@ export function CourseViewer({
             <div className="relative w-full bg-black aspect-video rounded-none sm:rounded-2xl overflow-hidden shadow-2xl border-y sm:border border-white/[0.05]">
               {getYoutubeId(lesson.video_url || '') ? (
                 <YouTube
+                  key={lesson.id}
                   videoId={getYoutubeId(lesson.video_url!)!}
                   onEnd={() => {
                     saveProgress();
@@ -351,19 +366,7 @@ export function CourseViewer({
                       }, 1000);
                     }
                   }}
-                  opts={{
-                    width: '100%',
-                    height: '100%',
-                    playerVars: {
-                      autoplay: autoPlay ? 1 : 0,
-                      mute: 0, 
-                      controls: 0,
-                      disablekb: 1,
-                      rel: 0,
-                      modestbranding: 1,
-                      origin: typeof window !== 'undefined' ? window.location.origin : undefined,
-                    },
-                  }}
+                  opts={youtubeOpts}
                   className="w-full h-full"
                 />
               ) : embedUrl ? (
@@ -641,19 +644,17 @@ export function CourseViewer({
         </>
       )}
 
-      {/* Desktop: sidebar kiri tetap + konten inline kanan */}
-      <div className="hidden lg:grid lg:grid-cols-[300px_1fr] min-h-[calc(100vh-64px)]">
+      {/* Desktop: Grid layout */}
+      <div className="hidden lg:grid grid-cols-[380px_1fr] h-full overflow-hidden">
         <aside className="bg-surface border-r border-white/[0.07] sticky top-16 h-[calc(100vh-64px)] overflow-y-auto flex flex-col">
           <SidebarContent />
         </aside>
-        <main className="h-[calc(100vh-64px)] overflow-hidden flex flex-col">
-          <MainContent />
-        </main>
+        {renderMainContent()}
       </div>
 
       {/* Mobile: full width */}
       <div className="lg:hidden flex flex-col">
-        <MainContent />
+        {renderMainContent()}
       </div>
     </div>
   );

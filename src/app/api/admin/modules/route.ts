@@ -1,0 +1,80 @@
+import { NextRequest, NextResponse } from "next/server";
+import { createClient, createAdminClient } from "@/lib/supabase/server";
+
+// 1. Fungsi Helper untuk Cek Admin
+async function getAdminUser() {
+  const s = createClient(); // Di Next 14, panggil tanpa await (sesuai server.ts kita)
+  const {
+    data: { user },
+  } = await s.auth.getUser();
+  return user?.user_metadata?.role === "admin" ? user : null;
+}
+
+const unauthorized = () =>
+  NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+
+// 2. Handler untuk Update Course (PATCH)
+export async function PATCH(req: NextRequest) {
+  const admin = await getAdminUser();
+  if (!admin) return unauthorized();
+
+  try {
+    const body = await req.json();
+    const { id, ...updateData } = body;
+
+    if (!id) {
+      return NextResponse.json(
+        { message: "Course ID is required" },
+        { status: 400 },
+      );
+    }
+
+    const s = createAdminClient(); // Admin client untuk bypass RLS
+    const { data, error } = await s
+      .from("courses")
+      .update(updateData)
+      .eq("id", id)
+      .select()
+      .single();
+
+    if (error) {
+      return NextResponse.json({ message: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json(data);
+  } catch (err) {
+    return NextResponse.json(
+      { message: "Invalid Request Body" },
+      { status: 400 },
+    );
+  }
+}
+
+// 3. Handler untuk Tambah Course (POST)
+export async function POST(req: NextRequest) {
+  const admin = await getAdminUser();
+  if (!admin) return unauthorized();
+
+  try {
+    const body = await req.json();
+    const s = createAdminClient();
+
+    const { data, error } = await s
+      .from("modules")
+      .insert(body)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Supabase Error Detail:", error); // Muncul di terminal VS Code kamu
+      return NextResponse.json({ message: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json(data, { status: 201 });
+  } catch (err) {
+    return NextResponse.json(
+      { message: "Invalid Request Body" },
+      { status: 400 },
+    );
+  }
+}

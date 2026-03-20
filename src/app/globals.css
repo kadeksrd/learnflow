@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: #05050c;
+    --surface: #0c0c1a;
+    --card: #10101f;
+    --accent: #7c6bff;
+    --accent-light: #9f91ff;
+    --cta: #f59e0b;
+    --green: #10b981;
+    --text: #eeeeff;
+    --text-muted: #7070a0;
+  }
+
+  /* KUNCI AGAR TIDAK BANTET: Set font global dan line-height */
+  html,
+  body {
+    font-family:
+      var(--font-poppins), sans-serif; /* Pastikan ini sesuai variable di layout.tsx */
+    line-height: 1.6; /* Jarak antar baris lebih lega */
+    -webkit-font-smoothing: antialiased;
+    background-color: var(--bg);
+    color: var(--text);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) var(--bg);
+  }
+
+  /* Scrollbar styling tetap sama */
+  *::-webkit-scrollbar {
+    width: 4px;
+  }
+  *::-webkit-scrollbar-track {
+    background: var(--bg);
+  }
+  *::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  /* Update utilities agar sesuai dengan Poppins */
+  .font-poppins {
+    font-family: var(--font-poppins), sans-serif;
+  }
+
+  /* Kalau masih butuh Syne/DM Sans silakan biarkan, tapi Poppins harus ada */
+  .font-syne {
+    font-family: var(--font-poppins), sans-serif;
+  }
+  .font-dm-sans {
+    font-family: var(--font-dm-sans), sans-serif;
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #9f91ff, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glass {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+}

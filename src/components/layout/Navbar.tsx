@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ShoppingBag, LayoutDashboard, LogOut, Menu, X, Zap, ChevronDown, BookOpen, Star } from 'lucide-react'
+import { ShoppingBag, LayoutDashboard, LogOut, Menu, X, Zap, ChevronDown, BookOpen, Star, User as UserIcon } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { cn } from '@/lib/utils'
 
@@ -33,7 +33,10 @@ export function Navbar() {
 
   const navLinks = [
     { href: '/store', label: 'Store', icon: ShoppingBag },
-    ...(user ? [{ href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard }] : []),
+    ...(user ? [
+      { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+      { href: '/profile', label: 'Profil', icon: UserIcon },
+    ] : []),
     ...(isAdmin ? [{ href: '/admin', label: 'Admin', icon: BookOpen }] : []),
   ]
 

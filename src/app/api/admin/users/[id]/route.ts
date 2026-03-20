@@ -8,13 +8,13 @@ export async function PATCH(
   const { id } = await params
   if (!await getAdminUser()) return unauthorized()
   
-  const { role } = await req.json()
-  if (!role) return NextResponse.json({ message: 'Role is required' }, { status: 400 })
+  const { role, email } = await req.json()
 
   const s = await createAdminClient()
   
-  // Update user_metadata in auth.users
+  // Update user in auth.users
   const { data, error } = await s.auth.admin.updateUserById(id, {
+    email,
     user_metadata: { role }
   })
 

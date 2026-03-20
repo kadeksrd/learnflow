@@ -19,6 +19,7 @@ export function UsersTable({ initialUsers }: { initialUsers: User[] }) {
   const [users, setUsers] = useState(initialUsers)
   const [search, setSearch] = useState('')
   const [loading, setLoading] = useState<string | null>(null)
+  const [editingEmail, setEditingEmail] = useState<{ id: string, email: string } | null>(null)
 
   const filteredUsers = users.filter(u => 
     u.email?.toLowerCase().includes(search.toLowerCase()) || 
@@ -40,6 +41,30 @@ export function UsersTable({ initialUsers }: { initialUsers: User[] }) {
       
       setUsers(users.map(u => u.id === userId ? { ...u, user_metadata: { ...u.user_metadata, role: newRole } } : u))
       alert('Role berhasil diperbarui')
+    } catch (err: any) {
+      alert(err.message)
+    } finally {
+      setLoading(null)
+    }
+  }
+
+  const handleUpdateEmail = async () => {
+    if (!editingEmail) return
+    if (!confirm(`Ubah email user menjadi ${editingEmail.email}?`)) return
+    
+    setLoading(editingEmail.id)
+    try {
+      const res = await fetch(`/api/admin/users/${editingEmail.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: editingEmail.email })
+      })
+      
+      if (!res.ok) throw new Error('Gagal update email')
+      
+      setUsers(users.map(u => u.id === editingEmail.id ? { ...u, email: editingEmail.email } : u))
+      alert('Email berhasil diperbarui')
+      setEditingEmail(null)
     } catch (err: any) {
       alert(err.message)
     } finally {
@@ -88,9 +113,29 @@ export function UsersTable({ initialUsers }: { initialUsers: User[] }) {
                 <div className="font-bold text-[#EEEEFF] truncate">
                   {user.user_metadata?.full_name || 'No Name'}
                 </div>
-                <div className="text-text-muted text-xs flex items-center gap-1 mt-0.5">
-                  <Mail size={12} /> {user.email}
-                </div>
+                {editingEmail?.id === user.id ? (
+                  <div className="flex items-center gap-2 mt-1">
+                    <input 
+                      className="bg-surface border border-accent/50 rounded-lg text-[10px] px-2 py-1 outline-none w-full"
+                      value={editingEmail.email}
+                      onChange={(e) => setEditingEmail({ ...editingEmail, email: e.target.value })}
+                      autoFocus
+                    />
+                    <button onClick={handleUpdateEmail} className="text-accent-light hover:text-white transition-colors">
+                      <ShieldCheck size={12} />
+                    </button>
+                    <button onClick={() => setEditingEmail(null)} className="text-text-dim hover:text-white transition-colors">
+                      <Trash2 size={12} />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="text-text-muted text-xs flex items-center gap-1 mt-0.5 group">
+                    <Mail size={12} /> {user.email}
+                    <button onClick={() => setEditingEmail({ id: user.id, email: user.email })} className="opacity-0 group-hover:opacity-100 transition-opacity text-text-dim hover:text-accent-light px-1">
+                      <UserCog size={10} />
+                    </button>
+                  </div>
+                )}
               </div>
               <span className={cn(
                 "px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider shrink-0",
@@ -142,7 +187,29 @@ export function UsersTable({ initialUsers }: { initialUsers: User[] }) {
                 <div className="font-semibold text-sm text-[#EEEEFF] truncate">
                   {user.user_metadata?.full_name || 'No Name'}
                 </div>
-                <div className="text-text-muted text-xs truncate">{user.email}</div>
+                {editingEmail?.id === user.id ? (
+                  <div className="flex items-center gap-2 mt-1">
+                    <input 
+                      className="bg-surface border border-accent/50 rounded-lg text-xs px-2 py-1 outline-none w-full"
+                      value={editingEmail.email}
+                      onChange={(e) => setEditingEmail({ ...editingEmail, email: e.target.value })}
+                      autoFocus
+                    />
+                    <button onClick={handleUpdateEmail} className="text-accent-light hover:text-white transition-colors">
+                      <ShieldCheck size={14} />
+                    </button>
+                    <button onClick={() => setEditingEmail(null)} className="text-text-dim hover:text-white transition-colors">
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="text-text-muted text-xs truncate flex items-center gap-1.5 group">
+                    {user.email}
+                    <button onClick={() => setEditingEmail({ id: user.id, email: user.email })} className="opacity-0 group-hover:opacity-100 transition-opacity text-text-dim hover:text-accent-light">
+                      <UserCog size={12} />
+                    </button>
+                  </div>
+                )}
               </div>
               
               <div>

@@ -125,16 +125,12 @@ export function CourseViewer({
       interval = setInterval(() => {
         // Cek jika sedang PLAYING (1)
         if (player.getPlayerState?.() === 1) {
-          const currentTime = player.getCurrentTime?.() || 0;
-          const duration = player.getDuration?.() || 0;
-          if (duration > 0) {
-            setWatchProgress(Math.round((currentTime / duration) * 100));
-          }
+          saveProgress();
         }
       }, 1000);
     }
     return () => clearInterval(interval);
-  }, [player, activeLessonId]);
+  }, [player, activeLessonId, saveProgress]);
 
   useEffect(() => {
     setWatchProgress(0);

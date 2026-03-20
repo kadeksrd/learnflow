@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -9,6 +9,7 @@ import { Eye, EyeOff } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
+import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 
 const schema = z.object({
   email: z.string().email('Email tidak valid'),
@@ -22,6 +23,8 @@ export function LoginForm() {
   const [mfaData, setMfaData] = useState<{ factorId: string } | null>(null)
   const [mfaCode, setMfaCode] = useState('')
   const [isVerifyingMfa, setIsVerifyingMfa] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const turnstileRef = useRef<TurnstileInstance>(null)
   
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -34,7 +37,10 @@ export function LoginForm() {
     setError(null)
     const { data, error: loginError } = await supabase.auth.signInWithPassword({ 
       email: values.email, 
-      password: values.password 
+      password: values.password,
+      options: {
+        captchaToken: captchaToken || undefined,
+      }
     })
     
     if (loginError) {
@@ -173,6 +179,18 @@ export function LoginForm() {
           </button>
         </div>
         {errors.password && <p className="text-xs text-red-400">{errors.password.message}</p>}
+      </div>
+      
+      {/* Turnstile Captcha */}
+      <div className="flex justify-center py-2">
+        <Turnstile
+          ref={turnstileRef}
+          siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+          onSuccess={(token) => setCaptchaToken(token)}
+          onExpire={() => setCaptchaToken(null)}
+          onError={() => setCaptchaToken(null)}
+          options={{ theme: 'dark' }}
+        />
       </div>
 
       <Button type="submit" size="lg" className="w-full font-syne font-bold text-base mt-2" loading={isSubmitting}>

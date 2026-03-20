@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -8,6 +8,7 @@ import { Eye, EyeOff, CheckCircle2, XCircle } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
+import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 
 const schema = z.object({
   full_name: z.string().min(2, 'Nama minimal 2 karakter'),
@@ -32,6 +33,8 @@ export function RegisterForm() {
   const [success, setSuccess] = useState(false)
   const [showPass, setShowPass] = useState(false)
   const [passwordVal, setPasswordVal] = useState('')
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const turnstileRef = useRef<TurnstileInstance>(null)
   const supabase = createClient()
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<Values>({ resolver: zodResolver(schema) })
@@ -44,6 +47,7 @@ export function RegisterForm() {
       options: {
         data: { full_name: values.full_name },
         emailRedirectTo: `${window.location.origin}/auth/callback`,
+        captchaToken: captchaToken || undefined,
       },
     })
     
@@ -139,6 +143,18 @@ export function RegisterForm() {
         error={errors.confirm_password?.message}
         {...register('confirm_password')}
       />
+
+      {/* Turnstile Captcha */}
+      <div className="flex justify-center py-2">
+        <Turnstile
+          ref={turnstileRef}
+          siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+          onSuccess={(token) => setCaptchaToken(token)}
+          onExpire={() => setCaptchaToken(null)}
+          onError={() => setCaptchaToken(null)}
+          options={{ theme: 'dark' }}
+        />
+      </div>
 
       <Button type="submit" variant="cta" size="lg" className="w-full font-syne font-bold text-base" loading={isSubmitting}>
         Buat Akun Gratis →

@@ -18,6 +18,7 @@ import {
   Volume2,
   Trophy,
   Award,
+  RotateCcw,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -469,6 +470,17 @@ export function CourseViewer({
               >
                 <CheckCircle size={16} />
                 {isDone ? "Selesai ✓" : saving ? "Saving..." : "Tandai Selesai"}
+              </button>
+
+              <button
+                onClick={() => {
+                  player?.seekTo(0);
+                  player?.playVideo();
+                }}
+                className="flex items-center gap-2 px-5 py-3 bg-card border border-white/[0.07] hover:border-accent/40 rounded-xl font-bold text-sm text-text-muted hover:text-white transition-all shadow-lg active:scale-95 text-balance shrink-0"
+              >
+                <RotateCcw size={16} />
+                Mulai Ulang
               </button>
 
               <div className="flex items-center gap-3 bg-card border border-white/[0.07] px-4 py-3 rounded-xl">

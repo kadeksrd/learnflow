@@ -350,7 +350,7 @@ export function CourseViewer({
     const embedUrl = getEmbedUrl(lesson.video_url ?? "");
 
     return (
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-full overflow-y-auto">
         {/* Video Container */}
         <div className="w-full bg-black/40 py-4 sm:py-8 px-0 sm:px-4 border-b border-white/[0.05]">
           <div className="max-w-[1000px] mx-auto">
@@ -427,22 +427,11 @@ export function CourseViewer({
               </div>
             )}
             
-            {getYoutubeId(lesson.video_url || '') && (
-              <div className="mt-2 text-center">
-                <a 
-                  href={`https://www.youtube.com/watch?v=${getYoutubeId(lesson.video_url || '')}`}
-                  target="_blank" rel="noopener noreferrer"
-                  className="text-[10px] text-text-dim hover:text-accent-light flex items-center justify-center gap-1"
-                >
-                  <ExternalLink size={10} /> Tonton di YouTube
-                </a>
-              </div>
-            )}
           </div>
         </div>
 
         {/* Lesson Info */}
-        <div className="p-4 sm:p-6 lg:p-8 flex-1 overflow-y-auto">
+        <div className="p-4 sm:p-6 lg:p-8 shrink-0">
           <div className="max-w-[1000px] mx-auto">
             <div className="flex items-start gap-4 mb-6">
               <div className="flex-1">

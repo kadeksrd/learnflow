@@ -16,7 +16,10 @@ import {
   StickyNote,
   ExternalLink,
   Volume2,
+  Trophy,
+  Award,
 } from "lucide-react";
+import Link from "next/link";
 
 interface Lesson {
   id: string;
@@ -73,6 +76,7 @@ export function CourseViewer({
   const [player, setPlayer] = useState<any>(null);
   const [watchProgress, setWatchProgress] = useState(0);
   const [showMuteNotice, setShowMuteNotice] = useState(false);
+  const [showCompleteModal, setShowCompleteModal] = useState(false);
 
   const youtubeOpts = useMemo(() => ({
     width: '100%',
@@ -172,6 +176,12 @@ export function CourseViewer({
       setCompletedIds((prev) => {
         const next = new Set(Array.from(prev));
         next.add(activeLessonId);
+        
+        // Cek jika ini adalah materi terakhir yang belum selesai
+        if (next.size === allLessons.length) {
+          setShowCompleteModal(true);
+        }
+        
         return next;
       });
       if (autoNext && nextLesson) {
@@ -180,7 +190,7 @@ export function CourseViewer({
     } finally {
       setSaving(false);
     }
-  }, [activeLessonId, completedIds, saving, autoNext, nextLesson, openLesson]);
+  }, [activeLessonId, completedIds, saving, autoNext, nextLesson, openLesson, allLessons.length]);
 
   // ─── Sidebar Content ──────────────────────────────────────────────────────
   const renderSidebarContent = () => (
@@ -603,6 +613,41 @@ export function CourseViewer({
             </div>
           </>
         )}
+      {/* Course Completion Modal */}
+      {showCompleteModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div 
+            className="absolute inset-0 bg-black/80 backdrop-blur-md animate-in fade-in duration-500" 
+            onClick={() => setShowCompleteModal(false)}
+          />
+          <div className="relative bg-[#1A0A2E] border border-white/10 rounded-3xl p-8 max-w-sm w-full text-center shadow-[0_0_50px_rgba(168,85,247,0.2)] animate-in zoom-in-95 duration-300">
+            <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-[0_0_30px_rgba(234,179,8,0.3)] animate-bounce">
+              <Trophy size={40} className="text-white" />
+            </div>
+            <h2 className="font-syne font-extrabold text-2xl mb-2 bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
+              Misi Berhasil! 🎉
+            </h2>
+            <p className="text-text-muted text-sm mb-8 leading-relaxed">
+              Selamat! Kamu telah menyelesaikan seluruh materi di course ini. Sekarang saatnya memanen hasil belajarmu.
+            </p>
+            <div className="flex flex-col gap-3">
+              <Link
+                href={`/certificate/${course.id}`}
+                className="flex items-center justify-center gap-2 w-full py-4 bg-accent hover:bg-accent-light text-white font-bold rounded-2xl transition-all shadow-lg active:scale-95"
+              >
+                <Award size={18} />
+                Ambil Sertifikat
+              </Link>
+              <button
+                onClick={() => setShowCompleteModal(false)}
+                className="text-text-dim text-xs hover:text-white transition-colors"
+              >
+                Nanti Saja
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       </div>
     </div>
   );

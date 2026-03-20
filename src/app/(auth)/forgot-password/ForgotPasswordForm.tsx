@@ -10,6 +10,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
+import { checkEmailExists } from './actions'
 
 const schema = z.object({
   email: z.string().email('Email tidak valid'),
@@ -29,6 +30,14 @@ export function ForgotPasswordForm() {
 
   const onSubmit = async (values: Values) => {
     setError(null)
+    
+    // Cek apakah email terdaftar (Server Action)
+    const exists = await checkEmailExists(values.email)
+    if (!exists) {
+      setError('Email tidak ditemukan. Cek lagi atau daftar akun baru.')
+      return
+    }
+
     const { error: resetError } = await supabase.auth.resetPasswordForEmail(values.email, {
       redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
       captchaToken: captchaToken || undefined,

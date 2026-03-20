@@ -283,8 +283,8 @@ export default async function DashboardPage() {
                         completedLessons={done}
                         totalLessons={total}
                       />
-                      {/* Quick actions: Continue or Restart/Certificate */}
-                      {courseNextLesson && progress < 100 ? (
+                      {/* Quick actions: Continue */}
+                      {courseNextLesson && progress < 100 && (
                         <Link
                           href={`/dashboard/course/${course.id}`}
                           className="mt-3 flex items-center justify-center gap-2 w-full py-2.5 bg-accent/10 hover:bg-accent/20 text-accent-light text-xs font-semibold rounded-xl transition-all"
@@ -293,21 +293,6 @@ export default async function DashboardPage() {
                           {courseNextLesson.title.slice(0, 28)}
                           {courseNextLesson.title.length > 28 ? "..." : ""}
                         </Link>
-                      ) : progress === 100 && (
-                        <div className="grid grid-cols-2 gap-2 mt-3 text-center">
-                          <Link
-                            href={`/certificate/${course.id}`}
-                            className="flex items-center justify-center gap-1.5 py-2.5 bg-yellow-400/10 hover:bg-yellow-400/20 text-yellow-400 text-[10px] font-bold rounded-xl transition-all border border-yellow-400/20"
-                          >
-                            <Award size={13} /> Sertifikat
-                          </Link>
-                          <Link
-                            href={`/dashboard/course/${course.id}`}
-                            className="flex items-center justify-center gap-1.5 py-2.5 bg-accent/10 hover:bg-accent/20 text-accent-light text-[10px] font-bold rounded-xl transition-all border border-accent/20"
-                          >
-                            <Play size={13} /> Pelajari Ulang
-                          </Link>
-                        </div>
                       )}
                     </div>
 

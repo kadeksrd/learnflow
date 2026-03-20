@@ -14,13 +14,9 @@ export function MyCourseCard({ course, progress, completedLessons, totalLessons 
   const router = useRouter()
   const product = course.products
 
-  const handleCardClick = () => {
-    router.push(`/dashboard/course/${course.id}`)
-  }
-
   return (
-    <div onClick={handleCardClick} className="group">
-      <div className="bg-card border border-white/[0.07] rounded-2xl overflow-hidden hover:border-accent/40 hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+    <div className="group">
+      <div className="bg-card border border-white/[0.07] rounded-2xl overflow-hidden hover:border-accent/40 hover:-translate-y-1 transition-all duration-300">
         <div className="relative h-36 overflow-hidden bg-surface flex items-center justify-center">
           {product?.thumbnail
             ? <img src={product.thumbnail} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -44,19 +40,24 @@ export function MyCourseCard({ course, progress, completedLessons, totalLessons 
             <div className="grid grid-cols-2 gap-2">
               <Link 
                 href={`/certificate/${course.id}`}
-                onClick={(e) => e.stopPropagation()}
                 className="flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] font-bold transition-all bg-yellow-400/10 text-yellow-400 border border-yellow-400/20 hover:bg-yellow-400/20"
               >
                 🏆 Sertifikat
               </Link>
-              <div className="flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] font-bold transition-all border border-accent/30 text-accent-light group-hover:bg-accent/10">
+              <Link
+                href={`/dashboard/course/${course.id}`}
+                className="flex items-center justify-center gap-1 py-2 rounded-xl text-[10px] font-bold transition-all border border-accent/30 text-accent-light hover:bg-accent/10"
+              >
                 ▶ Pelajari Ulang
-              </div>
+              </Link>
             </div>
           ) : (
-            <div className={`w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-semibold transition-all border border-accent/30 text-accent-light group-hover:bg-accent/10`}>
+            <Link 
+              href={`/dashboard/course/${course.id}`}
+              className={`w-full flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-semibold transition-all border border-accent/30 text-accent-light hover:bg-accent/10`}
+            >
               {progress > 0 ? '▶ Lanjut Belajar' : '▶ Mulai Belajar'}
-            </div>
+            </Link>
           )}
         </div>
       </div>

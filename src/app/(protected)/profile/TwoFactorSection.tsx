@@ -5,13 +5,13 @@ import { createClient } from '@/lib/supabase/client'
 import { QRCodeSVG } from 'qrcode.react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
-import { ShieldCheck, ShieldAlert, Key, Trash2, List } from 'lucide-react'
+import { ShieldCheck, ShieldAlert, Key, Trash2 } from 'lucide-react'
 
 export function TwoFactorSection() {
   const [loading, setLoading] = useState(true)
   const [factors, setFactors] = useState<any[]>([])
   const [isEnrolling, setIsEnrolling] = useState(false)
-  const [enrollData, setEnrollData] = useState<{ id: string, totp: { qr_code: string, secret: string } } | null>(null)
+  const [enrollData, setEnrollData] = useState<{ id: string, totp: { qr_code: string, secret: string, uri: string } } | null>(null)
   const [verifyCode, setVerifyCode] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
@@ -156,7 +156,7 @@ export function TwoFactorSection() {
 
           <div className="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
             <div className="bg-white p-3 rounded-2xl shadow-xl shadow-accent/10">
-              <QRCodeSVG value={enrollData.totp.qr_code} size={150} />
+              <QRCodeSVG value={enrollData.totp.uri} size={150} />
             </div>
             
             <div className="flex-1 space-y-4">

@@ -317,6 +317,7 @@ export function CourseViewer({
                       disablekb: 1,
                       rel: 0,
                       modestbranding: 1,
+                      origin: typeof window !== 'undefined' ? window.location.origin : undefined,
                     },
                   }}
                   className="w-full h-full"

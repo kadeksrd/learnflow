@@ -15,8 +15,6 @@ import {
   Loader2,
   StickyNote,
   ExternalLink,
-  Volume2,
-  VolumeX,
 } from "lucide-react";
 
 interface Lesson {
@@ -67,12 +65,11 @@ export function CourseViewer({
     course.modules.map((m) => m.id),
   );
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeLessonId, setActiveLessonId] = useState<string | null>(null);
+  const [activeLessonId, setActiveLessonId] = useState<string | null>(initialLessonId);
   const [saving, setSaving] = useState(false);
   const [autoNext, setAutoNext] = useState(true);
   const [autoPlay, setAutoPlay] = useState(true);
   const [player, setPlayer] = useState<any>(null);
-  const [isMuted, setIsMuted] = useState(true);
   const [watchProgress, setWatchProgress] = useState(0);
 
   // Resume progress on load
@@ -85,39 +82,23 @@ export function CourseViewer({
     }
   }, [player, activeLessonId]);
 
-  // Track and save progress
-  useEffect(() => {
-    if (!player) return;
-    const interval = setInterval(() => {
-      try {
-        const currentTime = player.getCurrentTime();
-        const duration = player.getDuration();
-        if (duration > 0) {
-          const percent = Math.round((currentTime / duration) * 100);
-          setWatchProgress(percent);
-          localStorage.setItem(`progress:${activeLessonId}`, currentTime.toString());
-        }
-      } catch (e) {}
-    }, 1000);
-    return () => clearInterval(interval);
+  // Simpan progress saat pause atau pindah
+  const saveProgress = useCallback(() => {
+    if (player && activeLessonId) {
+      const currentTime = player.getCurrentTime();
+      localStorage.setItem(`progress:${activeLessonId}`, currentTime.toString());
+      
+      const duration = player.getDuration();
+      if (duration > 0) {
+        setWatchProgress(Math.round((currentTime / duration) * 100));
+      }
+    }
   }, [player, activeLessonId]);
 
   useEffect(() => {
     setWatchProgress(0);
-    // Kita biarkan player tetap ada agar tidak terjadi flickering
   }, [activeLessonId]);
 
-  const toggleMute = useCallback(() => {
-    if (!player) return;
-    if (isMuted) {
-      player.unMute();
-      player.setVolume(100);
-      setIsMuted(false);
-    } else {
-      player.mute();
-      setIsMuted(true);
-    }
-  }, [player, isMuted]);
 
   const useChapters = course.use_chapters !== false;
   const allLessons: Lesson[] = course.modules.flatMap((m) => m.lessons);
@@ -349,15 +330,18 @@ export function CourseViewer({
               {getYoutubeId(lesson.video_url || '') ? (
                 <YouTube
                   videoId={getYoutubeId(lesson.video_url!)!}
-                  onEnd={markComplete}
+                  onEnd={() => {
+                    saveProgress();
+                    markComplete();
+                  }}
+                  onPause={saveProgress}
                   onReady={(e) => {
                     setPlayer(e.target);
                     if (autoPlay) {
                       e.target.playVideo();
-                      e.target.mute();
-                      setIsMuted(true);
-                    } else {
-                      setIsMuted(false);
+                      // Diizinkan oleh browser jika user pernah berinteraksi
+                      e.target.unMute(); 
+                      e.target.setVolume(100);
                     }
                   }}
                   opts={{
@@ -365,7 +349,7 @@ export function CourseViewer({
                     height: '100%',
                     playerVars: {
                       autoplay: autoPlay ? 1 : 0,
-                      mute: autoPlay ? 1 : 0, // Autoplay seringkali hanya jalan jika di-mute
+                      mute: 0, 
                       controls: 0,
                       disablekb: 1,
                       rel: 0,
@@ -500,18 +484,6 @@ export function CourseViewer({
               <span className="text-sm text-text-muted">Auto-putar</span>
             </label>
 
-            <button
-              onClick={toggleMute}
-              className={cn(
-                "flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold text-sm transition-all",
-                isMuted
-                  ? "bg-yellow-500/15 text-yellow-400 border border-yellow-500/20 hover:bg-yellow-500/25"
-                  : "bg-card border border-white/[0.07] text-text-muted hover:text-white",
-              )}
-            >
-              {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
-              {isMuted ? "Aktifkan Suara" : "Suara Nyala"}
-            </button>
 
             <div className="flex gap-2 sm:ml-auto">
               <button

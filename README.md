@@ -1,114 +1,108 @@
-# 🚀 LearnFlow — Advanced Online Course & LMS Platform
+# 🚀 LearnFlow — Enterprise LMS & Marketing-Driven Platform
 
-**LearnFlow** is a modern, full-stack education platform built for high scalability. It features **SEO Pixel Optimization**, a **Multi-Landing Page** system, and intuitive class management.
-
-
+**LearnFlow** is a high-performance, full-stack Learning Management System (LMS) built with **Next.js 14**, **Supabase**, and a **Multi-Gateway Payment** architecture. This platform is specifically designed for course creators who prioritize conversion, featuring a built-in **Landing Page Builder**, **Custom Storefront Editor**, and a full **Marketing Tech Stack**.
 
 ---
 
-## ✨ Key Features
+## ✨ Core Features
 
-* **🎯 SEO & Pixel Ready:** Integrated with Meta Pixel and Google Analytics. Features automatic SEO optimization (Dynamic Sitemap & JSON-LD) for every individual course.
-* **📑 Custom Landing Page Builder:** Every course has its own exclusive landing page, editable directly via the Admin Panel without touching the code.
-* **🏪 Storefront Management:** Real-time store customization to boost conversion rates and branding.
-* **📚 Dynamic Course Architecture:** Layered content structure (Modules > Lessons > Video/Quiz) with fast video streaming support.
-* **💳 Automated Payment:** Xendit integration for automated payments (E-wallets, Virtual Accounts, Retail Stores) with a robust webhook system.
-* **🔐 Secure Auth:** Reliable user authentication via Supabase Auth (Email & Social Login).
+* **💳 Multi-Payment Gateway:** Support for **Xendit**, **Midtrans**, and **DOKU**. Easily switch providers or scale based on your business requirements.
+* **📑 Dynamic Landing Page Builder:** Create and customize unique landing pages for *every single class* directly from the Admin Panel.
+* **🎨 Storefront Customizer:** Edit your homepage, manage banners, and curate featured courses in real-time without touching the code.
+* **📈 Advanced Marketing Suite:**
+    * **Native Tracking:** Easy integration for **Google Tag Manager (GTM)**.
+    * **Conversion Pixels:** One-click setup for **Facebook (Meta) Pixel** and **TikTok Pixel**.
+    * **SEO Engine:** Full control over Meta Titles, Descriptions, JSON-LD, and Slugs for every page.
+* **📚 Robust Learning Experience:** Managed Modules & Lessons (Video/PDF), student dashboards, and progress tracking.
 
 ---
 
 ## 🛠️ Tech Stack
 
 * **Frontend:** Next.js 14 (App Router), Tailwind CSS, Shadcn UI.
-* **Backend:** Supabase (PostgreSQL, Auth, Storage).
-* **Payment Gateway:** Xendit.
+* **Backend:** Supabase (Postgres, Auth, Edge Functions, Storage).
+* **Payments:** Xendit / Midtrans / DOKU.
+* **Tracking:** GTM, Meta Pixel, TikTok Pixel.
 * **Deployment:** Vercel.
 
 ---
 
 ## 🚦 Quick Start Guide
 
-### 1. Clone & Install
+### STEP 1 — Clone & Install
 ```bash
-git clone https://github.com/username/learnflow.git
+git clone https://github.com/yourusername/learnflow.git
 cd learnflow
 npm install
 cp .env.local.example .env.local
 ```
 
-### 2. Database Configuration (Supabase)
-1. Create a new project at [Supabase](https://supabase.com).
-2. Open the **SQL Editor** and paste the contents of `supabase/schema.sql` to build tables and Storage Buckets.
-3. Retrieve your `URL` and `Anon Key` from **Settings > API**.
+### STEP 2 — Database Setup (Supabase)
+1. Create a project at [supabase.com](https://supabase.com).
+2. Run the SQL script found in `supabase/schema.sql` inside the **SQL Editor**.
+3. Ensure public buckets named `thumbnails` and `course-assets` are created.
 
-### 3. Environment Variables (`.env.local`)
-Fill in the following variables to connect core features:
+### STEP 3 — Environment Variables
+Choose your preferred payment gateway and fill the credentials in `.env.local`:
 ```env
+# Supabase Keys
 NEXT_PUBLIC_SUPABASE_URL=https://your-id.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-service-role
 
-# Payment Configuration
-XENDIT_SECRET_KEY=xnd_development_...
-XENDIT_WEBHOOK_TOKEN=your_secret_token
+# Marketing & Analytics
+NEXT_PUBLIC_GTM_ID=GTM-XXXXXX
+NEXT_PUBLIC_FB_PIXEL_ID=XXXXXXXXXXXX
+NEXT_PUBLIC_TIKTOK_PIXEL_ID=XXXXXXXXXXXX
 
-# SEO & App Config
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXT_PUBLIC_PIXEL_ID=your-meta-pixel-id
+# Payment Providers (Configure as needed)
+PAYMENT_PROVIDER=xendit # Choose: xendit, midtrans, or doku
+XENDIT_SECRET_KEY=...
+MIDTRANS_SERVER_KEY=...
+DOKU_SECRET_KEY=...
 ```
 
-### 4. Run Locally
+### STEP 4 — Run Local Server
 ```bash
 npm run dev
 ```
-Access the app at `http://localhost:3000`.
+Access the dashboard at `http://localhost:3000`.
 
 ---
 
-## 🔑 Admin & SEO Setup
+## 🔑 Admin Privileges
 
-### Set Administrator Role
-After registering an account in the app, run this query in the Supabase SQL Editor:
+To access the Admin Panel (`/admin`), update your user role in the Supabase SQL Editor:
 ```sql
 UPDATE auth.users 
 SET raw_user_meta_data = raw_user_meta_data || '{"role": "admin"}' 
 WHERE email = 'your-email@example.com';
 ```
 
-### Enable Per-Course SEO
-1. Go to **Admin Panel > Landing Pages**.
-2. Click **Edit** on your desired course.
-3. Enter the **Meta Title, Description, and Slug**.
-4. The system will automatically render the necessary SEO tags for Google indexing.
-
 ---
 
-## 📂 Core Project Structure
+## 📂 Project Architecture
 
 ```text
 src/
 ├── app/
-│   ├── admin/             # Management Panel (Products, Classes, SEO)
-│   ├── (main)/store       # Course Catalog / Storefront
-│   ├── (main)/course/[slug] # Dynamic Landing Pages per Course
-│   └── (protected)/lesson # Learning Room (Video Player)
-├── components/            # UI Kit & SEO Meta Components
-├── lib/                   # Xendit & Supabase Helper Integrations
-└── supabase/              # Database Schema & Migrations
+│   ├── admin/             # SEO, Pixel, & Page Management
+│   ├── (main)/store       # Dynamic Catalog & Storefront
+│   ├── (main)/course/[slug] # Individual Landing Pages
+│   └── api/webhook        # Unified Webhook Handlers (Xendit/Midtrans/DOKU)
+├── components/marketing/  # Pixel & GTM Injection Logic
+├── lib/payments/          # Provider-specific Logic (Xendit/Midtrans/DOKU)
+└── supabase/              # Database Schema & Policies
 ```
 
 ---
 
 ## 🛡️ Troubleshooting
 
-| Issue | Solution |
-| :--- | :--- |
-| **SEO tags not appearing** | Ensure the metadata in `layout.tsx` is correctly mapped to the product data. |
-| **Video fails to play** | Check the YouTube/Vimeo URL. Ensure there are no special characters in the link. |
-| **Xendit Webhook Fail** | Verify the Callback Token in Xendit Dashboard matches `XENDIT_WEBHOOK_TOKEN`. |
-| **Image Upload Error** | Ensure the `thumbnails` bucket in Supabase Storage is set to **Public**. |
+* **❌ Tracking Not Working:** Ensure the Pixel IDs are correctly set in the Admin Panel and check for Ad-blockers.
+* **❌ Webhook Failures:** Verify that your production URL is correctly whitelisted in your Payment Provider's dashboard.
+* **❌ Image Upload:** Ensure the Supabase Storage Bucket policy is set to **Public**.
 
 ---
 
-## 🤝 Contributing
-Want to add new Pixel features or SEO optimizations? Please open a **Pull Request**!
+## 🤝 Support
+For any questions regarding the setup or to contribute new payment provider integrations, please open an **Issue** or contact the maintainer.

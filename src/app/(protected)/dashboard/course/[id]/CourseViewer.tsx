@@ -15,6 +15,8 @@ import {
   Loader2,
   StickyNote,
   ExternalLink,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 
 interface Lesson {
@@ -69,6 +71,20 @@ export function CourseViewer({
   const [saving, setSaving] = useState(false);
   const [autoNext, setAutoNext] = useState(true);
   const [autoPlay, setAutoPlay] = useState(true);
+  const [player, setPlayer] = useState<any>(null);
+  const [isMuted, setIsMuted] = useState(true);
+
+  const toggleMute = useCallback(() => {
+    if (!player) return;
+    if (isMuted) {
+      player.unMute();
+      player.setVolume(100);
+      setIsMuted(false);
+    } else {
+      player.mute();
+      setIsMuted(true);
+    }
+  }, [player, isMuted]);
 
   const useChapters = course.use_chapters !== false;
   const allLessons: Lesson[] = course.modules.flatMap((m) => m.lessons);
@@ -305,7 +321,14 @@ export function CourseViewer({
                   videoId={getYoutubeId(lesson.video_url!)!}
                   onEnd={markComplete}
                   onReady={(e) => {
-                    if (autoPlay) e.target.playVideo();
+                    setPlayer(e.target);
+                    if (autoPlay) {
+                      e.target.playVideo();
+                      e.target.mute();
+                      setIsMuted(true);
+                    } else {
+                      setIsMuted(false);
+                    }
                   }}
                   opts={{
                     width: '100%',
@@ -417,6 +440,19 @@ export function CourseViewer({
               />
               <span className="text-sm text-text-muted">Auto-putar</span>
             </label>
+
+            <button
+              onClick={toggleMute}
+              className={cn(
+                "flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold text-sm transition-all",
+                isMuted
+                  ? "bg-yellow-500/15 text-yellow-400 border border-yellow-500/20 hover:bg-yellow-500/25"
+                  : "bg-card border border-white/[0.07] text-text-muted hover:text-white",
+              )}
+            >
+              {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+              {isMuted ? "Aktifkan Suara" : "Suara Nyala"}
+            </button>
 
             <div className="flex gap-2 sm:ml-auto">
               <button

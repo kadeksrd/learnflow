@@ -22,8 +22,8 @@ export function LandingPageContent({
   landing_page: any;
   product: any;
   course: any;
-  benefits?: any;
-  testimonials?: any;
+  benefits?: any[];
+  testimonials?: any[];
 }) {
   // HAPUS BARIS: const { landing_page, product, course } = data; (Karena sudah diterima di atas)
 

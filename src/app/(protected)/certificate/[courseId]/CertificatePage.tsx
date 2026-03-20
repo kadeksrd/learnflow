@@ -20,6 +20,20 @@ export function CertificatePage({
     month: "long",
     day: "numeric",
   });
+  const numericDate = new Date()
+    .toISOString()
+    .split("T")[0]
+    .replace(/-/g, "");
+
+  const handlePrint = () => {
+    const originalTitle = document.title;
+    document.title = `${name} - ${courseName} - ${numericDate}`;
+    window.print();
+    setTimeout(() => {
+      document.title = originalTitle;
+    }, 500);
+  };
+
   const certId = `LF-${user.id.slice(0, 6).toUpperCase()}-${course.id.slice(0, 6).toUpperCase()}`;
 
   return (
@@ -28,7 +42,7 @@ export function CertificatePage({
         <h1 className="font-syne font-bold text-xl">Sertifikat Kelulusan</h1>
         <div className="flex gap-3">
           <button
-            onClick={() => window.print()}
+            onClick={handlePrint}
             className="flex items-center gap-2 px-4 py-2.5 bg-cta text-black font-bold rounded-xl text-sm hover:bg-cta-hover transition-all"
           >
             <Download size={15} /> Unduh / Print

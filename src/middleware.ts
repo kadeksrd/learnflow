@@ -30,7 +30,7 @@ export async function middleware(request: NextRequest) {
 
   const protectedPaths = ['/dashboard', '/lesson', '/checkout', '/certificate']
   const isProtected = protectedPaths.some(p => request.nextUrl.pathname.startsWith(p))
-  const isAdminPath = request.nextUrl.pathname.startsWith('/admin')
+  const isAdminPath = request.nextUrl.pathname.startsWith('/admin') || request.nextUrl.pathname.startsWith('/api/admin')
 
   if (isProtected && !user) {
     const url = new URL('/login', request.url)

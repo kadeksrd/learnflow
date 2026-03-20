@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Package, FileText, GraduationCap, ShoppingCart, Zap, Star, Menu, X, Store, Link as LinkIcon, CreditCard, Search, Radio } from 'lucide-react'
+import { LayoutDashboard, Package, FileText, GraduationCap, ShoppingCart, Zap, Star, Menu, X, Store, Link as LinkIcon, CreditCard, Search, Radio, Users } from 'lucide-react'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 
@@ -17,6 +17,7 @@ const ALL_ITEMS = [
   { href: '/admin/payment-settings', icon: CreditCard,      label: 'Payment Gateway',    section: 'Bisnis'    },
   { href: '/admin/reviews',          icon: Star,            label: 'Reviews',            section: 'Bisnis'    },
   { href: '/admin/orders',           icon: ShoppingCart,    label: 'Orders',             section: 'Bisnis'    },
+  { href: '/admin/users',            icon: Users,           label: 'Users',              section: 'Bisnis'    },
 ]
 
 const BOTTOM_TABS = [

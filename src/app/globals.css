@@ -90,9 +90,6 @@
     display: block;
   }
 
-  .marquee-mask {
-    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-  }
 
   @keyframes marquee-bounce {
     0%, 20% { left: 0; transform: translateX(0); }

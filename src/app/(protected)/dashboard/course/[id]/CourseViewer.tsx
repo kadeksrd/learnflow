@@ -369,7 +369,7 @@ export function CourseViewer({
           <div className="max-w-[1200px] mx-auto">
             <div className="flex items-center justify-between gap-6 pb-2 border-b border-white/[0.03]">
               <div className="flex-1 min-w-0">
-                <div className="overflow-hidden marquee-mask relative py-1">
+                <div className="flex-1 min-w-0 overflow-hidden relative py-1">
                   <div className="flex w-max animate-marquee-bounce">
                     <h1 className="font-syne font-extrabold text-xl sm:text-2xl text-white leading-tight whitespace-nowrap">
                       {lesson.title}
@@ -396,7 +396,12 @@ export function CourseViewer({
                    <button
                     onClick={() => {
                       setWatchProgress(0);
-                      setVideoReloadKey((prev) => prev + 1);
+                      if (player && typeof player.seekTo === 'function') {
+                        player.seekTo(0);
+                        player.playVideo();
+                      } else {
+                        setVideoReloadKey((prev) => prev + 1);
+                      }
                     }}
                     title="Muat Ulang Video (Mulai dari 0)"
                     className="p-2 rounded-lg bg-white/5 border border-white/10 text-text-dim hover:text-white hover:bg-white/10 transition-all active:scale-95"

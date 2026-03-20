@@ -48,9 +48,9 @@ export function CertificatePage({
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 pb-12 print:p-0 print:max-w-none">
+      <div className="max-w-4xl mx-auto px-4 pb-12 print:p-0 print:m-0 print:max-w-none print:w-full print:h-screen print:flex print:items-center print:justify-center">
         <div
-          className="relative text-gray-200 rounded-3xl overflow-hidden print:rounded-none"
+          className="certificate-card relative text-gray-200 rounded-3xl overflow-hidden print:rounded-none print:w-full print:h-auto"
           style={{
             aspectRatio: "1.414/1",
             minHeight: "560px",
@@ -117,11 +117,37 @@ export function CertificatePage({
 
       <style>{`
         @media print {
-          body { background: white; }
-          .print\\:hidden { display: none !important; }
-          .print\\:p-0 { padding: 0 !important; }
-          .print\\:max-w-none { max-width: none !important; }
-          @page { size: A4 landscape; margin: 0; }
+          /* Hide Navbar and other UI elements */
+          header, 
+          .print\\:hidden,
+          footer { 
+            display: none !important; 
+          }
+          
+          /* Reset body and main container */
+          body { 
+            margin: 0 !important; 
+            padding: 0 !important; 
+            background: white !important;
+          }
+          
+          /* Remove spacer if any */
+          .h-16 { display: none !important; }
+
+          /* Preserve colors and gradients */
+          .certificate-card {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: none !important;
+            border-radius: 0 !important;
+          }
+
+          @page {
+            size: A4 landscape;
+            margin: 0;
+          }
         }
       `}</style>
     </div>

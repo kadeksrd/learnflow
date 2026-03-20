@@ -38,7 +38,7 @@ export function RegisterForm() {
 
   const onSubmit = async (values: Values) => {
     setError(null)
-    const { error } = await supabase.auth.signUp({
+    const { error: signUpError } = await supabase.auth.signUp({
       email: values.email,
       password: values.password,
       options: {
@@ -46,7 +46,12 @@ export function RegisterForm() {
         emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     })
-    if (error) { setError(error.message); return }
+    
+    if (signUpError) {
+      setError(signUpError.message)
+      return
+    }
+    
     setSuccess(true)
   }
 

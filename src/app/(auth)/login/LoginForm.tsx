@@ -28,17 +28,27 @@ export function LoginForm() {
 
   const onSubmit = async (values: Values) => {
     setError(null)
-    const { error } = await supabase.auth.signInWithPassword({ email: values.email, password: values.password })
-    if (error) {
-      setError(
-        error.message === 'Invalid login credentials'
-          ? 'Email atau password salah. Periksa kembali.'
-          : error.message
-      )
+    const { error: loginError } = await supabase.auth.signInWithPassword({ 
+      email: values.email, 
+      password: values.password 
+    })
+    
+    if (loginError) {
+      if (loginError.message === 'Invalid login credentials') {
+        setError('Email atau password salah. Periksa kembali.')
+      } else if (loginError.message === 'Email not confirmed') {
+        setError('Email belum dikonfirmasi. Cek email kamu untuk aktivasi.')
+      } else {
+        setError(loginError.message)
+      }
       return
     }
-    router.push(redirectTo)
+    
+    // Refresh to update cookies then redirect
     router.refresh()
+    setTimeout(() => {
+      router.push(redirectTo)
+    }, 100)
   }
 
   return (

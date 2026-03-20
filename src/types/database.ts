@@ -15,7 +15,6 @@ export interface Database {
         Insert: { name: string; slug: string }
         Update: Partial<{ name: string; slug: string }>
         Relationships: any[]
-        Relationships: any[]
       }
       products: {
         Row: {
@@ -34,7 +33,19 @@ export interface Database {
           headline: string; subheadline: string | null; cta_text: string
           benefits: Json; testimonials: Json; theme_color: string
           preview_video: string | null
-          hero_image: string | null; seo_title?: string | null; seo_description?: string | null; seo_keywords?: string | null; og_title?: string | null; og_description?: string | null; og_image?: string | null; robots?: string | null; canonical_url?: string | null; schema_markup?: string | null; pixel_override_enabled?: boolean | null; fb_pixel_id?: string | null; fb_pixel_enabled?: boolean | null; tiktok_pixel_id?: string | null; tiktok_pixel_enabled?: boolean | null; ga4_id?: string | null; ga4_enabled?: boolean | null; gtm_id?: string | null; gtm_enabled?: boolean | null; custom_head_script?: string | null; pixel_fb_id?: string | null; pixel_tiktok_id?: string | null; pixel_ga4_id?: string | null; pixel_gtm_id?: string | null; pixel_custom_head?: string | null;
+          hero_image: string | null;
+          seo_title: string | null; seo_description: string | null; seo_keywords: string | null;
+          og_title: string | null; og_description: string | null; og_image: string | null;
+          robots: string | null; canonical_url: string | null; schema_markup: string | null;
+          pixel_override_enabled: boolean;
+          fb_pixel_id: string | null; fb_pixel_enabled: boolean;
+          tiktok_pixel_id: string | null; tiktok_pixel_enabled: boolean;
+          ga4_id: string | null; ga4_enabled: boolean;
+          gtm_id: string | null; gtm_enabled: boolean;
+          custom_head_script: string | null;
+          pixel_fb_id: string | null; pixel_tiktok_id: string | null;
+          pixel_ga4_id: string | null; pixel_gtm_id: string | null;
+          pixel_custom_head: string | null;
           created_at: string; updated_at: string
         }
         Insert: Omit<Database['public']['Tables']['landing_pages']['Row'], 'id' | 'created_at' | 'updated_at'>
@@ -42,13 +53,13 @@ export interface Database {
         Relationships: any[]
       }
       courses: {
-        Row: { id: string; product_id: string; title: string; created_at: string }
+        Row: { id: string; product_id: string; title: string; use_chapters: boolean; description: string | null; created_at: string }
         Insert: Omit<Database['public']['Tables']['courses']['Row'], 'id' | 'created_at'>
         Update: Partial<Database['public']['Tables']['courses']['Insert']>
         Relationships: any[]
       }
       modules: {
-        Row: { id: string; course_id: string; title: string; order: number; created_at: string }
+        Row: { id: string; course_id: string; title: string; order: number; description: string | null; created_at: string }
         Insert: Omit<Database['public']['Tables']['modules']['Row'], 'id' | 'created_at'>
         Update: Partial<Database['public']['Tables']['modules']['Insert']>
         Relationships: any[]
@@ -92,6 +103,24 @@ export interface Database {
         Update: Partial<Database['public']['Tables']['progress']['Insert']>
         Relationships: any[]
       }
+      reviews: {
+        Row: {
+          id: string; user_id: string; product_id: string; rating: number;
+          comment: string | null; is_visible: boolean; created_at: string; updated_at: string;
+        }
+        Insert: Omit<Database['public']['Tables']['reviews']['Row'], 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['reviews']['Insert']>
+        Relationships: any[]
+      }
+      site_settings: {
+        Row: {
+          id: string; key: string; value: Json;
+          updated_at: string; updated_by: string | null;
+        }
+        Insert: Omit<Database['public']['Tables']['site_settings']['Row'], 'id' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['site_settings']['Insert']>
+        Relationships: any[]
+      }
     }
   }
 }
@@ -106,6 +135,8 @@ export type UserCourse  = Database['public']['Tables']['user_courses']['Row']
 export type Progress    = Database['public']['Tables']['progress']['Row']
 export type Category    = Database['public']['Tables']['categories']['Row']
 export type Suggestion  = Database['public']['Tables']['suggestions']['Row']
+export type Review      = Database['public']['Tables']['reviews']['Row']
+export type SiteSetting = Database['public']['Tables']['site_settings']['Row']
 
 export interface Benefit {
   icon: string
@@ -117,23 +148,10 @@ export interface Testimonial {
   name: string
   role: string
   text: string
-  avatar_url?: string   // URL foto profil (opsional)
+  avatar_url?: string
   rating?: number
 }
 
-// Reviews
-export interface Review {
-  id: string
-  user_id: string
-  product_id: string
-  rating: number
-  comment: string | null
-  is_visible: boolean
-  created_at: string
-  updated_at: string
-}
-
-// Review dengan data user (untuk tampil di landing page)
 export interface ReviewWithUser extends Review {
   user_name: string
   user_avatar: string | null

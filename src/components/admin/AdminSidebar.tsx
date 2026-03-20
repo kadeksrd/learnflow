@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Package, FileText, GraduationCap, Link as LinkIcon, ShoppingCart, Zap, Star, Store, CreditCard, Search, Radio } from 'lucide-react'
+import { LayoutDashboard, Package, FileText, GraduationCap, Link as LinkIcon, ShoppingCart, Zap, Star, Store, CreditCard, Search, Radio, Users } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const NAV = [
@@ -19,6 +19,7 @@ const NAV = [
   { href: '/admin/payment-settings', icon: CreditCard,      label: 'Payment Gateway',   divider: 'Bisnis' },
   { href: '/admin/reviews',          icon: Star,            label: 'Reviews' },
   { href: '/admin/orders',           icon: ShoppingCart,    label: 'Orders' },
+  { href: '/admin/users',            icon: Users,           label: 'Users' },
 ]
 
 export function AdminSidebar() {

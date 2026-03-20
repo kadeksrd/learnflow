@@ -48,7 +48,7 @@ export function CertificatePage({
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 pb-12 print:p-0 print:m-0 print:max-w-none print:w-full print:h-screen print:flex print:items-center print:justify-center">
+      <div className="max-w-4xl mx-auto px-4 pb-12 print:p-0 print:m-0 print:max-w-none print:w-full print:flex print:items-center print:justify-center">
         <div
           className="certificate-card relative text-gray-200 rounded-3xl overflow-hidden print:rounded-none print:w-full print:h-auto"
           style={{
@@ -117,36 +117,35 @@ export function CertificatePage({
 
       <style>{`
         @media print {
-          /* Hide Navbar and other UI elements */
+          @page {
+            size: A4 landscape;
+            margin: 0;
+          }
+          
           header, 
           .print\\:hidden,
           footer { 
             display: none !important; 
           }
           
-          /* Reset body and main container */
           body { 
             margin: 0 !important; 
             padding: 0 !important; 
             background: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
           }
           
-          /* Remove spacer if any */
           .h-16 { display: none !important; }
 
-          /* Preserve colors and gradients */
           .certificate-card {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
-            width: 100vw !important;
+            width: 100% !important;
             height: 100vh !important;
             max-width: none !important;
             border-radius: 0 !important;
-          }
-
-          @page {
-            size: A4 landscape;
-            margin: 0;
+            margin: 0 !important;
           }
         }
       `}</style>

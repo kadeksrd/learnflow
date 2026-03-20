@@ -1,6 +1,24 @@
+import { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { notFound, redirect } from "next/navigation";
 import { CourseViewer } from "./CourseViewer";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const supabase = await createClient();
+  const { data: course } = await supabase
+    .from("courses")
+    .select("title")
+    .eq("id", params.id)
+    .single();
+
+  return {
+    title: course?.title || "Kursus",
+  };
+}
 
 export default async function CourseDetailPage({
   params,

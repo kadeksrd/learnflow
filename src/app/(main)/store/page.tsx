@@ -54,7 +54,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const seo = seoData?.value || {};
   const siteName = seo.site_name || "LearnFlow";
 
-  const title = `Semua Kursus | ${siteName}`;
+  const title = `Semua Kursus`;
   const description =
     store.subheadline ||
     `Temukan kursus digital terbaik di ${siteName}. Belajar kapan saja, di mana saja.`;

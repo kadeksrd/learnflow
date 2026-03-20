@@ -68,7 +68,7 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata> {
   const d = await getData(params.slug);
-  if (!d) return { title: "Kursus tidak ditemukan | LearnFlow" };
+  if (!d) return { title: "Kursus tidak ditemukan" };
 
   const { lp, product } = d;
 

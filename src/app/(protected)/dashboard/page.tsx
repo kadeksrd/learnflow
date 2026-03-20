@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-export const metadata: Metadata = { title: "Dashboard — LearnFlow" };
+export const metadata: Metadata = { title: "Dashboard | LearnFlow" };
 
 export default async function DashboardPage() {
   const supabase = await createClient();

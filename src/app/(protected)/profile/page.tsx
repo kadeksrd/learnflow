@@ -6,7 +6,7 @@ import { PasswordForm } from "@/app/(protected)/profile/PasswordForm";
 import { TwoFactorSection } from "@/app/(protected)/profile/TwoFactorSection";
 import { User as UserIcon, Shield, Key } from "lucide-react";
 
-export const metadata: Metadata = { title: "Profil & Keamanan — LearnFlow" };
+export const metadata: Metadata = { title: "Profil & Keamanan | LearnFlow" };
 
 export default async function ProfilePage() {
   const supabase = await createClient();

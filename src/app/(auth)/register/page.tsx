@@ -4,7 +4,7 @@ import { Zap, CheckCircle } from 'lucide-react'
 import { RegisterForm } from './RegisterForm'
 import { OAuthButtons } from '@/components/ui/OAuthButtons'
 
-export const metadata: Metadata = { title: 'Daftar Gratis — LearnFlow' }
+export const metadata: Metadata = { title: 'Daftar Gratis | LearnFlow' }
 
 const perks = [
   'Akses ratusan kursus gratis',

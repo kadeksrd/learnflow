@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const seo = await getGlobalSEO()
   return {
     title: {
-      default: seo.site_title || 'LearnFlow — Platform Kursus Online',
+      default: seo.site_title || 'LearnFlow | Platform Kursus Online',
       template: `%s | ${seo.site_name || 'LearnFlow'}`,
     },
     description: seo.site_description || 'Platform kursus digital terbaik.',
@@ -48,11 +48,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="id" className={`${syne.variable} ${dmSans.variable}`}>
       <head>
-        {/* @ts-expect-error async server component */}
         <TrackingScripts />
       </head>
       <body className="bg-bg text-[#EEEEFF] font-dm-sans antialiased">
-        {/* @ts-expect-error async server component */}
         <GTMNoScript />
         <AuthProvider>
           {children}

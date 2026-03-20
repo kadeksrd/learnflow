@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { Zap } from 'lucide-react'
 import { ResetPasswordForm } from './ResetPasswordForm'
 
-export const metadata: Metadata = { title: "Reset Password — LearnFlow" };
+export const metadata: Metadata = { title: "Reset Password | LearnFlow" };
 
 export default function ResetPasswordPage() {
   return (

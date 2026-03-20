@@ -5,7 +5,7 @@ import { Zap } from 'lucide-react'
 import { LoginForm } from './LoginForm'
 import { OAuthButtons } from '@/components/ui/OAuthButtons'
 
-export const metadata: Metadata = { title: "Masuk — LearnFlow" };
+export const metadata: Metadata = { title: "Masuk | LearnFlow" };
 
 export default function LoginPage() {
   return (

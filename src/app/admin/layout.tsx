@@ -4,7 +4,7 @@ import { AdminSidebar } from '@/components/admin/AdminSidebar'
 import { AdminMobileNav } from '@/components/admin/AdminMobileNav'
 import { Metadata } from 'next'
 
-export const metadata: Metadata = { title: 'Admin Panel — LearnFlow' }
+export const metadata: Metadata = { title: 'Admin Panel | LearnFlow' }
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()

@@ -50,6 +50,26 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  // --- SECURITY HEADERS ---
+  supabaseResponse.headers.set('X-Frame-Options', 'SAMEORIGIN')
+  supabaseResponse.headers.set('X-Content-Type-Options', 'nosniff')
+  supabaseResponse.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
+  supabaseResponse.headers.set('X-XSS-Protection', '1; mode=block')
+  
+  // Content Security Policy (CSP)
+  // Memungkinkan Turnstile dan external resources yang diperlukan
+  const cspHeader = `
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    img-src 'self' blob: data: https:;
+    font-src 'self' https://fonts.gstatic.com;
+    frame-src 'self' https://challenges.cloudflare.com https://www.youtube.com;
+    connect-src 'self' https://*.supabase.co wss://*.supabase.co https://challenges.cloudflare.com;
+  `.replace(/\s{2,}/g, ' ').trim()
+  
+  supabaseResponse.headers.set('Content-Security-Policy', cspHeader)
+
   return supabaseResponse
 }
 

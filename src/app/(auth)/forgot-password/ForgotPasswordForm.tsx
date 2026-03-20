@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
+import { Turnstile, type TurnstileInstance } from '@marsidev/react-turnstile'
 
 const schema = z.object({
   email: z.string().email('Email tidak valid'),
@@ -18,6 +19,8 @@ type Values = z.infer<typeof schema>
 export function ForgotPasswordForm() {
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null)
+  const turnstileRef = useRef<TurnstileInstance>(null)
   const supabase = createClient()
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<Values>({
@@ -28,6 +31,7 @@ export function ForgotPasswordForm() {
     setError(null)
     const { error: resetError } = await supabase.auth.resetPasswordForEmail(values.email, {
       redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
+      captchaToken: captchaToken || undefined,
     })
 
     if (resetError) {
@@ -82,6 +86,18 @@ export function ForgotPasswordForm() {
         error={errors.email?.message}
         {...register('email')}
       />
+
+      {/* Turnstile Captcha */}
+      <div className="flex justify-center py-2">
+        <Turnstile
+          ref={turnstileRef}
+          siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+          onSuccess={(token) => setCaptchaToken(token)}
+          onExpire={() => setCaptchaToken(null)}
+          onError={() => setCaptchaToken(null)}
+          options={{ theme: 'dark' }}
+        />
+      </div>
 
       <Button type="submit" size="lg" className="w-full font-syne font-bold text-base" loading={isSubmitting}>
         Kirim Link Pemulihan →

@@ -78,6 +78,7 @@ export function CourseViewer({
   const [watchProgress, setWatchProgress] = useState(0);
   const [showMuteNotice, setShowMuteNotice] = useState(false);
   const [showCompleteModal, setShowCompleteModal] = useState(false);
+  const [activeTab, setActiveTab] = useState<"notes" | "resources" | "quiz">("notes");
 
   const youtubeOpts = useMemo(() => ({
     width: '100%',
@@ -195,30 +196,29 @@ export function CourseViewer({
 
   // ─── Sidebar Content ──────────────────────────────────────────────────────
   const renderSidebarContent = () => (
-    <>
-      <div className="p-4 sm:p-5 border-b border-white/[0.07]">
-        <h2 className="font-syne font-bold text-sm leading-snug mb-3">
+    <div className="flex flex-col h-full bg-white">
+      <div className="p-6 border-b border-gray-100">
+        <h2 className="font-syne font-extrabold text-[#1A1A1A] text-lg leading-tight mb-4">
           {course.products?.title || course.title}
         </h2>
-        <div className="flex items-center gap-2 mb-1">
-          <div className="flex-1 h-1.5 bg-bg rounded-full overflow-hidden">
+        
+        <div className="space-y-3">
+          <div className="flex items-center justify-between text-[10px] font-bold tracking-wider text-gray-400 uppercase">
+            <span>{completedIds.size}/{allLessons.length} COMPLETED</span>
+            <Trophy size={14} className="text-[#00C2A0]" />
+          </div>
+          <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-accent to-accent-light rounded-full transition-all duration-500"
+              className="h-full bg-[#00C2A0] rounded-full transition-all duration-700 ease-out"
               style={{ width: `${progress}%` }}
             />
           </div>
-          <span className="text-xs font-bold text-accent-light">
-            {progress}%
-          </span>
         </div>
-        <p className="text-xs text-text-muted">
-          {completedIds.size}/{allLessons.length} lesson
-        </p>
       </div>
 
-      <div className="p-2 flex-1 overflow-auto">
-        {!useChapters &&
-          course.modules[0]?.lessons?.map((l) => {
+      <div className="flex-1 overflow-y-auto py-4 px-2 custom-scrollbar">
+        <div className="space-y-1">
+          {allLessons.map((l, idx) => {
             const done = completedIds.has(l.id);
             const active = activeLessonId === l.id;
             return (
@@ -226,101 +226,72 @@ export function CourseViewer({
                 key={l.id}
                 onClick={() => openLesson(l.id)}
                 className={cn(
-                  "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg mb-1 text-left transition-all text-xs",
+                  "w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-left transition-all group relative",
                   active
-                    ? "bg-accent/10 text-accent-light"
-                    : done
-                      ? "text-green-400 hover:bg-green-500/5"
-                      : "text-text-muted hover:bg-white/5 hover:text-[#EEEEFF]",
+                    ? "bg-white shadow-md border border-gray-100"
+                    : "hover:bg-gray-50",
                 )}
               >
-                <span className="shrink-0">
-                  {done ? (
-                    <CheckCircle size={13} className="text-green-400" />
-                  ) : active ? (
-                    <Play size={13} className="text-accent-light fill-accent-light" />
-                  ) : (
-                    <Play size={13} className="text-text-dim" />
+                <div className={cn(
+                  "w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold shrink-0 transition-colors",
+                  active 
+                    ? "border-blue-600 bg-blue-600 text-white" 
+                    : done 
+                      ? "border-[#00C2A0] text-[#00C2A0]" 
+                      : "border-gray-200 text-gray-400 group-hover:border-gray-300"
+                )}>
+                  {idx + 1}
+                </div>
+                
+                <div className="flex-1 min-w-0">
+                  <div className={cn(
+                    "text-sm font-bold truncate transition-colors",
+                    active ? "text-blue-600" : done ? "text-gray-700" : "text-gray-500"
+                  )}>
+                    {l.title}
+                  </div>
+                  {done && (
+                    <div className="flex items-center gap-1 mt-0.5">
+                      <CheckCircle size={10} className="text-[#00C2A0]" />
+                      <span className="text-[10px] text-gray-400">Completed</span>
+                    </div>
                   )}
-                </span>
-                <span className="flex-1 truncate">{l.title}</span>
-                {l.duration > 0 && (
-                  <span className="text-text-dim shrink-0">
-                    {Math.floor(l.duration / 60)}m
-                  </span>
+                </div>
+
+                {!done && !active && (
+                   <ChevronRight size={14} className="text-gray-300 group-hover:text-gray-400" />
+                )}
+                {active && (
+                   <div className="w-1.5 h-1.5 rounded-full bg-blue-600 shadow-[0_0_8px_rgba(37,99,235,0.6)]" />
                 )}
               </button>
             );
           })}
+        </div>
 
-        {useChapters &&
-          course.modules.map((m, mi) => (
-            <div key={m.id} className="mb-1">
-              <button
-                onClick={() =>
-                  setExpanded((p) =>
-                    p.includes(m.id) ? p.filter((x) => x !== m.id) : [...p, m.id],
-                  )
-                }
-                className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg hover:bg-white/5 text-left transition-colors"
-              >
-                <span className="w-5 h-5 rounded bg-accent/10 flex items-center justify-center text-[10px] font-bold text-accent-light shrink-0">
-                  {mi + 1}
-                </span>
-                <span className="flex-1 text-xs font-semibold text-text-muted truncate">
-                  {m.title}
-                </span>
-                <ChevronDown
-                  size={13}
-                  className={cn(
-                    "text-text-dim transition-transform shrink-0",
-                    expanded.includes(m.id) && "rotate-180",
-                  )}
-                />
-              </button>
-
-              {expanded.includes(m.id) && (
-                <div className="space-y-0.5 ml-2">
-                  {m.lessons.map((l) => {
-                    const done = completedIds.has(l.id);
-                    const active = activeLessonId === l.id;
-                    return (
-                      <button
-                        key={l.id}
-                        onClick={() => openLesson(l.id)}
-                        className={cn(
-                          "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-left transition-all text-xs",
-                          active
-                            ? "bg-accent/10 text-accent-light"
-                            : done
-                              ? "text-green-400 hover:bg-green-500/5"
-                              : "text-text-muted hover:bg-white/5 hover:text-[#EEEEFF]",
-                        )}
-                      >
-                        <span className="shrink-0">
-                          {done ? (
-                            <CheckCircle size={12} className="text-green-400" />
-                          ) : active ? (
-                            <Play size={12} className="text-accent-light fill-accent-light" />
-                          ) : (
-                            <Play size={12} className="text-text-dim" />
-                          )}
-                        </span>
-                        <span className="flex-1 truncate">{l.title}</span>
-                        {l.duration > 0 && (
-                          <span className="text-text-dim shrink-0">
-                            {Math.floor(l.duration / 60)}m
-                          </span>
-                        )}
-                      </button>
-                    );
-                  })}
+        {/* Mock Discussion Section */}
+        <div className="mt-10 px-4">
+          <h3 className="text-sm font-extrabold text-gray-900 mb-6">Discussion</h3>
+          <div className="space-y-6">
+            <div className="flex gap-3">
+              <div className="w-8 h-8 rounded-full bg-gray-200 shrink-0 overflow-hidden">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Robin" alt="Avatar" />
+              </div>
+              <div>
+                <div className="text-xs font-bold text-gray-900">Robin Sherbasky</div>
+                <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                  Cool stuff tutor! I&apos;m wondering where I can find the list of recommended resources..
+                </p>
+                <div className="flex items-center gap-4 mt-3">
+                  <button className="text-[10px] font-bold text-gray-400 hover:text-gray-600">Reply</button>
+                  <button className="text-[10px] font-bold text-gray-400 hover:text-gray-600">Show 8 replies</button>
                 </div>
-              )}
+              </div>
             </div>
-          ))}
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   );
 
   // ─── Main Content ─────────────────────────────────────────────────────────
@@ -417,23 +388,21 @@ export function CourseViewer({
                   </button>
                 </div>
               )}
+              {/* Progress Overlay */}
+              {player && (
+                <>
+                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10 z-[50]">
+                    <div 
+                      className="h-full bg-accent shadow-[0_0_12px_rgba(168,85,247,0.6)] transition-all duration-300"
+                      style={{ width: `${watchProgress}%` }}
+                    />
+                  </div>
+                  <div className="absolute bottom-3 right-3 z-[50] bg-black/60 backdrop-blur-md px-2 py-1 rounded-md text-[10px] font-bold text-white tabular-nums border border-white/10 shadow-lg">
+                    {watchProgress}%
+                  </div>
+                </>
+              )}
             </div>
-
-            {/* Progress and Fallback */}
-            {player && (
-              <div className="flex items-center gap-2 mt-4 px-1">
-                <div className="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-accent-light rounded-full transition-all duration-300"
-                    style={{ width: `${watchProgress}%` }}
-                  />
-                </div>
-                <span className="text-[10px] font-bold text-text-dim tabular-nums">
-                  {watchProgress}% ditonton
-                </span>
-              </div>
-            )}
-            
           </div>
         </div>
 
@@ -579,31 +548,31 @@ export function CourseViewer({
   };
 
   return (
-    <div className="flex flex-col h-screen bg-bg overflow-hidden">
+    <div className="flex flex-col h-screen bg-[#F8F9FB] text-[#1A1A1A] overflow-hidden font-sans">
       {/* Mobile Top Bar */}
-      <div className="lg:hidden h-14 bg-surface/90 backdrop-blur-md border-b border-white/[0.07] flex items-center justify-between px-4 shrink-0 z-50">
+      <div className="lg:hidden h-14 bg-white border-b border-gray-200 flex items-center justify-between px-4 shrink-0 z-50">
         <button
           onClick={() => setMobileOpen(true)}
-          className="p-2 -ml-2 text-accent-light"
+          className="p-2 -ml-2 text-blue-600"
         >
           <Menu size={20} />
         </button>
-        <span className="font-syne font-bold text-sm truncate flex-1 text-center px-4">
+        <span className="font-syne font-bold text-sm truncate flex-1 text-center px-4 text-gray-900">
           {activeLesson?.title || course.title}
         </span>
         <div className="w-10" /> {/* Spacer */}
       </div>
 
       <div className="flex flex-1 overflow-hidden relative">
-        {/* Desktop Sidebar */}
-        <aside className="hidden lg:flex flex-col w-[350px] bg-surface border-r border-white/[0.07] shrink-0">
-          {renderSidebarContent()}
-        </aside>
-
         {/* Shared Main Viewport */}
-        <main className="flex-1 flex flex-col min-w-0 h-full relative z-10">
+        <main className="flex-1 flex flex-col min-w-0 h-full relative z-10 bg-white">
           {renderMainContent()}
         </main>
+
+        {/* Desktop Sidebar (Right) */}
+        <aside className="hidden lg:flex flex-col w-[380px] bg-white border-l border-gray-200 shrink-0 shadow-sm transition-all duration-300">
+          {renderSidebarContent()}
+        </aside>
 
         {/* Mobile Sidebar Overlay */}
         {mobileOpen && (

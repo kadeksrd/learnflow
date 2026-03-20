@@ -115,7 +115,6 @@ export function CourseViewer({
     setWatchProgress(0);
   }, [activeLessonId]);
 
-
   const useChapters = course.use_chapters !== false;
   const allLessons: Lesson[] = course.modules.flatMap((m) => m.lessons);
   const progress =
@@ -137,7 +136,6 @@ export function CourseViewer({
   const openLesson = useCallback((lessonId: string) => {
     setActiveLessonId(lessonId);
     setMobileOpen(false);
-    // scroll main area to top on mobile
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
@@ -163,8 +161,8 @@ export function CourseViewer({
     }
   }, [activeLessonId, completedIds, saving, autoNext, nextLesson, openLesson]);
 
-  // ─── Sidebar ──────────────────────────────────────────────────────────────
-  const SidebarContent = () => (
+  // ─── Sidebar Content ──────────────────────────────────────────────────────
+  const renderSidebarContent = () => (
     <>
       <div className="p-4 sm:p-5 border-b border-white/[0.07]">
         <h2 className="font-syne font-bold text-sm leading-snug mb-3">
@@ -187,7 +185,6 @@ export function CourseViewer({
       </div>
 
       <div className="p-2 flex-1 overflow-auto">
-        {/* Flat mode */}
         {!useChapters &&
           course.modules[0]?.lessons?.map((l) => {
             const done = completedIds.has(l.id);
@@ -209,10 +206,7 @@ export function CourseViewer({
                   {done ? (
                     <CheckCircle size={13} className="text-green-400" />
                   ) : active ? (
-                    <Play
-                      size={13}
-                      className="text-accent-light fill-accent-light"
-                    />
+                    <Play size={13} className="text-accent-light fill-accent-light" />
                   ) : (
                     <Play size={13} className="text-text-dim" />
                   )}
@@ -227,16 +221,13 @@ export function CourseViewer({
             );
           })}
 
-        {/* Chapter mode */}
         {useChapters &&
           course.modules.map((m, mi) => (
             <div key={m.id} className="mb-1">
               <button
                 onClick={() =>
                   setExpanded((p) =>
-                    p.includes(m.id)
-                      ? p.filter((x) => x !== m.id)
-                      : [...p, m.id],
+                    p.includes(m.id) ? p.filter((x) => x !== m.id) : [...p, m.id],
                   )
                 }
                 className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg hover:bg-white/5 text-left transition-colors"
@@ -278,10 +269,7 @@ export function CourseViewer({
                           {done ? (
                             <CheckCircle size={12} className="text-green-400" />
                           ) : active ? (
-                            <Play
-                              size={12}
-                              className="text-accent-light fill-accent-light"
-                            />
+                            <Play size={12} className="text-accent-light fill-accent-light" />
                           ) : (
                             <Play size={12} className="text-text-dim" />
                           )}
@@ -307,7 +295,7 @@ export function CourseViewer({
   const renderMainContent = () => {
     if (!activeLessonId || !activeLesson) {
       return (
-        <div className="flex items-center justify-center h-full p-8">
+        <div className="flex items-center justify-center p-8 min-h-[400px]">
           <div className="text-center max-w-md">
             <div className="text-5xl mb-4">📚</div>
             <h2 className="font-syne font-bold text-xl mb-2">
@@ -337,11 +325,10 @@ export function CourseViewer({
     const embedUrl = getEmbedUrl(lesson.video_url ?? "");
 
     return (
-      <div className="flex flex-col h-full overflow-y-auto">
-        {/* Video */}
-        <div className="w-full bg-bg py-4 sm:py-10 px-0 sm:px-4">
-          <div className="max-w-[1100px] mx-auto">
-            {" "}
+      <div className="flex flex-col h-full">
+        {/* Video Container */}
+        <div className="w-full bg-black/40 py-4 sm:py-8 px-0 sm:px-4 border-b border-white/[0.05]">
+          <div className="max-w-[1000px] mx-auto">
             <div className="relative w-full bg-black aspect-video rounded-none sm:rounded-2xl overflow-hidden shadow-2xl border-y sm:border border-white/[0.05]">
               {getYoutubeId(lesson.video_url || '') ? (
                 <YouTube
@@ -358,7 +345,6 @@ export function CourseViewer({
                       e.target.playVideo();
                       e.target.unMute();
                       e.target.setVolume(100);
-                      // Tunggu sebentar lalu cek apakah masih mute (karena kebijakan browser)
                       setTimeout(() => {
                         if (e.target.isMuted()) {
                           setShowMuteNotice(true);
@@ -379,14 +365,11 @@ export function CourseViewer({
                 />
               ) : (
                 <div className="w-full h-full bg-gradient-to-br from-[#0A0015] to-[#1A0A2E] flex flex-col items-center justify-center gap-4">
-                  <span className="text-4xl sm:text-5xl">🎬</span>
-                  <p className="text-text-muted text-sm">
-                    Video belum tersedia
-                  </p>
+                  <span className="text-4xl">🎬</span>
+                  <p className="text-text-muted text-sm">Video belum tersedia</p>
                 </div>
               )}
 
-              {/* Mute Notice Overlay */}
               {showMuteNotice && (
                 <div className="absolute inset-0 flex items-end justify-center pb-6 sm:pb-10 px-4 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none">
                   <button
@@ -395,19 +378,19 @@ export function CourseViewer({
                       player?.setVolume(100);
                       setShowMuteNotice(false);
                     }}
-                    className="pointer-events-auto flex items-center gap-2.5 px-6 py-3 bg-yellow-400 text-black rounded-full font-bold shadow-[0_0_30px_rgba(250,204,21,0.3)] animate-bounce hover:animate-none hover:scale-105 active:scale-95 transition-all"
+                    className="pointer-events-auto flex items-center gap-2.5 px-6 py-3 bg-yellow-400 text-black rounded-full font-bold shadow-xl animate-bounce hover:animate-none scale-90 sm:scale-100"
                   >
-                    <Volume2 size={20} />
-                    <span>Klik untuk Aktifkan Suara</span>
+                    <Volume2 size={18} />
+                    <span className="text-sm">Klik untuk Aktifkan Suara</span>
                   </button>
                 </div>
               )}
             </div>
 
-            {/* Video watch percentage */}
+            {/* Progress and Fallback */}
             {player && (
               <div className="flex items-center gap-2 mt-4 px-1">
-                <div className="flex-1 h-1 bg-surface rounded-full overflow-hidden">
+                <div className="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-accent-light rounded-full transition-all duration-300"
                     style={{ width: `${watchProgress}%` }}
@@ -419,242 +402,197 @@ export function CourseViewer({
               </div>
             )}
             
-            {/* Fallback link if video has issues */}
             {getYoutubeId(lesson.video_url || '') && (
               <div className="mt-2 text-center">
                 <a 
                   href={`https://www.youtube.com/watch?v=${getYoutubeId(lesson.video_url || '')}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target="_blank" rel="noopener noreferrer"
                   className="text-[10px] text-text-dim hover:text-accent-light flex items-center justify-center gap-1"
                 >
-                  <ExternalLink size={10} /> Bermasalah? Tonton di YouTube
+                  <ExternalLink size={10} /> Tonton di YouTube
                 </a>
               </div>
             )}
           </div>
         </div>
 
-        <div className="p-5 sm:p-6 flex-1">
-          {/* Lesson header */}
-          <div className="flex items-start gap-3 mb-4">
-            <div className="flex-1">
-              <p className="text-xs text-text-muted mb-1">
-                Lesson {currentIndex + 1} dari {allLessons.length}
-              </p>
-              <h1 className="font-syne font-extrabold text-lg sm:text-xl leading-snug">
-                {lesson.title}
-              </h1>
-              {lesson.duration > 0 && (
-                <p className="text-text-muted text-xs mt-1">
-                  ⏱ {Math.floor(lesson.duration / 60)} menit
+        {/* Lesson Info */}
+        <div className="p-4 sm:p-6 lg:p-8 flex-1 overflow-y-auto">
+          <div className="max-w-[1000px] mx-auto">
+            <div className="flex items-start gap-4 mb-6">
+              <div className="flex-1">
+                <p className="text-xs text-text-muted mb-1">
+                  Lesson {currentIndex + 1} dari {allLessons.length}
                 </p>
+                <h1 className="font-syne font-extrabold text-xl sm:text-2xl leading-tight">
+                  {lesson.title}
+                </h1>
+              </div>
+              {isDone && (
+                <span className="flex items-center gap-1.5 text-xs text-green-400 bg-green-500/10 px-3 py-1.5 rounded-full shrink-0">
+                  <CheckCircle size={14} /> Selesai
+                </span>
               )}
             </div>
-            {isDone && (
-              <span className="flex items-center gap-1.5 text-xs text-green-400 bg-green-500/10 px-2.5 py-1 rounded-full shrink-0 mt-1">
-                <CheckCircle size={12} /> Selesai
-              </span>
-            )}
-          </div>
 
-          {/* Progress bar */}
-          <div className="flex items-center gap-3 mb-5 p-3 bg-card border border-white/[0.07] rounded-xl">
-            <div className="flex-1 h-1.5 bg-surface rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-accent to-accent-light rounded-full transition-all duration-500"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-            <span className="text-xs text-text-muted shrink-0 font-semibold">
-              {progress}%
-            </span>
-          </div>
-
-          {/* Actions */}
-          <div className="flex flex-col sm:flex-row gap-2.5 mb-6">
-            <button
-              onClick={markComplete}
-              disabled={isDone || saving}
-              className={cn(
-                "flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold text-sm transition-all",
-                isDone
-                  ? "bg-green-500/15 text-green-400 border border-green-500/20"
-                  : "bg-accent hover:bg-accent-light text-white",
-              )}
-            >
-              <CheckCircle size={15} />
-              {isDone
-                ? "Lesson Selesai ✓"
-                : saving
-                  ? "Menyimpan..."
-                  : "Tandai Selesai"}
-            </button>
-
-            <label className="flex items-center gap-2 px-4 py-3 bg-card border border-white/[0.07] rounded-xl cursor-pointer hover:border-accent/30 transition-all select-none">
-              <input
-                type="checkbox"
-                checked={autoNext}
-                onChange={(e) => setAutoNext(e.target.checked)}
-                className="w-4 h-4 accent-purple-500"
-              />
-              <span className="text-sm text-text-muted">Auto-lanjut</span>
-            </label>
-
-            <label className="flex items-center gap-2 px-4 py-3 bg-card border border-white/[0.07] rounded-xl cursor-pointer hover:border-accent/30 transition-all select-none">
-              <input
-                type="checkbox"
-                checked={autoPlay}
-                onChange={(e) => setAutoPlay(e.target.checked)}
-                className="w-4 h-4 accent-purple-500"
-              />
-              <span className="text-sm text-text-muted">Auto-putar</span>
-            </label>
-
-
-            <div className="flex gap-2 sm:ml-auto">
+            {/* Actions Bar */}
+            <div className="flex flex-wrap gap-3 mb-8">
               <button
-                onClick={() => prevLesson && openLesson(prevLesson.id)}
-                disabled={!prevLesson}
-                className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-3 bg-card border border-white/[0.07] rounded-xl text-sm text-text-muted hover:text-[#EEEEFF] hover:border-accent/30 transition-all disabled:opacity-40"
+                onClick={markComplete}
+                disabled={isDone || saving}
+                className={cn(
+                  "flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-sm transition-all shadow-lg",
+                  isDone
+                    ? "bg-green-500/10 text-green-400 border border-green-500/20"
+                    : "bg-accent hover:bg-accent-light text-white"
+                )}
               >
-                <ChevronLeft size={16} /> Prev
+                <CheckCircle size={16} />
+                {isDone ? "Selesai ✓" : saving ? "Saving..." : "Tandai Selesai"}
               </button>
-              <button
-                onClick={() => nextLesson && openLesson(nextLesson.id)}
-                disabled={!nextLesson}
-                className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-3 bg-accent hover:bg-accent-light rounded-xl text-sm text-white font-semibold transition-all disabled:opacity-40"
-              >
-                Next <ChevronRight size={16} />
-              </button>
-            </div>
-          </div>
 
-          {/* Description */}
-          {lesson.description && (
-            <div className="bg-card border border-white/[0.07] rounded-2xl p-5 mb-5">
-              <h2 className="font-syne font-bold text-base mb-3">
-                📋 Tentang Lesson Ini
-              </h2>
-              <p className="text-text-muted text-sm leading-relaxed whitespace-pre-line">
-                {lesson.description}
-              </p>
-            </div>
-          )}
+              <div className="flex items-center gap-3 bg-card border border-white/[0.07] px-4 py-3 rounded-xl">
+                <label className="flex items-center gap-2 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={autoNext}
+                    onChange={(e) => setAutoNext(e.target.checked)}
+                    className="w-4 h-4 accent-accent"
+                  />
+                  <span className="text-sm text-text-muted">Auto-Lanjut</span>
+                </label>
+                <div className="w-px h-4 bg-white/10" />
+                <label className="flex items-center gap-2 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={autoPlay}
+                    onChange={(e) => setAutoPlay(e.target.checked)}
+                    className="w-4 h-4 accent-accent"
+                  />
+                  <span className="text-sm text-text-muted">Auto-Putar</span>
+                </label>
+              </div>
 
-          {/* Notes */}
-          {lesson.notes && (
-            <div className="bg-yellow-500/5 border border-yellow-500/20 rounded-2xl p-5 mb-5">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-7 h-7 rounded-lg bg-yellow-500/20 flex items-center justify-center shrink-0">
-                  <StickyNote size={14} className="text-yellow-400" />
+              <div className="flex gap-2 sm:ml-auto">
+                <button
+                  onClick={() => prevLesson && openLesson(prevLesson.id)}
+                  disabled={!prevLesson}
+                  className="p-3 bg-card border border-white/[0.07] rounded-xl text-text-muted hover:text-white hover:border-accent/40 disabled:opacity-30"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                <button
+                  onClick={() => nextLesson && openLesson(nextLesson.id)}
+                  disabled={!nextLesson}
+                  className="flex items-center gap-2 px-5 py-3 bg-accent hover:bg-accent-light rounded-xl font-bold text-sm text-white disabled:opacity-30"
+                >
+                  Next <ChevronRight size={18} />
+                </button>
+              </div>
+            </div>
+
+            {/* Content Details */}
+            <div className="space-y-6">
+              {lesson.description && (
+                <div className="bg-card/50 border border-white/[0.05] rounded-2xl p-6">
+                  <h3 className="font-syne font-bold mb-3 flex items-center gap-2">
+                    <span>📝</span> Deskripsi
+                  </h3>
+                  <p className="text-text-muted text-sm leading-relaxed whitespace-pre-line">
+                    {lesson.description}
+                  </p>
                 </div>
-                <h2 className="font-syne font-bold text-base text-yellow-300">
-                  📝 Catatan & Tips
-                </h2>
-              </div>
-              <pre className="text-sm text-yellow-100/70 leading-relaxed whitespace-pre-wrap font-sans">
-                {lesson.notes}
-              </pre>
-            </div>
-          )}
+              )}
 
-          {/* Suggestions */}
-          {lesson.suggestions && lesson.suggestions.length > 0 && (
-            <div>
-              <h2 className="font-syne font-bold text-base mb-4">
-                🔗 Tools & Resources
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {lesson.suggestions.map((s) => (
-                  <a
-                    key={s.id}
-                    href={s.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 p-4 bg-card border border-white/[0.07] rounded-xl hover:border-accent/40 hover:-translate-y-0.5 transition-all group"
-                  >
-                    <span className="text-2xl shrink-0">{s.icon || "🔗"}</span>
-                    <div className="flex-1 min-w-0">
-                      <div className="font-semibold text-sm truncate">
-                        {s.title}
-                      </div>
-                      <div className="text-text-muted text-xs mt-0.5 capitalize">
-                        {s.type}
-                      </div>
-                    </div>
-                    <ExternalLink
-                      size={14}
-                      className="text-text-dim group-hover:text-accent-light shrink-0"
-                    />
-                  </a>
-                ))}
-              </div>
+              {lesson.notes && (
+                <div className="bg-yellow-500/5 border border-yellow-500/10 rounded-2xl p-6">
+                  <h3 className="font-syne font-bold text-yellow-300 mb-3 flex items-center gap-2">
+                    <span>📌</span> Catatan Penting
+                  </h3>
+                  <pre className="text-sm text-yellow-100/70 leading-relaxed whitespace-pre-wrap font-sans">
+                    {lesson.notes}
+                  </pre>
+                </div>
+              )}
+
+              {lesson.suggestions && lesson.suggestions.length > 0 && (
+                <div>
+                  <h3 className="font-syne font-bold mb-4 flex items-center gap-2">
+                    <span>🔗</span> Resources
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {lesson.suggestions.map((s) => (
+                      <a
+                        key={s.id}
+                        href={s.url}
+                        target="_blank" rel="noopener noreferrer"
+                        className="flex items-center gap-4 p-4 bg-card border border-white/[0.07] rounded-xl hover:border-accent/40 hover:-translate-y-1 transition-all group"
+                      >
+                        <span className="text-2xl shrink-0">{s.icon || "📎"}</span>
+                        <div className="flex-1 min-w-0">
+                          <div className="font-bold text-sm truncate">{s.title}</div>
+                          <div className="text-text-dim text-[10px] uppercase tracking-wider">{s.type}</div>
+                        </div>
+                        <ExternalLink size={14} className="text-text-dim group-hover:text-accent" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     );
   };
 
-  // ─── Render ───────────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-bg">
-      {/* Mobile top bar */}
-      <div className="lg:hidden sticky top-0 z-30 bg-surface/95 backdrop-blur-xl border-b border-white/[0.07] px-4 h-12 flex items-center justify-between">
+    <div className="flex flex-col h-screen bg-bg overflow-hidden">
+      {/* Mobile Top Bar */}
+      <div className="lg:hidden h-14 bg-surface/90 backdrop-blur-md border-b border-white/[0.07] flex items-center justify-between px-4 shrink-0 z-50">
         <button
           onClick={() => setMobileOpen(true)}
-          className="flex items-center gap-1.5 text-xs text-accent-light shrink-0 ml-3"
+          className="p-2 -ml-2 text-accent-light"
         >
-          <Menu size={15} /> Materi
+          <Menu size={20} />
         </button>
-        <div className="flex items-center gap-2 min-w-0">
-          <span className="font-syne font-bold text-sm truncate">
-            {activeLesson?.title ?? course.products?.title}
-          </span>
-          {useChapters ? (
-            <Layers size={14} className="text-text-dim shrink-0" />
-          ) : (
-            <List size={14} className="text-text-dim shrink-0" />
-          )}
-        </div>
+        <span className="font-syne font-bold text-sm truncate flex-1 text-center px-4">
+          {activeLesson?.title || course.title}
+        </span>
+        <div className="w-10" /> {/* Spacer */}
       </div>
 
-      {/* Mobile sidebar drawer */}
-      {mobileOpen && (
-        <>
-          <div
-            className="fixed inset-0 bg-black/60 z-40 lg:hidden"
-            onClick={() => setMobileOpen(false)}
-          />
-          <div className="fixed top-0 left-0 bottom-0 w-80 bg-surface border-l border-white/[0.07] z-50 lg:hidden flex flex-col">
-            <div className="flex items-center justify-between p-4 border-b border-white/[0.07]">
-              <span className="font-syne font-bold text-sm">Daftar Materi</span>
-              <button
-                onClick={() => setMobileOpen(false)}
-                className="p-1.5 rounded-lg hover:bg-white/5 text-text-muted"
-              >
-                <X size={16} />
-              </button>
-            </div>
-            <div className="flex-1 overflow-auto flex flex-col">
-              <SidebarContent />
-            </div>
-          </div>
-        </>
-      )}
-
-      {/* Desktop: Grid layout */}
-      <div className="hidden lg:grid grid-cols-[380px_1fr] h-full overflow-hidden">
-        <aside className="bg-surface border-r border-white/[0.07] sticky top-16 h-[calc(100vh-64px)] overflow-y-auto flex flex-col">
-          <SidebarContent />
+      <div className="flex flex-1 overflow-hidden relative">
+        {/* Desktop Sidebar */}
+        <aside className="hidden lg:flex flex-col w-[350px] bg-surface border-r border-white/[0.07] shrink-0">
+          {renderSidebarContent()}
         </aside>
-        {renderMainContent()}
-      </div>
 
-      {/* Mobile: full width */}
-      <div className="lg:hidden flex flex-col">
-        {renderMainContent()}
+        {/* Shared Main Viewport */}
+        <main className="flex-1 flex flex-col min-w-0 h-full relative z-10">
+          {renderMainContent()}
+        </main>
+
+        {/* Mobile Sidebar Overlay */}
+        {mobileOpen && (
+          <>
+            <div 
+              className="fixed inset-0 bg-black/60 z-[60] lg:hidden backdrop-blur-sm"
+              onClick={() => setMobileOpen(false)}
+            />
+            <div className="fixed top-0 left-0 bottom-0 w-[85%] max-w-[320px] bg-surface z-[70] lg:hidden flex flex-col shadow-2xl animate-in slide-in-from-left duration-300">
+              <div className="p-4 border-b border-white/[0.07] flex items-center justify-between">
+                <span className="font-syne font-bold">Menu Materi</span>
+                <button onClick={() => setMobileOpen(false)} className="p-1 text-text-muted">
+                  <X size={20} />
+                </button>
+              </div>
+              <div className="flex-1 overflow-y-auto">
+                {renderSidebarContent()}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

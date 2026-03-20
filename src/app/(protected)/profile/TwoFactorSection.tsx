@@ -35,6 +35,17 @@ export function TwoFactorSection() {
   const startEnrollment = async () => {
     setLoading(true)
     setError(null)
+
+    // Handle existing unverified factor with the same name to prevent "already exists" error
+    const existingUnverified = factors.find(f => 
+      f.status === 'unverified' && 
+      (f.friendly_name === 'Authenticator App' || f.factor_type === 'totp')
+    )
+
+    if (existingUnverified) {
+      await supabase.auth.mfa.unenroll({ factorId: existingUnverified.id })
+    }
+
     const { data, error } = await supabase.auth.mfa.enroll({
       factorType: 'totp',
       issuer: 'LearnFlow',

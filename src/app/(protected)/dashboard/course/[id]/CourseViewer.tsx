@@ -102,7 +102,11 @@ export function CourseViewer({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ lesson_id: activeLessonId }),
       });
-      setCompletedIds((prev) => new Set([...prev, activeLessonId]));
+      setCompletedIds((prev) => {
+        const next = new Set(Array.from(prev));
+        next.add(activeLessonId);
+        return next;
+      });
       if (autoNext && nextLesson) {
         setTimeout(() => openLesson(nextLesson.id), 1200);
       }

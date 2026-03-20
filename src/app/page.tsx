@@ -19,7 +19,7 @@ import { Footer } from "@/components/layout/Footer";
 async function getSiteData() {
   const supabase = await createClient();
 
-  const [{ data: settingsRows }, { data: allProducts }] = await Promise.all([
+  const results = await Promise.all([
     supabase.from("site_settings").select("key, value").in("key", ["homepage"]),
     supabase
       .from("products")
@@ -30,16 +30,18 @@ async function getSiteData() {
       .order("created_at", { ascending: false }),
   ]);
 
+  const settingsRows = results[0].data as any[] | null;
+  const allProds = (results[1].data as any[]) || [];
+
   const hp: any = settingsRows?.find((r) => r.key === "homepage")?.value || {};
-  const allProds = allProducts || [];
 
   // Featured: use selected IDs if available, else take latest 6
   let featured = allProds;
   if (hp.featured_product_ids?.length > 0) {
     const ids: string[] = hp.featured_product_ids;
     featured = ids
-      .map((id: string) => allProds.find((p) => p.id === id))
-      .filter(Boolean) as typeof allProds;
+      .map((id: string) => allProds.find((p: any) => p.id === id)) // Tambah (p: any) di sini
+      .filter(Boolean);
   } else {
     featured = allProds.slice(0, 6);
   }

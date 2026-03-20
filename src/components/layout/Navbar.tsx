@@ -87,7 +87,7 @@ export function Navbar() {
               )}
             </div>
 
-            {navLinks.map(({ href, label }) => (
+            {navLinks.filter(l => l.href !== '/profile').map(({ href, label }) => (
               <Link key={href} href={href}
                 className={cn(
                   'px-3 py-2 rounded-lg text-sm font-medium transition-all',
@@ -105,7 +105,7 @@ export function Navbar() {
             {user ? (
               <div className="flex items-center gap-3">
                 {/* Avatar + name */}
-                <Link href="/dashboard" className="flex items-center gap-2 px-3 py-1.5 rounded-xl hover:bg-white/5 transition-all">
+                <Link href="/profile" className="flex items-center gap-2 px-3 py-1.5 rounded-xl hover:bg-white/5 transition-all">
                   <div className="w-7 h-7 rounded-full bg-gradient-accent flex items-center justify-center text-white text-xs font-bold shrink-0">
                     {user.email?.[0].toUpperCase()}
                   </div>

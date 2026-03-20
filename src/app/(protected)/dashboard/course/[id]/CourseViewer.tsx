@@ -342,13 +342,10 @@ export function CourseViewer({
     return (
       <div className="flex flex-col h-full overflow-y-auto">
         {/* Video */}
-        <div className="w-full bg-bg py-6 sm:py-10 px-4">
-          {" "}
-          {/* Tambah background & padding luar */}
-          <div className="max-w-[960px] mx-auto">
+        <div className="w-full bg-bg py-4 sm:py-10 px-0 sm:px-4">
+          <div className="max-w-[1100px] mx-auto">
             {" "}
-            {/* Batasi lebar maksimal video */}
-            <div className="w-full bg-black aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/[0.05]">
+            <div className="w-full bg-black aspect-video rounded-none sm:rounded-2xl overflow-hidden shadow-2xl border-y sm:border border-white/[0.05]">
               {getYoutubeId(lesson.video_url || '') ? (
                 <YouTube
                   videoId={getYoutubeId(lesson.video_url!)!}

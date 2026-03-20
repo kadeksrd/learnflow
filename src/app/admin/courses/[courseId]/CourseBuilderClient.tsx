@@ -294,6 +294,7 @@ const LessonEditor = memo(
     </div>
   ),
 );
+LessonEditor.displayName = "LessonEditor";
 
 // ─────────────────────────────────────────────────────────────
 // 2. LESSON ROW (DIPINDAH KE LUAR AGAR TIDAK RE-RENDER BERLEBIHAN)
@@ -398,6 +399,7 @@ const LessonRow = memo(
     );
   },
 );
+LessonRow.displayName = "LessonRow";
 
 // ─────────────────────────────────────────────────────────────
 // 3. KOMPONEN UTAMA (UI TETAP SAMA 100%)

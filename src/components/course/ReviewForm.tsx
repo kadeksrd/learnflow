@@ -83,7 +83,7 @@ export function ReviewForm({ productId, existingReview }: ReviewFormProps) {
 
         {(existingReview?.comment || comment) && (
           <p className="text-sm text-text-muted italic">
-            "{existingReview?.comment || comment}"
+            &quot;{existingReview?.comment || comment}&quot;
           </p>
         )}
       </div>

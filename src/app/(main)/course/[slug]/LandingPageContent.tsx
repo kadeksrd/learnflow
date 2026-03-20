@@ -34,9 +34,6 @@ export function LandingPageContent({
   const router = useRouter();
   const supabase = createClient();
 
-  // Safety check agar tidak crash jika data belum mendarat
-  if (!landing_page || !product) return null;
-
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => setStickyVisible(!entry.isIntersecting),
@@ -45,6 +42,9 @@ export function LandingPageContent({
     if (ctaRef.current) observer.observe(ctaRef.current);
     return () => observer.disconnect();
   }, []);
+
+  // Safety check agar tidak crash jika data belum mendarat
+  if (!landing_page || !product) return null;
 
   const handleCTA = async () => {
     setIsProcessing(true);

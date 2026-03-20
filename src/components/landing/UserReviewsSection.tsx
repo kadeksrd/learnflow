@@ -96,7 +96,7 @@ export function UserReviewsSection({ productId }: { productId: string }) {
                     ))}
                   </div>
                   {review.comment && (
-                    <p className="text-sm text-text-muted leading-relaxed mb-4 italic flex-1">"{review.comment}"</p>
+                    <p className="text-sm text-text-muted leading-relaxed mb-4 italic flex-1">&quot;{review.comment}&quot;</p>
                   )}
                   <div className="flex items-center gap-3 mt-auto">
                     {review.user_avatar ? (

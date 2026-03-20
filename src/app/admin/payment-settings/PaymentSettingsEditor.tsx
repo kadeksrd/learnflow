@@ -34,6 +34,7 @@ export function PaymentSettingsEditor({ initialSettings }: { initialSettings: an
   const [error,    setError]    = useState<string | null>(null)
   const [testing,  setTesting]  = useState<string | null>(null)
   const [testResult, setTestResult] = useState<Record<string, 'ok' | 'fail' | null>>({})
+  const [newMethods, setNewMethods] = useState<Record<string, string>>({})
 
   const updateGateway = (gw: string, key: string, val: any) =>
     setSettings(p => ({ ...p, [gw]: { ...(p as any)[gw], [key]: val } }))
@@ -161,7 +162,8 @@ export function PaymentSettingsEditor({ initialSettings }: { initialSettings: an
       {GATEWAYS.map(gw => {
         const g = (settings as any)[gw] as GatewayConfig
         const color = GATEWAY_COLORS[gw]
-        const [newMethod, setNewMethod] = useState('')
+        const newMethod = newMethods[gw] || ''
+        const setNewMethod = (val: string) => setNewMethods(p => ({ ...p, [gw]: val }))
         const res = testResult[gw]
 
         return (
@@ -210,7 +212,7 @@ export function PaymentSettingsEditor({ initialSettings }: { initialSettings: an
                   <Input label="Nama Label" value={g.label}
                     onChange={e => updateGateway(gw, 'label', e.target.value)} />
                   <div className="flex items-center justify-between p-3.5 bg-surface rounded-xl border border-white/[0.06] mt-5">
-                    <span className="text-sm font-medium">Tampilkan badge "Populer"</span>
+                    <span className="text-sm font-medium">Tampilkan badge &quot;Populer&quot;</span>
                     <div onClick={() => updateGateway(gw, 'is_popular', !g.is_popular)}
                       className={`w-10 h-6 rounded-full relative cursor-pointer transition-colors ${g.is_popular ? 'bg-green-500' : 'bg-card border border-white/20'}`}>
                       <div className={`absolute top-0.5 w-5 h-5 rounded-full bg-white transition-all ${g.is_popular ? 'left-4' : 'left-0.5'}`} />
@@ -243,7 +245,7 @@ export function PaymentSettingsEditor({ initialSettings }: { initialSettings: an
                       + Tambah
                     </Button>
                   </div>
-                  <p className="text-text-dim text-xs mt-1.5">Tekan Enter atau klik "+ Tambah". Ini hanya untuk tampilan di halaman checkout, bukan konfigurasi API.</p>
+                  <p className="text-text-dim text-xs mt-1.5">Tekan Enter atau klik &quot;+ Tambah&quot;. Ini hanya untuk tampilan di halaman checkout, bukan konfigurasi API.</p>
                 </div>
 
                 {/* Env reminder */}

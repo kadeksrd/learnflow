@@ -68,7 +68,7 @@ export function ReviewsManager({ reviews: initial }: { reviews: any[] }) {
                   <span className="text-text-muted text-xs">· {(r.products as any)?.title}</span>
                 </div>
                 {r.comment ? (
-                  <p className="text-sm text-text-muted italic line-clamp-2">"{r.comment}"</p>
+                  <p className="text-sm text-text-muted italic line-clamp-2">&quot;{r.comment}&quot;</p>
                 ) : (
                   <p className="text-xs text-text-dim italic">Tidak ada komentar</p>
                 )}

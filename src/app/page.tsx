@@ -438,7 +438,7 @@ export default async function HomePage() {
                     </div>
                   </div>
                   <p className="text-text-muted text-sm italic leading-relaxed">
-                    "{founder_quote}"
+                    &quot;{founder_quote}&quot;
                   </p>
                 </div>
               </div>
@@ -477,7 +477,7 @@ export default async function HomePage() {
                   ))}
                 </div>
                 <p className="text-text-muted text-sm leading-relaxed mb-6 italic">
-                  "{t.text}"
+                  &quot;{t.text}&quot;
                 </p>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-gradient-accent flex items-center justify-center font-bold text-white shrink-0">

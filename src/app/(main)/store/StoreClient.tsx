@@ -118,7 +118,7 @@ export function StoreClient({ initialProducts, categories }: { initialProducts: 
       {/* Result count */}
       <p className="text-sm text-text-muted mb-5">
         <span className="text-[#EEEEFF] font-semibold">{filtered.length}</span> kursus
-        {search && <span className="ml-1">untuk "<span className="text-accent-light">{search}</span>"</span>}
+        {search && <span className="ml-1">untuk &quot;<span className="text-accent-light">{search}</span>&quot;</span>}
       </p>
 
       {/* Grid */}

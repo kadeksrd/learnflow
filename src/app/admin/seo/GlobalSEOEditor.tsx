@@ -285,10 +285,10 @@ export function GlobalSEOEditor({ initialSettings }: { initialSettings: any }) {
                   Google Search Console
                 </a>
               </li>
-              <li>Pilih "Add property" → masukkan URL website</li>
-              <li>Pilih metode "HTML tag" → copy kode verifikasi</li>
+              <li>Pilih &quot;Add property&quot; → masukkan URL website</li>
+              <li>Pilih metode &quot;HTML tag&quot; → copy kode verifikasi</li>
               <li>
-                Paste di kolom di bawah → Simpan → klik "Verify" di Search
+                Paste di kolom di bawah → Simpan → klik &quot;Verify&quot; di Search
                 Console
               </li>
             </ol>

@@ -21,7 +21,7 @@ export function TestimonialsSection({ testimonials }: { testimonials: Testimonia
 
               {/* Text */}
               <p className="text-sm text-text-muted leading-relaxed mb-6 italic flex-1">
-                "{t.text}"
+                &quot;{t.text}&quot;
               </p>
 
               {/* Author */}

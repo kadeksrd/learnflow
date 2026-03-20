@@ -296,7 +296,7 @@ function HomePage({ nav }) {
               <div style={{ width: 36, height: 36, borderRadius: "50%", background: `linear-gradient(135deg, ${S.accent}, ${S.accentL})`, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, color: "#fff" }}>R</div>
               <div><div style={{ fontWeight: 600, fontSize: 13 }}>Rini Wulandari</div><div style={{ color: S.muted, fontSize: 11 }}>Founder & CEO, LearnFlow</div></div>
             </div>
-            <p style={{ color: S.muted, fontSize: 13, fontStyle: "italic", lineHeight: 1.7 }}>"Kami percaya bahwa skill yang tepat bisa mengubah nasib seseorang. Itu mengapa kami membuat LearnFlow."</p>
+            <p style={{ color: S.muted, fontSize: 13, fontStyle: "italic", lineHeight: 1.7 }}>&quot;Kami percaya bahwa skill yang tepat bisa mengubah nasib seseorang. Itu mengapa kami membuat LearnFlow.&quot;</p>
           </div>
         </div>
       </section>
@@ -518,7 +518,7 @@ function LandingPage({ nav, course }) {
             {[["Andi P.","Digital Marketer","Omzet naik 3x setelah ikut kursus ini. Materi sangat praktis!","A"],["Siti R.","Freelancer","Dalam 2 bulan follower naik dari 500 ke 50K. Luar biasa!","S"],["Budi S.","Content Creator","Akhirnya paham cara kerja algoritma TikTok. Worth it banget!","B"]].map(([name,role,text,av]) => (
               <div key={name} style={{ background: S.card, border: "1px solid rgba(255,255,255,0.06)", borderRadius: 16, padding: 20 }}>
                 <div style={{ display: "flex", gap: 2, marginBottom: 12 }}>{[1,2,3,4,5].map(s=><Star key={s} size={13} fill="#F59E0B" />)}</div>
-                <p style={{ color: S.muted, fontSize: 13, lineHeight: 1.7, marginBottom: 16, fontStyle: "italic" }}>"{text}"</p>
+                <p style={{ color: S.muted, fontSize: 13, lineHeight: 1.7, marginBottom: 16, fontStyle: "italic" }}>&quot;{text}&quot;</p>
                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                   <div style={{ width: 36, height: 36, borderRadius: "50%", background: `linear-gradient(135deg, ${S.accent}, ${S.accentL})`, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, color: "#fff", fontSize: 14 }}>{av}</div>
                   <div><div style={{ fontWeight: 600, fontSize: 13 }}>{name}</div><div style={{ color: S.muted, fontSize: 11 }}>{role}</div></div>

@@ -15,6 +15,7 @@ import {
   Loader2,
   StickyNote,
   ExternalLink,
+  Volume2,
 } from "lucide-react";
 
 interface Lesson {
@@ -71,6 +72,7 @@ export function CourseViewer({
   const [autoPlay, setAutoPlay] = useState(true);
   const [player, setPlayer] = useState<any>(null);
   const [watchProgress, setWatchProgress] = useState(0);
+  const [showMuteNotice, setShowMuteNotice] = useState(false);
 
   // Resume progress on load
   useEffect(() => {
@@ -326,7 +328,7 @@ export function CourseViewer({
         <div className="w-full bg-bg py-4 sm:py-10 px-0 sm:px-4">
           <div className="max-w-[1100px] mx-auto">
             {" "}
-            <div className="w-full bg-black aspect-video rounded-none sm:rounded-2xl overflow-hidden shadow-2xl border-y sm:border border-white/[0.05]">
+            <div className="relative w-full bg-black aspect-video rounded-none sm:rounded-2xl overflow-hidden shadow-2xl border-y sm:border border-white/[0.05]">
               {getYoutubeId(lesson.video_url || '') ? (
                 <YouTube
                   videoId={getYoutubeId(lesson.video_url!)!}
@@ -339,9 +341,14 @@ export function CourseViewer({
                     setPlayer(e.target);
                     if (autoPlay) {
                       e.target.playVideo();
-                      // Diizinkan oleh browser jika user pernah berinteraksi
-                      e.target.unMute(); 
+                      e.target.unMute();
                       e.target.setVolume(100);
+                      // Tunggu sebentar lalu cek apakah masih mute (karena kebijakan browser)
+                      setTimeout(() => {
+                        if (e.target.isMuted()) {
+                          setShowMuteNotice(true);
+                        }
+                      }, 1000);
                     }
                   }}
                   opts={{
@@ -373,6 +380,23 @@ export function CourseViewer({
                   <p className="text-text-muted text-sm">
                     Video belum tersedia
                   </p>
+                </div>
+              )}
+
+              {/* Mute Notice Overlay */}
+              {showMuteNotice && (
+                <div className="absolute inset-0 flex items-end justify-center pb-6 sm:pb-10 px-4 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none">
+                  <button
+                    onClick={() => {
+                      player?.unMute();
+                      player?.setVolume(100);
+                      setShowMuteNotice(false);
+                    }}
+                    className="pointer-events-auto flex items-center gap-2.5 px-6 py-3 bg-yellow-400 text-black rounded-full font-bold shadow-[0_0_30px_rgba(250,204,21,0.3)] animate-bounce hover:animate-none hover:scale-105 active:scale-95 transition-all"
+                  >
+                    <Volume2 size={20} />
+                    <span>Klik untuk Aktifkan Suara</span>
+                  </button>
                 </div>
               )}
             </div>

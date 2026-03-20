@@ -1,21 +1,23 @@
 # 🚀 LearnFlow — Advanced Online Course & LMS Platform
 
-**LearnFlow** adalah platform edukasi full-stack modern yang dirancang untuk skalabilitas tinggi. Dilengkapi dengan fitur **SEO Pixel Optimized**, sistem **Multi-Landing Page**, dan manajemen kelas yang intuitif.
+**LearnFlow** is a modern, full-stack education platform built for high scalability. It features **SEO Pixel Optimization**, a **Multi-Landing Page** system, and intuitive class management.
 
 
-
-## ✨ Fitur Unggulan
-
-* **🎯 SEO & Pixel Ready:** Terintegrasi dengan Meta Pixel, Google Analytics, dan optimasi SEO otomatis (Dynamic Sitemap & JSON-LD) untuk setiap kelas.
-* **📑 Custom Landing Page Builder:** Setiap kelas memiliki landing page eksklusif yang bisa diedit langsung melalui Admin Panel tanpa menyentuh kode.
-* **🏪 Storefront Management:** Edit tampilan toko/store secara real-time untuk meningkatkan konversi penjualan.
-* **📚 Dynamic Course Architecture:** Struktur materi berlapis (Modul > Lesson > Video/Quiz) dengan dukungan streaming video yang cepat.
-* **💳 Automated Payment:** Integrasi Xendit untuk pembayaran otomatis (E-wallet, VA, Retail Store) dengan sistem webhook.
-* **🔐 Secure Auth:** Sistem login menggunakan Supabase Auth (Email & Social Login).
 
 ---
 
-## 🛠️ Stack Teknologi
+## ✨ Key Features
+
+* **🎯 SEO & Pixel Ready:** Integrated with Meta Pixel and Google Analytics. Features automatic SEO optimization (Dynamic Sitemap & JSON-LD) for every individual course.
+* **📑 Custom Landing Page Builder:** Every course has its own exclusive landing page, editable directly via the Admin Panel without touching the code.
+* **🏪 Storefront Management:** Real-time store customization to boost conversion rates and branding.
+* **📚 Dynamic Course Architecture:** Layered content structure (Modules > Lessons > Video/Quiz) with fast video streaming support.
+* **💳 Automated Payment:** Xendit integration for automated payments (E-wallets, Virtual Accounts, Retail Stores) with a robust webhook system.
+* **🔐 Secure Auth:** Reliable user authentication via Supabase Auth (Email & Social Login).
+
+---
+
+## 🛠️ Tech Stack
 
 * **Frontend:** Next.js 14 (App Router), Tailwind CSS, Shadcn UI.
 * **Backend:** Supabase (PostgreSQL, Auth, Storage).
@@ -24,9 +26,9 @@
 
 ---
 
-## 🚦 Panduan Instalasi Cepat
+## 🚦 Quick Start Guide
 
-### 1. Kloning & Install
+### 1. Clone & Install
 ```bash
 git clone https://github.com/username/learnflow.git
 cd learnflow
@@ -34,13 +36,13 @@ npm install
 cp .env.local.example .env.local
 ```
 
-### 2. Konfigurasi Database (Supabase)
-1. Buat proyek baru di [Supabase](https://supabase.com).
-2. Buka **SQL Editor**, lalu tempelkan isi dari file `supabase/schema.sql` untuk membangun tabel dan *Storage Bucket*.
-3. Ambil `URL` dan `Anon Key` dari menu **Settings > API**.
+### 2. Database Configuration (Supabase)
+1. Create a new project at [Supabase](https://supabase.com).
+2. Open the **SQL Editor** and paste the contents of `supabase/schema.sql` to build tables and Storage Buckets.
+3. Retrieve your `URL` and `Anon Key` from **Settings > API**.
 
-### 3. Konfigurasi Environment (`.env.local`)
-Isi variabel berikut untuk menghubungkan fitur utama:
+### 3. Environment Variables (`.env.local`)
+Fill in the following variables to connect core features:
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://your-id.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
@@ -55,43 +57,43 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 NEXT_PUBLIC_PIXEL_ID=your-meta-pixel-id
 ```
 
-### 4. Jalankan Lokal
+### 4. Run Locally
 ```bash
 npm run dev
 ```
-Akses di `http://localhost:3000`.
+Access the app at `http://localhost:3000`.
 
 ---
 
-## 🔑 Setup Admin & SEO
+## 🔑 Admin & SEO Setup
 
-### Menjadi Administrator
-Setelah mendaftar akun di aplikasi, jalankan query ini di Supabase SQL Editor:
+### Set Administrator Role
+After registering an account in the app, run this query in the Supabase SQL Editor:
 ```sql
 UPDATE auth.users 
 SET raw_user_meta_data = raw_user_meta_data || '{"role": "admin"}' 
-WHERE email = 'emailanda@example.com';
+WHERE email = 'your-email@example.com';
 ```
 
-### Mengaktifkan SEO per Kelas
-1. Masuk ke **Admin Panel > Landing Pages**.
-2. Klik **Edit** pada kelas yang diinginkan.
-3. Masukkan **Meta Title, Description, dan Slug**.
-4. Sistem akan otomatis merender tag SEO yang diperlukan agar kelas mudah terindeks Google.
+### Enable Per-Course SEO
+1. Go to **Admin Panel > Landing Pages**.
+2. Click **Edit** on your desired course.
+3. Enter the **Meta Title, Description, and Slug**.
+4. The system will automatically render the necessary SEO tags for Google indexing.
 
 ---
 
-## 📂 Struktur Folder Utama
+## 📂 Core Project Structure
 
 ```text
 src/
 ├── app/
-│   ├── admin/             # Panel Manajemen (Produk, Kelas, SEO)
-│   ├── (main)/store       # Katalog Produk/Kursus
-│   ├── (main)/course/[slug] # Landing Page Dinamis per Kelas
-│   └── (protected)/lesson # Ruang Belajar (Video Player)
+│   ├── admin/             # Management Panel (Products, Classes, SEO)
+│   ├── (main)/store       # Course Catalog / Storefront
+│   ├── (main)/course/[slug] # Dynamic Landing Pages per Course
+│   └── (protected)/lesson # Learning Room (Video Player)
 ├── components/            # UI Kit & SEO Meta Components
-├── lib/                   # Integrasi Xendit & Supabase Helper
+├── lib/                   # Xendit & Supabase Helper Integrations
 └── supabase/              # Database Schema & Migrations
 ```
 
@@ -99,14 +101,14 @@ src/
 
 ## 🛡️ Troubleshooting
 
-| Masalah | Solusi |
+| Issue | Solution |
 | :--- | :--- |
-| **SEO tidak muncul** | Pastikan metadata di `layout.tsx` sudah terhubung dengan data produk. |
-| **Video tidak play** | Cek URL YouTube/Vimeo. Pastikan tidak ada karakter aneh di link. |
-| **Xendit Gagal** | Pastikan Callback Token di Dashboard Xendit sama dengan `XENDIT_WEBHOOK_TOKEN`. |
-| **Image Upload Error** | Pastikan Bucket `thumbnails` di Supabase Storage sudah diatur ke **Public**. |
+| **SEO tags not appearing** | Ensure the metadata in `layout.tsx` is correctly mapped to the product data. |
+| **Video fails to play** | Check the YouTube/Vimeo URL. Ensure there are no special characters in the link. |
+| **Xendit Webhook Fail** | Verify the Callback Token in Xendit Dashboard matches `XENDIT_WEBHOOK_TOKEN`. |
+| **Image Upload Error** | Ensure the `thumbnails` bucket in Supabase Storage is set to **Public**. |
 
 ---
 
-## 🤝 Kontribusi
-Ingin menambahkan fitur Pixel baru atau optimasi SEO? Silakan buat **Pull Request**!
+## 🤝 Contributing
+Want to add new Pixel features or SEO optimizations? Please open a **Pull Request**!

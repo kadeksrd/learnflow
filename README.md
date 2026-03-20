@@ -1,4 +1,3 @@
-
 # 🚀 LearnFlow — Advanced Online Course & LMS Platform
 
 **LearnFlow** adalah platform edukasi full-stack modern yang dirancang untuk skalabilitas tinggi. Dilengkapi dengan fitur **SEO Pixel Optimized**, sistem **Multi-Landing Page**, dan manajemen kelas yang intuitif.
@@ -111,5 +110,3 @@ src/
 
 ## 🤝 Kontribusi
 Ingin menambahkan fitur Pixel baru atau optimasi SEO? Silakan buat **Pull Request**!
-
----

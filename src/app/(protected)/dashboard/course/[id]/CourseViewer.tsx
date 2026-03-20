@@ -198,15 +198,15 @@ export function CourseViewer({
 
   // ─── Sidebar Content ──────────────────────────────────────────────────────
   const renderSidebarContent = () => (
-    <div className="flex flex-col h-full bg-surface">
+    <div className="flex flex-col h-full bg-surface overscroll-contain">
       <div className="p-6 border-b border-white/[0.07]">
-        <h2 className="font-syne font-bold text-white text-base leading-tight mb-4">
+        <h2 className="font-syne font-bold text-white text-base leading-tight mb-4 uppercase">
           {course.products?.title || course.title}
         </h2>
         
         <div className="space-y-3">
           <div className="flex items-center justify-between text-[10px] font-bold tracking-wider text-text-dim uppercase">
-            <span>{completedIds.size}/{allLessons.length} COMPLETED</span>
+            <span>{completedIds.size}/{allLessons.length} SELESAI</span>
             <Trophy size={14} className="text-accent-light" />
           </div>
           <div className="h-1.5 bg-bg rounded-full overflow-hidden">
@@ -218,7 +218,7 @@ export function CourseViewer({
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto py-4 px-2 custom-scrollbar">
+      <div className="flex-1 overflow-y-auto py-4 px-2 scrollbar-hide hover-scrollbar-show transition-all overscroll-contain custom-scrollbar">
         <div className="space-y-1">
           {allLessons.map((l, idx) => {
             const done = completedIds.has(l.id);
@@ -255,7 +255,7 @@ export function CourseViewer({
                   {done && (
                     <div className="flex items-center gap-1 mt-0.5">
                       <CheckCircle size={10} className="text-green-500" />
-                      <span className="text-[10px] text-text-dim">Completed</span>
+                      <span className="text-[10px] text-text-dim">Selesai</span>
                     </div>
                   )}
                 </div>
@@ -269,28 +269,6 @@ export function CourseViewer({
               </button>
             );
           })}
-        </div>
-
-        {/* Mock Discussion Section */}
-        <div className="mt-10 px-4">
-          <h3 className="text-sm font-extrabold text-white mb-6">Discussion</h3>
-          <div className="space-y-6">
-            <div className="flex gap-3">
-              <div className="w-8 h-8 rounded-full bg-white/5 shrink-0 overflow-hidden border border-white/10">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Robin" alt="Avatar" />
-              </div>
-              <div>
-                <div className="text-xs font-bold text-white">Robin Sherbasky</div>
-                <p className="text-xs text-text-muted mt-1 leading-relaxed">
-                  Cool stuff tutor! I&apos;m wondering where I can find the list of recommended resources..
-                </p>
-                <div className="flex items-center gap-4 mt-3">
-                  <button className="text-[10px] font-bold text-text-dim hover:text-white transition-colors">Reply</button>
-                  <button className="text-[10px] font-bold text-text-dim hover:text-white transition-colors">Show 8 replies</button>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -330,30 +308,36 @@ export function CourseViewer({
     const embedUrl = getEmbedUrl(lesson.video_url ?? "");
 
     return (
-      <div className="flex flex-col h-full bg-bg overflow-y-auto custom-scrollbar">
+      <div className="flex flex-col h-full bg-bg overflow-y-auto overscroll-contain custom-scrollbar">
+        {/* Anti-Header Hack */}
+        <style jsx global>{`
+          nav { display: none !important; }
+          header.fixed { display: none !important; }
+        `}</style>
+
         {/* Header Section */}
         <header className="px-6 sm:px-10 py-8">
           <div className="max-w-[1200px] mx-auto">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
               <div className="space-y-3">
                 <nav className="flex items-center gap-2 text-[10px] font-bold tracking-widest text-text-dim uppercase">
-                  <span>Courses</span>
+                  <Link href="/dashboard" className="hover:text-white transition-colors flex items-center gap-1">
+                    <ChevronLeft size={10} />
+                    DASHBOARD
+                  </Link>
                   <span className="text-white/10">/</span>
-                  <span className="text-text-dim">Design</span>
+                  <span className="text-text-dim">KURSUS</span>
                   <span className="text-white/10">/</span>
-                  <span className="text-accent-light truncate max-w-[200px]">{course.title}</span>
+                  <span className="text-accent-light truncate max-w-[200px] uppercase">{course.title}</span>
                 </nav>
                 <h1 className="font-syne font-extrabold text-3xl sm:text-4xl text-white leading-tight">
                   {lesson.title}
                 </h1>
-                <p className="text-xs font-bold text-text-muted">
-                  Natalie Storm, <span className="text-text-dim font-medium font-sans">Design Department</span>
-                </p>
               </div>
 
               <div className="flex items-center gap-6">
                 <div className="text-right whitespace-nowrap">
-                  <span className="text-[10px] font-bold tracking-widest text-text-dim uppercase">CHAPTER {currentIndex + 1}/{allLessons.length}</span>
+                  <span className="text-[10px] font-bold tracking-widest text-text-dim uppercase">MATERI {currentIndex + 1}/{allLessons.length}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
@@ -416,12 +400,14 @@ export function CourseViewer({
               ) : (
                 <div className="w-full h-full bg-gradient-to-br from-[#0A0015] to-[#1A0A2E] flex flex-col items-center justify-center gap-4">
                   <div className="w-16 h-16 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center text-3xl">🎬</div>
-                  <p className="text-text-muted text-sm font-bold">Video not available</p>
+                  <p className="text-text-muted text-sm font-bold">Video tidak tersedia</p>
                 </div>
               )}
 
               {showMuteNotice && (
                 <div className="absolute inset-0 flex items-end justify-center pb-6 sm:pb-10 px-4 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none">
+                  <p className="text-white font-extrabold text-lg mb-2 leading-tight">Video dimulai tanpa suara</p>
+                  <p className="text-white/60 text-[10px] font-bold mb-6 tracking-widest uppercase">Klik untuk mendengar</p>
                   <button
                     onClick={() => {
                       player?.unMute();
@@ -431,7 +417,7 @@ export function CourseViewer({
                     className="pointer-events-auto flex items-center gap-2.5 px-6 py-3 bg-yellow-400 text-black rounded-full font-bold shadow-xl animate-bounce hover:animate-none scale-90 sm:scale-100 transition-transform active:scale-95"
                   >
                     <Volume2 size={18} />
-                    <span className="text-sm">Click to Unmute</span>
+                    <span className="text-sm">AKTIFKAN SUARA</span>
                   </button>
                 </div>
               )}
@@ -439,7 +425,7 @@ export function CourseViewer({
               {/* Progress Overlay */}
               {player && (
                 <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-black/10 z-[50]">
-                  <div 
+                  <div
                     className="h-full bg-accent shadow-[0_0_15px_rgba(168,85,247,0.4)] transition-all duration-300"
                     style={{ width: `${watchProgress}%` }}
                   />
@@ -455,9 +441,9 @@ export function CourseViewer({
             {/* Tabs */}
             <div className="flex items-center gap-8 border-b border-white/[0.05] mb-10 overflow-x-auto no-scrollbar">
               {[
-                { id: "notes", label: "Notes" },
-                { id: "resources", label: "Resources" },
-                { id: "quiz", label: "Quiz (0)" }
+                { id: "notes", label: "Catatan" },
+                { id: "resources", label: "Materi" },
+                { id: "quiz", label: "Kuis" }
               ].map((t) => (
                 <button
                   key={t.id}
@@ -475,18 +461,18 @@ export function CourseViewer({
               ))}
 
               <div className="ml-auto flex items-center gap-4 pb-4">
-                 <button 
+                 <button
                   onClick={markComplete}
                   disabled={isDone || saving}
                   className={cn(
                     "flex items-center gap-2 px-6 py-2 rounded-xl text-xs font-bold transition-all",
-                    isDone 
+                    isDone
                       ? "bg-green-500/10 text-green-400 border border-green-500/20"
                       : "bg-accent hover:bg-accent-light text-white shadow-lg shadow-accent/10"
                   )}
                  >
                    <CheckCircle size={14} />
-                   {isDone ? "Completed" : saving ? "Saving..." : "Mark as Done"}
+                   {isDone ? "Selesai" : saving ? "Menyimpan..." : "Tandai Selesai"}
                  </button>
               </div>
             </div>
@@ -496,7 +482,7 @@ export function CourseViewer({
                 {activeTab === "notes" && (
                   <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
                     <p className="text-text-muted text-sm leading-8 whitespace-pre-line font-medium">
-                      {lesson.description || "No description available for this lesson."}
+                      {lesson.description || "Tidak ada deskripsi untuk materi ini."}
                     </p>
                   </div>
                 )}
@@ -518,35 +504,16 @@ export function CourseViewer({
                         <ExternalLink size={14} className="text-text-dim group-hover:text-accent-light" />
                       </a>
                     )) || (
-                       <p className="text-text-dim text-sm italic col-span-2">No resources available.</p>
+                       <p className="text-text-dim text-sm italic col-span-2">Tidak ada materi tambahan.</p>
                     )}
                   </div>
                 )}
 
                 {activeTab === "quiz" && (
                   <p className="text-text-dim text-sm italic animate-in fade-in slide-in-from-bottom-2 duration-300">
-                    No quiz available for this section yet.
+                    Belum ada kuis untuk bagian ini.
                   </p>
                 )}
-              </div>
-
-              {/* About Instructor Card */}
-              <div className="lg:w-[350px] shrink-0">
-                <div className="p-8 bg-surface rounded-[2.5rem] border border-white/5">
-                  <h4 className="text-sm font-extrabold text-white mb-8">About Instructor</h4>
-                  <div className="flex gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-[1.5rem] bg-white/5 border border-white/10 overflow-hidden shadow-lg shrink-0">
-                       <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Natalie" alt="Natalie" className="w-full h-full object-cover" />
-                    </div>
-                    <div className="flex-1 min-w-0 py-1">
-                      <div className="font-extrabold text-white truncate">Natalie Storm</div>
-                      <div className="text-xs font-bold text-text-dim">Design Department</div>
-                    </div>
-                  </div>
-                  <p className="text-xs text-text-muted leading-relaxed font-medium">
-                    Natalie is a freelance designer with 10+ years of experience in the industry. She loves creating beautiful and functional interfaces.
-                  </p>
-                </div>
               </div>
             </div>
           </div>
@@ -585,7 +552,7 @@ export function CourseViewer({
         {/* Mobile Sidebar Overlay */}
         {mobileOpen && (
           <>
-            <div 
+            <div
               className="fixed inset-0 bg-black/60 z-[60] lg:hidden backdrop-blur-sm"
               onClick={() => setMobileOpen(false)}
             />
@@ -605,8 +572,8 @@ export function CourseViewer({
       {/* Course Completion Modal */}
       {showCompleteModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          <div 
-            className="absolute inset-0 bg-black/80 backdrop-blur-xl animate-in fade-in duration-500" 
+          <div
+            className="absolute inset-0 bg-black/80 backdrop-blur-xl animate-in fade-in duration-500"
             onClick={() => setShowCompleteModal(false)}
           />
           <div className="relative bg-[#1A0A2E] border border-white/10 rounded-[3rem] p-10 max-w-sm w-full text-center shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-300">
@@ -614,10 +581,10 @@ export function CourseViewer({
               <Trophy size={48} className="text-white" />
             </div>
             <h2 className="font-syne font-extrabold text-3xl mb-3 text-white leading-tight">
-              Misi Berhasil! 🎉
+              Selamat! 🎉
             </h2>
             <p className="text-text-muted text-sm mb-10 leading-relaxed font-medium">
-              Selamat! Kamu telah menyelesaikan seluruh materi di course ini. Sekarang saatnya memanen hasil belajarmu.
+              Kamu telah menyelesaikan semua materi di kursus ini. Kamu bisa mengambil sertifikatmu sekarang.
             </p>
             <div className="flex flex-col gap-4">
               <Link

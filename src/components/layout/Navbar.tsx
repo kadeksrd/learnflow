@@ -40,6 +40,8 @@ export function Navbar() {
     ...(isAdmin ? [{ href: '/admin', label: 'Admin', icon: BookOpen }] : []),
   ]
 
+  if (pathname.includes('/dashboard/course/')) return null
+
   return (
     <>
       <header className={cn(

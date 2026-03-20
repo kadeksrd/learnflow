@@ -12,7 +12,7 @@ async function getGlobalSEO() {
   try {
     const supabase = await createClient()
     const { data } = await supabase.from('site_settings').select('value').eq('key', 'seo_global').single()
-    return (data?.value || {}) as Record<string, any>
+    return ((data as any)?.value || {}) as Record<string, any>
   } catch { return {} }
 }
 

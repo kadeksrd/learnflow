@@ -52,6 +52,7 @@ export interface Database {
         };
         Insert: any;
         Update: any;
+        Relationships: any;
       };
       site_settings: {
         Row: {
@@ -63,6 +64,7 @@ export interface Database {
         };
         Insert: any;
         Update: any;
+        Relationships: any;
       };
       // Minimal placeholder for other tables to avoid broad 'any' errors
       [key: string]: any;

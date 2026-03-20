@@ -56,7 +56,7 @@ export default function LoginPage() {
           {/* Forgot password */}
           <div className="mt-4 text-center">
             <Link
-              href="#"
+              href="/forgot-password"
               className="text-xs text-text-muted hover:text-accent-light transition-colors"
             >
               Lupa password?

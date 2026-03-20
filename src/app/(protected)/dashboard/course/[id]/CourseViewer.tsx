@@ -367,18 +367,18 @@ export function CourseViewer({
         {/* Header Section */}
         <header className="px-6 sm:px-10 py-8">
           <div className="max-w-[1200px] mx-auto">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <div className="space-y-3">
-                <div className="flex-1 min-w-0 overflow-hidden marquee-mask relative py-2">
+            <div className="flex items-center justify-between gap-6 pb-2 border-b border-white/[0.03]">
+              <div className="flex-1 min-w-0">
+                <div className="overflow-hidden marquee-mask relative py-1">
                   <div className="flex w-max animate-marquee-bounce">
-                    <h1 className="font-syne font-extrabold text-3xl sm:text-4xl text-white leading-tight whitespace-nowrap">
+                    <h1 className="font-syne font-extrabold text-xl sm:text-2xl text-white leading-tight whitespace-nowrap">
                       {lesson.title}
                     </h1>
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 sm:gap-6">
+              <div className="flex items-center gap-3 sm:gap-5 shrink-0">
                 <div className="flex items-center gap-2 mr-2">
                    <button
                     onClick={() => setAutoNext(!autoNext)}

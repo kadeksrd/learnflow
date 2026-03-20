@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { cn, getEmbedUrl, getYoutubeId } from "@/lib/utils";
 import YouTube from "react-youtube";
 import {
@@ -73,6 +73,39 @@ export function CourseViewer({
   const [autoPlay, setAutoPlay] = useState(true);
   const [player, setPlayer] = useState<any>(null);
   const [isMuted, setIsMuted] = useState(true);
+  const [watchProgress, setWatchProgress] = useState(0);
+
+  // Resume progress on load
+  useEffect(() => {
+    if (player && activeLessonId) {
+      const savedTime = localStorage.getItem(`progress:${activeLessonId}`);
+      if (savedTime) {
+        player.seekTo(parseFloat(savedTime));
+      }
+    }
+  }, [player, activeLessonId]);
+
+  // Track and save progress
+  useEffect(() => {
+    if (!player) return;
+    const interval = setInterval(() => {
+      try {
+        const currentTime = player.getCurrentTime();
+        const duration = player.getDuration();
+        if (duration > 0) {
+          const percent = Math.round((currentTime / duration) * 100);
+          setWatchProgress(percent);
+          localStorage.setItem(`progress:${activeLessonId}`, currentTime.toString());
+        }
+      } catch (e) {}
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [player, activeLessonId]);
+
+  useEffect(() => {
+    setWatchProgress(0);
+    // Kita biarkan player tetap ada agar tidak terjadi flickering
+  }, [activeLessonId]);
 
   const toggleMute = useCallback(() => {
     if (!player) return;
@@ -362,6 +395,35 @@ export function CourseViewer({
                 </div>
               )}
             </div>
+
+            {/* Video watch percentage */}
+            {player && (
+              <div className="flex items-center gap-2 mt-4 px-1">
+                <div className="flex-1 h-1 bg-surface rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-accent-light rounded-full transition-all duration-300"
+                    style={{ width: `${watchProgress}%` }}
+                  />
+                </div>
+                <span className="text-[10px] font-bold text-text-dim tabular-nums">
+                  {watchProgress}% ditonton
+                </span>
+              </div>
+            )}
+            
+            {/* Fallback link if video has issues */}
+            {getYoutubeId(lesson.video_url || '') && (
+              <div className="mt-2 text-center">
+                <a 
+                  href={`https://www.youtube.com/watch?v=${getYoutubeId(lesson.video_url || '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] text-text-dim hover:text-accent-light flex items-center justify-center gap-1"
+                >
+                  <ExternalLink size={10} /> Bermasalah? Tonton di YouTube
+                </a>
+              </div>
+            )}
           </div>
         </div>
 

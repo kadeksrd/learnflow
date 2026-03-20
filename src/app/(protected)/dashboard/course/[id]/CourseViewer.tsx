@@ -93,7 +93,14 @@ export function CourseViewer({
     if (player && activeLessonId) {
       const savedTime = localStorage.getItem(`progress:${activeLessonId}`);
       if (savedTime) {
-        player.seekTo(parseFloat(savedTime));
+        const time = parseFloat(savedTime);
+        player.seekTo(time);
+        
+        // Update percentage immediately
+        const duration = player.getDuration();
+        if (duration > 0) {
+          setWatchProgress(Math.round((time / duration) * 100));
+        }
       }
     }
   }, [player, activeLessonId]);
@@ -109,6 +116,24 @@ export function CourseViewer({
         setWatchProgress(Math.round((currentTime / duration) * 100));
       }
     }
+  }, [player, activeLessonId]);
+
+  // Real-time progress update while playing
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (player && activeLessonId) {
+      interval = setInterval(() => {
+        // Cek jika sedang PLAYING (1)
+        if (player.getPlayerState?.() === 1) {
+          const currentTime = player.getCurrentTime?.() || 0;
+          const duration = player.getDuration?.() || 0;
+          if (duration > 0) {
+            setWatchProgress(Math.round((currentTime / duration) * 100));
+          }
+        }
+      }, 1000);
+    }
+    return () => clearInterval(interval);
   }, [player, activeLessonId]);
 
   useEffect(() => {

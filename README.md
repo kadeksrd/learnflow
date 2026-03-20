@@ -1,8 +1,3 @@
-Tentu, ini adalah versi README yang sudah diperbarui dan dioptimalkan untuk menonjolkan fitur unggulan **LearnFlow** seperti SEO Pixel, Custom Landing Pages, dan Manajemen Kelas yang dinamis. 
-
-Format ini dirancang agar terlihat profesional di profil GitHub kamu.
-
----
 
 # 🚀 LearnFlow — Advanced Online Course & LMS Platform
 
@@ -118,5 +113,3 @@ src/
 Ingin menambahkan fitur Pixel baru atau optimasi SEO? Silakan buat **Pull Request**!
 
 ---
-
-**Apakah Anda ingin saya menambahkan bagian teknis spesifik mengenai cara kerja SEO Pixel di dalam kode tersebut?**

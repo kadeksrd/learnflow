@@ -60,11 +60,11 @@ export async function middleware(request: NextRequest) {
   // Memungkinkan Turnstile dan external resources yang diperlukan
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com;
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://www.youtube.com https://s.ytimg.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-    img-src 'self' blob: data: https:;
+    img-src 'self' blob: data: https: https://i.ytimg.com;
     font-src 'self' https://fonts.gstatic.com;
-    frame-src 'self' https://challenges.cloudflare.com https://www.youtube.com;
+    frame-src 'self' https://challenges.cloudflare.com https://www.youtube.com https://youtube.com;
     connect-src 'self' https://*.supabase.co wss://*.supabase.co https://challenges.cloudflare.com;
   `.replace(/\s{2,}/g, ' ').trim()
   

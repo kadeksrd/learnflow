@@ -304,13 +304,17 @@ export function CourseViewer({
                 <YouTube
                   videoId={getYoutubeId(lesson.video_url!)!}
                   onEnd={markComplete}
+                  onReady={(e) => {
+                    if (autoPlay) e.target.playVideo();
+                  }}
                   opts={{
                     width: '100%',
                     height: '100%',
                     playerVars: {
                       autoplay: autoPlay ? 1 : 0,
-                      controls: 0, // Sembunyikan kontrol agar tidak bisa digeser
-                      disablekb: 1, // Nonaktifkan keyboard (tombol panah dll) untuk mencari
+                      mute: autoPlay ? 1 : 0, // Autoplay seringkali hanya jalan jika di-mute
+                      controls: 0,
+                      disablekb: 1,
                       rel: 0,
                       modestbranding: 1,
                     },

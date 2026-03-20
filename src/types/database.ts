@@ -53,6 +53,17 @@ export interface Database {
         Insert: any;
         Update: any;
       };
+      site_settings: {
+        Row: {
+          id: string;
+          key: string;
+          value: any;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: any;
+        Update: any;
+      };
       // Minimal placeholder for other tables to avoid broad 'any' errors
       [key: string]: any;
     };

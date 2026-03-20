@@ -19,7 +19,7 @@ export async function generateStaticParams() {
     .from("landing_pages")
     .select("slug")
     .limit(100);
-  return (data || []).map((lp) => ({ slug: lp.slug }));
+  return ((data as any[]) || []).map((lp) => ({ slug: lp.slug }));
 }
 
 async function getData(slug: string) {

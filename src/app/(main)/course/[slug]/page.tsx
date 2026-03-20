@@ -1,13 +1,14 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { createBrowserClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 import { LandingPageContent } from "./LandingPageContent";
 import { LandingPagePixels } from "./LandingPagePixels";
-import type { Benefit, Testimonial } from "@/types/database";
+import type { Benefit, Testimonial, Database } from "@/types/database";
 
 // Fungsi bypass cookies agar tidak error saat build/prerender
+// Menggunakan @supabase/supabase-js agar tidak ada overhead cookie management saat build
 const getStaticSupabase = () =>
-  createBrowserClient(
+  createClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   );
@@ -23,7 +24,7 @@ export async function generateStaticParams() {
 
 async function getData(slug: string) {
   const supabase = getStaticSupabase();
-  const { data: lp, error } = await supabase
+  const { data: lp, error } = (await supabase
     .from("landing_pages")
     .select(
       `*,
@@ -40,18 +41,23 @@ async function getData(slug: string) {
     `,
     )
     .eq("slug", slug)
-    .single();
+    .single()) as any;
 
   if (error || !lp) return null;
   const product = lp.products as any;
   if (!product?.is_published) return null;
 
-  const course = product.courses?.[0];
+  const course = (product.courses as any[])?.[0];
   if (course) {
-    course.modules.sort((a: any, b: any) => a.order - b.order);
-    course.modules.forEach((m: any) =>
-      m.lessons.sort((a: any, b: any) => a.order - b.order),
-    );
+    // Sort modules and lessons safely
+    if (Array.isArray(course.modules)) {
+      course.modules.sort((a: any, b: any) => (a.order || 0) - (b.order || 0));
+      course.modules.forEach((m: any) => {
+        if (Array.isArray(m.lessons)) {
+          m.lessons.sort((a: any, b: any) => (a.order || 0) - (b.order || 0));
+        }
+      });
+    }
   }
   return { lp, product, course };
 }

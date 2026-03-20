@@ -44,9 +44,12 @@ export function ResetPasswordForm() {
       return
     }
 
+    // Sign out to ensure they have to login with the new password manually
+    await supabase.auth.signOut()
+
     setSuccess(true)
     setTimeout(() => {
-      router.push('/login')
+      router.push('/login?message=Password berhasil diubah. Silakan login kembali.')
     }, 3000)
   }
 

@@ -369,11 +369,8 @@ export function CourseViewer({
           <div className="max-w-[1200px] mx-auto">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
               <div className="space-y-3">
-                <div className="max-w-full overflow-hidden marquee-mask group/marquee relative">
-                  <div className="flex w-max gap-12 animate-marquee py-2">
-                    <h1 className="font-syne font-extrabold text-3xl sm:text-4xl text-white leading-tight whitespace-nowrap">
-                      {lesson.title}
-                    </h1>
+                <div className="flex-1 min-w-0 overflow-hidden marquee-mask relative py-2">
+                  <div className="flex w-max animate-marquee-bounce">
                     <h1 className="font-syne font-extrabold text-3xl sm:text-4xl text-white leading-tight whitespace-nowrap">
                       {lesson.title}
                     </h1>

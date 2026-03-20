@@ -83,6 +83,7 @@ export function CourseViewer({
   const [showMuteNotice, setShowMuteNotice] = useState(false);
   const [showCompleteModal, setShowCompleteModal] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [videoReloadKey, setVideoReloadKey] = useState(0);
   const [activeTab, setActiveTab] = useState<"notes" | "resources">("notes");
 
   const youtubeOpts = useMemo(() => ({
@@ -399,13 +400,9 @@ export function CourseViewer({
                      <span className="hidden sm:inline">OTOMATIS LANJUTKAN</span>
                    </button>
                    <button
-                    onClick={() => {
-                      const currentId = activeLessonId;
-                      setActiveLessonId(null);
-                      setTimeout(() => setActiveLessonId(currentId), 10);
-                    }}
+                    onClick={() => setVideoReloadKey((prev) => prev + 1)}
                     title="Muat Ulang Video"
-                    className="p-2 rounded-lg bg-white/5 border border-white/10 text-text-dim hover:text-white hover:bg-white/10 transition-all"
+                    className="p-2 rounded-lg bg-white/5 border border-white/10 text-text-dim hover:text-white hover:bg-white/10 transition-all active:scale-95"
                    >
                      <RotateCcw size={14} />
                    </button>
@@ -441,7 +438,7 @@ export function CourseViewer({
             <div className="relative w-full bg-black aspect-video rounded-[2rem] overflow-hidden shadow-2xl border border-white/[0.05]">
               {getYoutubeId(lesson.video_url || '') ? (
                 <YouTube
-                  key={lesson.id}
+                  key={`${lesson.id}-${videoReloadKey}`}
                   videoId={getYoutubeId(lesson.video_url!)!}
                   onEnd={() => {
                     saveProgress();
@@ -466,7 +463,7 @@ export function CourseViewer({
                 />
               ) : embedUrl ? (
                 <iframe
-                  key={lesson.id}
+                  key={`${lesson.id}-${videoReloadKey}`}
                   src={embedUrl}
                   className="w-full h-full"
                   allowFullScreen

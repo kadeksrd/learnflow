@@ -1,6 +1,7 @@
 "use client";
 import { useState, useCallback } from "react";
-import { cn, getEmbedUrl } from "@/lib/utils";
+import { cn, getEmbedUrl, getYoutubeId } from "@/lib/utils";
+import YouTube from "react-youtube";
 import {
   CheckCircle,
   Play,
@@ -67,6 +68,7 @@ export function CourseViewer({
   const [activeLessonId, setActiveLessonId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [autoNext, setAutoNext] = useState(true);
+  const [autoPlay, setAutoPlay] = useState(true);
 
   const useChapters = course.use_chapters !== false;
   const allLessons: Lesson[] = course.modules.flatMap((m) => m.lessons);
@@ -298,7 +300,24 @@ export function CourseViewer({
             {" "}
             {/* Batasi lebar maksimal video */}
             <div className="w-full bg-black aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/[0.05]">
-              {embedUrl ? (
+              {getYoutubeId(lesson.video_url || '') ? (
+                <YouTube
+                  videoId={getYoutubeId(lesson.video_url!)!}
+                  onEnd={markComplete}
+                  opts={{
+                    width: '100%',
+                    height: '100%',
+                    playerVars: {
+                      autoplay: autoPlay ? 1 : 0,
+                      controls: 0, // Sembunyikan kontrol agar tidak bisa digeser
+                      disablekb: 1, // Nonaktifkan keyboard (tombol panah dll) untuk mencari
+                      rel: 0,
+                      modestbranding: 1,
+                    },
+                  }}
+                  className="w-full h-full"
+                />
+              ) : embedUrl ? (
                 <iframe
                   key={lesson.id}
                   src={embedUrl}
@@ -382,6 +401,16 @@ export function CourseViewer({
                 className="w-4 h-4 accent-purple-500"
               />
               <span className="text-sm text-text-muted">Auto-lanjut</span>
+            </label>
+
+            <label className="flex items-center gap-2 px-4 py-3 bg-card border border-white/[0.07] rounded-xl cursor-pointer hover:border-accent/30 transition-all select-none">
+              <input
+                type="checkbox"
+                checked={autoPlay}
+                onChange={(e) => setAutoPlay(e.target.checked)}
+                className="w-4 h-4 accent-purple-500"
+              />
+              <span className="text-sm text-text-muted">Auto-putar</span>
             </label>
 
             <div className="flex gap-2 sm:ml-auto">

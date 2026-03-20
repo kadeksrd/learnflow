@@ -107,15 +107,14 @@ export function LandingPageContent({
       />
 
       {/* Benefits */}
-      {landing_page.benefits?.length > 0 && (
-        <BenefitsSection benefits={landing_page.benefits} />
+      {benefits && benefits.length > 0 && (
+        <BenefitsSection benefits={benefits} />
       )}
 
       {/* Admin-created testimonials (manual) */}
-      {landing_page.testimonials?.length > 0 && (
-        <TestimonialsSection testimonials={landing_page.testimonials} />
+      {testimonials && testimonials.length > 0 && (
+        <TestimonialsSection testimonials={testimonials} />
       )}
-
       {/* Real user reviews — otomatis dari database */}
       <UserReviewsSection productId={product.id} />
 

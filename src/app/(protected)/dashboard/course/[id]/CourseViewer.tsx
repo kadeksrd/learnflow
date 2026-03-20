@@ -369,19 +369,16 @@ export function CourseViewer({
           <div className="max-w-[1200px] mx-auto">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
               <div className="space-y-3">
-                <nav className="flex items-center gap-2 text-[10px] font-bold tracking-widest text-text-dim uppercase">
-                  <Link href="/dashboard" className="hover:text-white transition-colors flex items-center gap-1">
-                    <ChevronLeft size={10} />
-                    DASHBOARD
-                  </Link>
-                  <span className="text-white/10">/</span>
-                  <span className="text-text-dim">KURSUS</span>
-                  <span className="text-white/10">/</span>
-                  <span className="text-accent-light truncate max-w-[200px] uppercase">{course.title}</span>
-                </nav>
-                <h1 className="font-syne font-extrabold text-3xl sm:text-4xl text-white leading-tight">
-                  {lesson.title}
-                </h1>
+                <div className="max-w-full overflow-hidden marquee-mask group/marquee relative">
+                  <div className="flex w-max gap-12 animate-marquee py-2">
+                    <h1 className="font-syne font-extrabold text-3xl sm:text-4xl text-white leading-tight whitespace-nowrap">
+                      {lesson.title}
+                    </h1>
+                    <h1 className="font-syne font-extrabold text-3xl sm:text-4xl text-white leading-tight whitespace-nowrap">
+                      {lesson.title}
+                    </h1>
+                  </div>
+                </div>
               </div>
 
               <div className="flex items-center gap-4 sm:gap-6">
@@ -400,8 +397,11 @@ export function CourseViewer({
                      <span className="hidden sm:inline">OTOMATIS LANJUTKAN</span>
                    </button>
                    <button
-                    onClick={() => setVideoReloadKey((prev) => prev + 1)}
-                    title="Muat Ulang Video"
+                    onClick={() => {
+                      setWatchProgress(0);
+                      setVideoReloadKey((prev) => prev + 1);
+                    }}
+                    title="Muat Ulang Video (Mulai dari 0)"
                     className="p-2 rounded-lg bg-white/5 border border-white/10 text-text-dim hover:text-white hover:bg-white/10 transition-all active:scale-95"
                    >
                      <RotateCcw size={14} />
@@ -496,11 +496,16 @@ export function CourseViewer({
 
               {/* Progress Overlay */}
               {player && (
-                <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-black/10 z-[50]">
+                <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-white/10 z-[50]">
                   <div
-                    className="h-full bg-accent shadow-[0_0_15px_rgba(168,85,247,0.4)] transition-all duration-300"
+                    className="h-full bg-accent shadow-[0_0_15px_rgba(168,85,247,0.6)] transition-all duration-300 relative"
                     style={{ width: `${watchProgress}%` }}
-                  />
+                  >
+                    {/* Percentage Indicator */}
+                    <div className="absolute -top-7 -right-4 flex items-center justify-center px-1.5 py-0.5 bg-accent/90 backdrop-blur-sm text-[10px] font-bold text-white rounded-md shadow-lg border border-white/10 select-none">
+                      {Math.round(watchProgress)}%
+                    </div>
+                  </div>
                 </div>
               )}
             </div>

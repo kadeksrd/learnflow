@@ -19,6 +19,10 @@ import {
   Trophy,
   Award,
   RotateCcw,
+  Zap,
+  ArrowLeft,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -78,7 +82,8 @@ export function CourseViewer({
   const [watchProgress, setWatchProgress] = useState(0);
   const [showMuteNotice, setShowMuteNotice] = useState(false);
   const [showCompleteModal, setShowCompleteModal] = useState(false);
-  const [activeTab, setActiveTab] = useState<"notes" | "resources" | "quiz">("notes");
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [activeTab, setActiveTab] = useState<"notes" | "resources">("notes");
 
   const youtubeOpts = useMemo(() => ({
     width: '100%',
@@ -198,27 +203,65 @@ export function CourseViewer({
 
   // ─── Sidebar Content ──────────────────────────────────────────────────────
   const renderSidebarContent = () => (
-    <div className="flex flex-col h-full bg-surface overscroll-contain">
-      <div className="p-6 border-b border-white/[0.07]">
-        <h2 className="font-syne font-bold text-white text-base leading-tight mb-4 uppercase">
-          {course.products?.title || course.title}
-        </h2>
-        
-        <div className="space-y-3">
-          <div className="flex items-center justify-between text-[10px] font-bold tracking-wider text-text-dim uppercase">
-            <span>{completedIds.size}/{allLessons.length} SELESAI</span>
-            <Trophy size={14} className="text-accent-light" />
-          </div>
-          <div className="h-1.5 bg-bg rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-accent to-accent-light rounded-full transition-all duration-700 ease-out"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
+    <div className={cn("flex flex-col h-full bg-surface overscroll-contain transition-all duration-300", isSidebarCollapsed ? "w-[80px]" : "w-full")}>
+      {/* Fixed Part */}
+      <div className={cn("p-6 border-b border-white/[0.07] shrink-0", isSidebarCollapsed && "p-4")}>
+        {/* Logo & Brand & Toggle */}
+        <div className={cn("flex items-center justify-between gap-3 mb-8", isSidebarCollapsed && "flex-col mb-6")}>
+          {!isSidebarCollapsed && (
+            <Link href="/" className="flex items-center gap-3 group/logo truncate">
+              <div className="w-9 h-9 rounded-xl bg-gradient-accent flex items-center justify-center shadow-lg shadow-accent/30 group-hover/logo:scale-110 transition-transform duration-300">
+                <Zap size={18} className="text-white fill-white" />
+              </div>
+              <span className="font-syne font-extrabold text-xl text-white tracking-tight">LearnFlow</span>
+            </Link>
+          )}
+          {isSidebarCollapsed && (
+            <div className="w-9 h-9 rounded-xl bg-gradient-accent flex items-center justify-center shadow-lg shadow-accent/30 mb-2">
+              <Zap size={18} className="text-white fill-white" />
+            </div>
+          )}
+          <button
+            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+            className="p-2 text-text-dim hover:text-white hover:bg-white/5 rounded-lg transition-all"
+            title={isSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+          >
+            {isSidebarCollapsed ? <PanelLeftOpen size={20} /> : <PanelLeftClose size={20} />}
+          </button>
         </div>
+
+        {!isSidebarCollapsed && (
+          <>
+            <Link 
+              href="/dashboard" 
+              className="flex items-center gap-2 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-xs font-extrabold text-text-muted hover:text-white hover:bg-accent/10 hover:border-accent/30 transition-all w-full group/back mb-6"
+            >
+              <ArrowLeft size={16} className="group-hover/back:-translate-x-1 transition-transform" />
+              <span>Kembali ke Dashboard</span>
+            </Link>
+
+            <h2 className="font-syne font-bold text-text-dim text-[11px] tracking-[0.15em] mb-4 uppercase truncate">
+              {course.products?.title || course.title}
+            </h2>
+            
+            <div className="space-y-3">
+              <div className="flex items-center justify-between text-[10px] font-bold tracking-wider text-text-dim uppercase">
+                <span>{completedIds.size}/{allLessons.length} SELESAI</span>
+                <Trophy size={14} className="text-accent-light" />
+              </div>
+              <div className="h-1.5 bg-bg rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-accent to-accent-light rounded-full transition-all duration-700 ease-out"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
-      <div className="flex-1 overflow-y-auto py-4 px-2 scrollbar-hide hover-scrollbar-show transition-all overscroll-contain custom-scrollbar">
+      {/* Scrollable List */}
+      <div className={cn("flex-1 overflow-y-auto py-4 px-2 scrollbar-hide hover-scrollbar-show transition-all custom-scrollbar", isSidebarCollapsed && "px-1")}>
         <div className="space-y-1">
           {allLessons.map((l, idx) => {
             const done = completedIds.has(l.id);
@@ -232,7 +275,9 @@ export function CourseViewer({
                   active
                     ? "bg-white/5 shadow-lg border border-white/[0.05]"
                     : "hover:bg-white/[0.02]",
+                  isSidebarCollapsed && "justify-center px-0 py-4 h-12 w-12 mx-auto rounded-xl"
                 )}
+                title={isSidebarCollapsed ? l.title : undefined}
               >
                 <div className={cn(
                   "w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold shrink-0 transition-colors",
@@ -240,30 +285,33 @@ export function CourseViewer({
                     ? "border-accent bg-accent text-white" 
                     : done 
                       ? "border-green-500/50 text-green-400" 
-                      : "border-white/10 text-text-dim group-hover:border-white/20"
+                      : "border-white/10 text-text-dim group-hover:border-white/20",
+                  isSidebarCollapsed && "w-7 h-7"
                 )}>
                   {idx + 1}
                 </div>
                 
-                <div className="flex-1 min-w-0">
-                  <div className={cn(
-                    "text-sm font-bold truncate transition-colors",
-                    active ? "text-accent-light" : done ? "text-green-400/90" : "text-text-muted"
-                  )}>
-                    {l.title}
-                  </div>
-                  {done && (
-                    <div className="flex items-center gap-1 mt-0.5">
-                      <CheckCircle size={10} className="text-green-500" />
-                      <span className="text-[10px] text-text-dim">Selesai</span>
+                {!isSidebarCollapsed && (
+                  <div className="flex-1 min-w-0">
+                    <div className={cn(
+                      "text-sm font-bold truncate transition-colors",
+                      active ? "text-accent-light" : done ? "text-green-400/90" : "text-text-muted"
+                    )}>
+                      {l.title}
                     </div>
-                  )}
-                </div>
+                    {done && (
+                      <div className="flex items-center gap-1 mt-0.5">
+                        <CheckCircle size={10} className="text-green-500" />
+                        <span className="text-[10px] text-text-dim">Selesai</span>
+                      </div>
+                    )}
+                  </div>
+                )}
 
-                {!done && !active && (
+                {!isSidebarCollapsed && !done && !active && (
                    <ChevronRight size={14} className="text-gray-300 group-hover:text-gray-400" />
                 )}
-                {active && (
+                {!isSidebarCollapsed && active && (
                    <div className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(168,85,247,0.6)]" />
                 )}
               </button>
@@ -335,8 +383,35 @@ export function CourseViewer({
                 </h1>
               </div>
 
-              <div className="flex items-center gap-6">
-                <div className="text-right whitespace-nowrap">
+              <div className="flex items-center gap-4 sm:gap-6">
+                <div className="flex items-center gap-2 mr-2">
+                   <button
+                    onClick={() => setAutoNext(!autoNext)}
+                    title="Otomatis Lanjutkan"
+                    className={cn(
+                      "flex items-center gap-2 px-3 py-1.5 rounded-lg text-[10px] font-bold tracking-wider transition-all border",
+                      autoNext 
+                        ? "bg-accent/20 text-accent-light border-accent/30" 
+                        : "bg-white/5 text-text-dim border-white/10 hover:text-white"
+                    )}
+                   >
+                     <Zap size={12} fill={autoNext ? "currentColor" : "none"} />
+                     <span className="hidden sm:inline">OTOMATIS LANJUTKAN</span>
+                   </button>
+                   <button
+                    onClick={() => {
+                      const currentId = activeLessonId;
+                      setActiveLessonId(null);
+                      setTimeout(() => setActiveLessonId(currentId), 10);
+                    }}
+                    title="Muat Ulang Video"
+                    className="p-2 rounded-lg bg-white/5 border border-white/10 text-text-dim hover:text-white hover:bg-white/10 transition-all"
+                   >
+                     <RotateCcw size={14} />
+                   </button>
+                </div>
+
+                <div className="hidden sm:block text-right whitespace-nowrap">
                   <span className="text-[10px] font-bold tracking-widest text-text-dim uppercase">MATERI {currentIndex + 1}/{allLessons.length}</span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -442,8 +517,7 @@ export function CourseViewer({
             <div className="flex items-center gap-8 border-b border-white/[0.05] mb-10 overflow-x-auto no-scrollbar">
               {[
                 { id: "notes", label: "Catatan" },
-                { id: "resources", label: "Materi" },
-                { id: "quiz", label: "Kuis" }
+                { id: "resources", label: "Materi" }
               ].map((t) => (
                 <button
                   key={t.id}
@@ -509,11 +583,6 @@ export function CourseViewer({
                   </div>
                 )}
 
-                {activeTab === "quiz" && (
-                  <p className="text-text-dim text-sm italic animate-in fade-in slide-in-from-bottom-2 duration-300">
-                    Belum ada kuis untuk bagian ini.
-                  </p>
-                )}
               </div>
             </div>
           </div>
@@ -539,15 +608,18 @@ export function CourseViewer({
       </div>
 
       <div className="flex flex-1 overflow-hidden relative">
+        {/* Desktop Sidebar (Left) */}
+        <aside className={cn(
+          "hidden lg:flex flex-col bg-surface border-r border-white/5 shrink-0 shadow-sm transition-all duration-300 ease-in-out",
+          isSidebarCollapsed ? "w-[80px]" : "w-[380px]"
+        )}>
+          {renderSidebarContent()}
+        </aside>
+
         {/* Shared Main Viewport */}
         <main className="flex-1 flex flex-col min-w-0 h-full relative z-10 bg-bg">
           {renderMainContent()}
         </main>
-
-        {/* Desktop Sidebar (Right) */}
-        <aside className="hidden lg:flex flex-col w-[380px] bg-surface border-l border-white/5 shrink-0 shadow-sm transition-all duration-300">
-          {renderSidebarContent()}
-        </aside>
 
         {/* Mobile Sidebar Overlay */}
         {mobileOpen && (

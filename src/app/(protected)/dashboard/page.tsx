@@ -25,16 +25,16 @@ export default async function DashboardPage() {
     .from('progress').select('lesson_id, completed_at').eq('user_id', user!.id).eq('status', 'completed')
     .in('lesson_id', allLessonIds.length ? allLessonIds : ['none'])
 
-  const completedSet = new Set(progressData?.map(p => p.lesson_id) || [])
+  const completedSet = new Set(progressData?.map((p: any) => p.lesson_id) || [])
 
   // Today's progress (lessons completed today)
   const today = new Date().toISOString().slice(0, 10)
-  const todayCount = progressData?.filter(p => p.completed_at?.startsWith(today)).length || 0
+  const todayCount = progressData?.filter((p: any) => p.completed_at?.startsWith(today)).length || 0
 
   // Find next lesson to continue (first uncompleted lesson across all enrolled courses)
   let nextLesson: any = null
   let nextCourse: any = null
-  for (const uc of (enrolled || [])) {
+  for (const uc of (enrolled as any[] || [])) {
     const course = uc.courses
     if (!course) continue
     for (const mod of (course.modules || [])) {
@@ -55,7 +55,7 @@ export default async function DashboardPage() {
   const { data: existingReviews } = await supabase
     .from('reviews').select('product_id, rating, comment').eq('user_id', user!.id)
     .in('product_id', productIds.length ? productIds : ['none'])
-  const reviewMap = new Map(existingReviews?.map(r => [r.product_id, r]) || [])
+  const reviewMap = new Map(existingReviews?.map((r: any) => [r.product_id, r]) || [])
 
   const totalLessons = allLessonIds.length
   const completedLessons = completedSet.size

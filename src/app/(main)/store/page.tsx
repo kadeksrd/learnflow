@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { StoreClient } from "./StoreClient";
@@ -141,8 +142,9 @@ export default async function StorePage() {
           )}
         </div>
       </div>
-
-      <StoreClient initialProducts={products} categories={categories} />
+      <Suspense fallback={<div className="p-8 text-center text-text-muted">Loading produk...</div>}>
+        <StoreClient initialProducts={products} categories={categories} />
+      </Suspense>
     </div>
   );
 }

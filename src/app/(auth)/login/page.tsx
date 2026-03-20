@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { Zap } from 'lucide-react'
@@ -42,7 +43,9 @@ export default function LoginPage() {
           </div>
 
           {/* Email form */}
-          <LoginForm />
+          <Suspense fallback={<div className="h-40 animate-pulse bg-white/5 rounded-xl border border-white/10" />}>
+            <LoginForm />
+          </Suspense>
 
           {/* Forgot password */}
           <div className="mt-4 text-center">

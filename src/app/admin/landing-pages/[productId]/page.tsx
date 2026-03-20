@@ -20,7 +20,7 @@ export default async function EditLandingPage({
       .select("*")
       .eq("product_id", params.productId)
       .single(),
-  ]);
+  ]) as any;
   if (!product)
     return <div className="p-8 text-text-muted">Produk tidak ditemukan</div>;
   return (

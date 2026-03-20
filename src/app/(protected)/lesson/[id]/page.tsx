@@ -11,7 +11,7 @@ export default async function LessonPage({ params }: { params: { id: string } })
     .eq('id', params.id).single()
 
   if (!lesson) notFound()
-  const course = (lesson.modules as any)?.courses
+  const course = ((lesson as any).modules)?.courses
   if (!course) notFound()
 
   const { data: access } = await supabase.from('user_courses').select('id').eq('user_id', user!.id).eq('course_id', course.id).single()

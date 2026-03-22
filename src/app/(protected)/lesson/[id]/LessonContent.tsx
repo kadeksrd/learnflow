@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { ChevronLeft, ChevronRight, CheckCircle, ExternalLink, StickyNote } from 'lucide-react'
 import { cn, getEmbedUrl } from '@/lib/utils'
@@ -11,6 +11,14 @@ export function LessonContent({ lesson, course, prevLesson, nextLesson, isComple
   const [autoNext, setAutoNext] = useState(true)
   const [saving, setSaving] = useState(false)
   const router = useRouter()
+
+  useEffect(() => {
+    fetch('/api/progress/touch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lesson_id: lesson.id }),
+    })
+  }, [lesson.id])
   const embedUrl = getEmbedUrl(lesson.video_url)
   const allLessons = course.modules.flatMap((m: any) => m.lessons)
   const completedSet = new Set(completedLessonIds)

@@ -25,6 +25,7 @@ import {
   PanelLeftOpen,
 } from "lucide-react";
 import Link from "next/link";
+import { MarqueeText } from "@/components/ui/MarqueeText";
 
 interface Lesson {
   id: string;
@@ -294,12 +295,12 @@ export function CourseViewer({
                 
                 {!isSidebarCollapsed && (
                   <div className="flex-1 min-w-0">
-                    <div className={cn(
-                      "text-sm font-bold truncate transition-colors",
+                    <MarqueeText className={cn(
+                      "text-sm font-bold transition-colors",
                       active ? "text-accent-light" : done ? "text-green-400/90" : "text-text-muted"
                     )}>
                       {l.title}
-                    </div>
+                    </MarqueeText>
                     {done && (
                       <div className="flex items-center gap-1 mt-0.5">
                         <CheckCircle size={10} className="text-green-500" />
@@ -369,13 +370,11 @@ export function CourseViewer({
           <div className="max-w-[1200px] mx-auto">
             <div className="flex items-center justify-between gap-6 pb-2 border-b border-white/[0.03]">
               <div className="flex-1 min-w-0">
-                <div className="flex-1 min-w-0 overflow-hidden relative py-1">
-                  <div className="flex w-max animate-marquee-bounce">
-                    <h1 className="font-syne font-extrabold text-xl sm:text-2xl text-white leading-tight whitespace-nowrap">
-                      {lesson.title}
-                    </h1>
-                  </div>
-                </div>
+                <MarqueeText 
+                  className="font-syne font-extrabold text-xl sm:text-2xl text-white leading-tight"
+                >
+                  {lesson.title}
+                </MarqueeText>
               </div>
 
               <div className="flex items-center gap-3 sm:gap-5 shrink-0">

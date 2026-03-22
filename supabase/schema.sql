@@ -126,10 +126,25 @@ CREATE TABLE IF NOT EXISTS progress (
   lesson_id    UUID NOT NULL REFERENCES lessons(id) ON DELETE CASCADE,
   status       TEXT NOT NULL DEFAULT 'started' CHECK (status IN ('started','completed')),
   completed_at TIMESTAMPTZ,
+  updated_at   TIMESTAMPTZ DEFAULT now(),
   created_at   TIMESTAMPTZ DEFAULT now(),
   UNIQUE(user_id, lesson_id)
 );
 CREATE INDEX IF NOT EXISTS idx_progress_user ON progress(user_id);
+
+-- Trigger to update updated_at on progress
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = now();
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+CREATE OR REPLACE TRIGGER update_progress_updated_at
+    BEFORE UPDATE ON progress
+    FOR EACH ROW
+    EXECUTE PROCEDURE update_updated_at_column();
 
 -- =============================================
 -- ROW LEVEL SECURITY

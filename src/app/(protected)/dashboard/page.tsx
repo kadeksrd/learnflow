@@ -39,25 +39,68 @@ export default async function DashboardPage() {
 
   const { data: progressData } = await supabase
     .from("progress")
-    .select("lesson_id, completed_at")
+    .select("lesson_id, completed_at, status, updated_at")
     .eq("user_id", user!.id)
-    .eq("status", "completed")
-    .in("lesson_id", allLessonIds.length ? allLessonIds : ["none"]);
+    .in("lesson_id", allLessonIds.length ? allLessonIds : ["none"])
+    .order("updated_at", { ascending: false });
 
-  const completedSet = new Set(progressData?.map((p: any) => p.lesson_id) || [])
+  const completedSet = new Set(
+    progressData?.filter((p: any) => p.status === "completed").map((p: any) => p.lesson_id) || []
+  );
 
   // Today's progress (lessons completed today)
-  const today = new Date().toISOString().slice(0, 10)
-  const todayCount = progressData?.filter((p: any) => p.completed_at?.startsWith(today)).length || 0
+  const today = new Date().toISOString().slice(0, 10);
+  const todayCount =
+    progressData?.filter(
+      (p: any) => p.status === "completed" && p.completed_at?.startsWith(today)
+    ).length || 0;
 
-  // Find next lesson to continue (first uncompleted lesson across all enrolled courses)
-  let nextLesson: any = null
-  let nextCourse: any = null
-  for (const uc of (enrolled as any[] || [])) {
-    const course = uc.courses
-    if (!course) continue
-    for (const mod of (course.modules || [])) {
-      for (const lesson of (mod.lessons || [])) {
+  // Find next lesson to continue
+  let nextLesson: any = null;
+  let nextCourse: any = null;
+
+  // 1. Try to find the most recently active lesson
+  const latestProgress = progressData?.[0];
+  if (latestProgress) {
+    const ucMatch = (enrolled || []).find((uc: any) =>
+      uc.courses?.modules?.some((m: any) =>
+        m.lessons.some((l: any) => l.id === latestProgress.lesson_id)
+      )
+    );
+
+    if (ucMatch) {
+      const course = ucMatch.courses;
+      const allLessonsInCourse = course.modules
+        .sort((a: any, b: any) => a.order - b.order)
+        .flatMap((m: any) => m.lessons.sort((a: any, b: any) => a.order - b.order));
+      
+      const currentIdx = allLessonsInCourse.findIndex((l: any) => l.id === latestProgress.lesson_id);
+      
+      if (latestProgress.status === 'started') {
+        // Continue the one we just started
+        nextLesson = allLessonsInCourse[currentIdx];
+        nextCourse = course;
+      } else if (latestProgress.status === 'completed') {
+        // Move to the next one in this course
+        if (currentIdx < allLessonsInCourse.length - 1) {
+          nextLesson = allLessonsInCourse[currentIdx + 1];
+          nextCourse = course;
+        }
+      }
+    }
+  }
+
+  // 2. Fallback to current logic: first uncompleted lesson across all enrolled courses
+  if (!nextLesson) {
+    for (const uc of (enrolled as any[] || [])) {
+      const course = uc.courses;
+      if (!course) continue;
+      
+      const allLessonsInCourse = (course.modules || [])
+        .sort((a: any, b: any) => a.order - b.order)
+        .flatMap((m: any) => (m.lessons || []).sort((a: any, b: any) => a.order - b.order));
+
+      for (const lesson of allLessonsInCourse) {
         if (!completedSet.has(lesson.id) && lesson.video_url) {
           nextLesson = lesson;
           nextCourse = course;
@@ -66,7 +109,6 @@ export default async function DashboardPage() {
       }
       if (nextLesson) break;
     }
-    if (nextLesson) break;
   }
 
   // Reviews

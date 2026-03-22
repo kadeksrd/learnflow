@@ -35,7 +35,7 @@ export async function PATCH(req: NextRequest) {
     const s = await createAdminClient();
 
     // Kita hanya memasukkan 'updateData' yang sudah bersih dari 'course_id'
-    const { data, error } = await s
+    const { data, error } = await (s as any)
       .from("courses")
       .update(updateData)
       .eq("id", id)

@@ -30,7 +30,7 @@ export async function PATCH(req: NextRequest) {
     }
 
     const s = await createAdminClient(); // Admin client untuk bypass RLS
-    const { data, error } = await s
+    const { data, error } = await (s as any)
       .from("courses")
       .update(updateData)
       .eq("id", id)
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const s = await createAdminClient();
 
-    const { data, error } = await s
+    const { data, error } = await (s as any)
       .from("modules")
       .insert(body)
       .select()

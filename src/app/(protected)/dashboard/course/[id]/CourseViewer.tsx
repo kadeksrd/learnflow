@@ -86,6 +86,7 @@ export function CourseViewer({
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [videoReloadKey, setVideoReloadKey] = useState(0);
   const [activeTab, setActiveTab] = useState<"notes" | "resources">("notes");
+  const [showResumeNotice, setShowResumeNotice] = useState(false);
 
   const youtubeOpts = useMemo(() => ({
     width: '100%',
@@ -107,12 +108,16 @@ export function CourseViewer({
       const savedTime = localStorage.getItem(`progress:${activeLessonId}`);
       if (savedTime) {
         const time = parseFloat(savedTime);
-        player.seekTo(time);
-        
-        // Update percentage immediately
-        const duration = player.getDuration();
-        if (duration > 0) {
-          setWatchProgress(Math.round((time / duration) * 100));
+        if (time > 0) {
+          player.seekTo(time);
+          setShowResumeNotice(true);
+          setTimeout(() => setShowResumeNotice(false), 3000);
+          
+          // Update percentage immediately
+          const duration = player.getDuration();
+          if (duration > 0) {
+            setWatchProgress(Math.round((time / duration) * 100));
+          }
         }
       }
     }
@@ -136,7 +141,6 @@ export function CourseViewer({
     let interval: NodeJS.Timeout;
     if (player && activeLessonId) {
       interval = setInterval(() => {
-        // Cek jika sedang PLAYING (1)
         if (player.getPlayerState?.() === 1) {
           saveProgress();
         }
@@ -149,7 +153,6 @@ export function CourseViewer({
     setWatchProgress(0);
   }, [activeLessonId]);
 
-  const useChapters = course.use_chapters !== false;
   const allLessons: Lesson[] = course.modules.flatMap((m) => m.lessons);
   const progress =
     allLessons.length > 0
@@ -188,7 +191,6 @@ export function CourseViewer({
         return next;
       });
 
-      // Check if all lessons are completed after marking the current one
       if (allLessons.every((l) => l.id === activeLessonId || completedIds.has(l.id))) {
         setShowCompleteModal(true);
       }
@@ -201,14 +203,11 @@ export function CourseViewer({
     } finally {
       setSaving(false);
     }
-  }, [activeLessonId, allLessons, completedIds, setShowCompleteModal, saving, autoNext, nextLesson, openLesson]);
+  }, [activeLessonId, allLessons, completedIds, saving, autoNext, nextLesson, openLesson]);
 
-  // ─── Sidebar Content ──────────────────────────────────────────────────────
   const renderSidebarContent = () => (
     <div className={cn("flex flex-col h-full bg-surface overscroll-contain transition-all duration-300", isSidebarCollapsed ? "w-[80px]" : "w-full")}>
-      {/* Fixed Part */}
       <div className={cn("p-6 border-b border-white/[0.07] shrink-0", isSidebarCollapsed && "p-4")}>
-        {/* Logo & Brand & Toggle */}
         <div className={cn("flex items-center justify-between gap-3 mb-8", isSidebarCollapsed && "flex-col mb-6")}>
           {!isSidebarCollapsed && (
             <Link href="/" className="flex items-center gap-3 group/logo truncate">
@@ -262,7 +261,6 @@ export function CourseViewer({
         )}
       </div>
 
-      {/* Scrollable List */}
       <div className={cn("flex-1 overflow-y-auto py-4 px-2 scrollbar-hide hover-scrollbar-show transition-all custom-scrollbar", isSidebarCollapsed && "px-1")}>
         <div className="space-y-1">
           {allLessons.map((l, idx) => {
@@ -324,7 +322,6 @@ export function CourseViewer({
     </div>
   );
 
-  // ─── Main Content ─────────────────────────────────────────────────────────
   const renderMainContent = () => {
     if (!activeLessonId || !activeLesson) {
       return (
@@ -359,20 +356,16 @@ export function CourseViewer({
 
     return (
       <div className="flex flex-col h-full bg-bg overflow-y-auto overscroll-contain custom-scrollbar">
-        {/* Anti-Header Hack */}
         <style jsx global>{`
           nav { display: none !important; }
           header.fixed { display: none !important; }
         `}</style>
 
-        {/* Header Section */}
         <header className="px-6 sm:px-10 py-8">
           <div className="max-w-[1200px] mx-auto">
             <div className="flex items-center justify-between gap-6 pb-2 border-b border-white/[0.03]">
               <div className="flex-1 min-w-0">
-                <MarqueeText 
-                  className="font-syne font-extrabold text-xl sm:text-2xl text-white leading-tight"
-                >
+                <MarqueeText className="font-syne font-extrabold text-xl sm:text-2xl text-white leading-tight">
                   {lesson.title}
                 </MarqueeText>
               </div>
@@ -433,7 +426,6 @@ export function CourseViewer({
           </div>
         </header>
 
-        {/* Video Player */}
         <section className="px-4 sm:px-10 pb-8">
           <div className="max-w-[1200px] mx-auto">
             <div className="relative w-full bg-black aspect-video rounded-[2rem] overflow-hidden shadow-2xl border border-white/[0.05]">
@@ -477,6 +469,15 @@ export function CourseViewer({
                 </div>
               )}
 
+              {showResumeNotice && (
+                <div className="absolute top-6 left-1/2 -translate-x-1/2 z-[60] animate-in fade-in slide-in-from-top-4 duration-500">
+                  <div className="flex items-center gap-2 px-4 py-2 bg-accent/90 backdrop-blur-md border border-white/20 rounded-full shadow-2xl">
+                    <Play size={12} className="text-white fill-white" />
+                    <span className="text-[10px] font-bold text-white tracking-widest uppercase">Video dilanjutkan dari posisi terakhir</span>
+                  </div>
+                </div>
+              )}
+
               {showMuteNotice && (
                 <div className="absolute inset-0 flex items-end justify-center pb-6 sm:pb-10 px-4 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none">
                   <p className="text-white font-extrabold text-lg mb-2 leading-tight">Video dimulai tanpa suara</p>
@@ -495,14 +496,12 @@ export function CourseViewer({
                 </div>
               )}
 
-              {/* Progress Overlay */}
               {player && (
                 <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-white/10 z-[50]">
                   <div
                     className="h-full bg-accent shadow-[0_0_15px_rgba(168,85,247,0.6)] transition-all duration-300 relative"
                     style={{ width: `${watchProgress}%` }}
                   >
-                    {/* Percentage Indicator */}
                     <div className="absolute -top-7 -right-4 flex items-center justify-center px-1.5 py-0.5 bg-accent/90 backdrop-blur-sm text-[10px] font-bold text-white rounded-md shadow-lg border border-white/10 select-none">
                       {Math.round(watchProgress)}%
                     </div>
@@ -513,10 +512,8 @@ export function CourseViewer({
           </div>
         </section>
 
-        {/* Content Tabs & Details */}
         <section className="px-6 sm:px-10 pb-20">
           <div className="max-w-[1200px] mx-auto">
-            {/* Tabs */}
             <div className="flex items-center gap-8 border-b border-white/[0.05] mb-10 overflow-x-auto no-scrollbar">
               {[
                 { id: "notes", label: "Catatan" },
@@ -585,7 +582,6 @@ export function CourseViewer({
                     )}
                   </div>
                 )}
-
               </div>
             </div>
           </div>
@@ -596,7 +592,6 @@ export function CourseViewer({
 
   return (
     <div className="flex flex-col h-screen bg-bg text-white overflow-hidden font-sans">
-      {/* Mobile Top Bar */}
       <div className="lg:hidden h-14 bg-surface border-b border-white/5 flex items-center justify-between px-4 shrink-0 z-50">
         <button
           onClick={() => setMobileOpen(true)}
@@ -607,11 +602,10 @@ export function CourseViewer({
         <span className="font-syne font-bold text-sm truncate flex-1 text-center px-4">
           {activeLesson?.title || course.title}
         </span>
-        <div className="w-10" /> {/* Spacer */}
+        <div className="w-10" />
       </div>
 
       <div className="flex flex-1 overflow-hidden relative">
-        {/* Desktop Sidebar (Left) */}
         <aside className={cn(
           "hidden lg:flex flex-col bg-surface border-r border-white/5 shrink-0 shadow-sm transition-all duration-300 ease-in-out",
           isSidebarCollapsed ? "w-[80px]" : "w-[380px]"
@@ -619,12 +613,10 @@ export function CourseViewer({
           {renderSidebarContent()}
         </aside>
 
-        {/* Shared Main Viewport */}
         <main className="flex-1 flex flex-col min-w-0 h-full relative z-10 bg-bg">
           {renderMainContent()}
         </main>
 
-        {/* Mobile Sidebar Overlay */}
         {mobileOpen && (
           <>
             <div
@@ -644,41 +636,41 @@ export function CourseViewer({
             </div>
           </>
         )}
-      {/* Course Completion Modal */}
-      {showCompleteModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          <div
-            className="absolute inset-0 bg-black/80 backdrop-blur-xl animate-in fade-in duration-500"
-            onClick={() => setShowCompleteModal(false)}
-          />
-          <div className="relative bg-[#1A0A2E] border border-white/10 rounded-[3rem] p-10 max-w-sm w-full text-center shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-300">
-            <div className="w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-[2rem] mx-auto mb-8 flex items-center justify-center shadow-[0_20px_40px_rgba(234,179,8,0.3)] animate-bounce">
-              <Trophy size={48} className="text-white" />
-            </div>
-            <h2 className="font-syne font-extrabold text-3xl mb-3 text-white leading-tight">
-              Selamat! 🎉
-            </h2>
-            <p className="text-text-muted text-sm mb-10 leading-relaxed font-medium">
-              Kamu telah menyelesaikan semua materi di kursus ini. Kamu bisa mengambil sertifikatmu sekarang.
-            </p>
-            <div className="flex flex-col gap-4">
-              <Link
-                href={`/certificate/${course.id}`}
-                className="flex items-center justify-center gap-2 w-full py-5 bg-accent hover:bg-accent-light text-white font-extrabold rounded-[1.5rem] transition-all shadow-xl shadow-accent/20 active:scale-95"
-              >
-                <Award size={20} />
-                Ambil Sertifikat
-              </Link>
-              <button
-                onClick={() => setShowCompleteModal(false)}
-                className="text-text-dim text-xs font-bold hover:text-white transition-colors py-2"
-              >
-                Nanti Saja
-              </button>
+
+        {showCompleteModal && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <div
+              className="absolute inset-0 bg-black/80 backdrop-blur-xl animate-in fade-in duration-500"
+              onClick={() => setShowCompleteModal(false)}
+            />
+            <div className="relative bg-[#1A0A2E] border border-white/10 rounded-[3rem] p-10 max-w-sm w-full text-center shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-300">
+              <div className="w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-[2rem] mx-auto mb-8 flex items-center justify-center shadow-[0_20px_40px_rgba(234,179,8,0.3)] animate-bounce">
+                <Trophy size={48} className="text-white" />
+              </div>
+              <h2 className="font-syne font-extrabold text-3xl mb-3 text-white leading-tight">
+                Selamat! 🎉
+              </h2>
+              <p className="text-text-muted text-sm mb-10 leading-relaxed font-medium">
+                Kamu telah menyelesaikan semua materi di kursus ini. Kamu bisa mengambil sertifikatmu sekarang.
+              </p>
+              <div className="flex flex-col gap-4">
+                <Link
+                  href={`/certificate/${course.id}`}
+                  className="flex items-center justify-center gap-2 w-full py-5 bg-accent hover:bg-accent-light text-white font-extrabold rounded-[1.5rem] transition-all shadow-xl shadow-accent/20 active:scale-95"
+                >
+                  <Award size={20} />
+                  Ambil Sertifikat
+                </Link>
+                <button
+                  onClick={() => setShowCompleteModal(false)}
+                  className="text-text-dim text-xs font-bold hover:text-white transition-colors py-2"
+                >
+                  Nanti Saja
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
       </div>
     </div>
   );

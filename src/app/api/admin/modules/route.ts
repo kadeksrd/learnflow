@@ -3,7 +3,7 @@ import { createClient, createAdminClient } from "@/lib/supabase/server";
 
 // 1. Fungsi Helper untuk Cek Admin
 async function getAdminUser() {
-  const s = createClient(); // Di Next 14, panggil tanpa await (sesuai server.ts kita)
+  const s = await createClient(); // Di Next 14, panggil tanpa await (sesuai server.ts kita)
   const {
     data: { user },
   } = await s.auth.getUser();
@@ -29,7 +29,7 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
-    const s = createAdminClient(); // Admin client untuk bypass RLS
+    const s = await createAdminClient(); // Admin client untuk bypass RLS
     const { data, error } = await s
       .from("courses")
       .update(updateData)
@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const s = createAdminClient();
+    const s = await createAdminClient();
 
     const { data, error } = await s
       .from("modules")

@@ -8,7 +8,7 @@ export default async function EditLandingPage({
 }: {
   params: { productId: string };
 }) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const [{ data: product }, { data: landingPage }] = await Promise.all([
     supabase
       .from("products")

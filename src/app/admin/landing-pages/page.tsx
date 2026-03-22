@@ -5,7 +5,7 @@ import { Plus } from "lucide-react";
 export const dynamic = "force-dynamic";
 
 export default async function AdminLandingPagesPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: pages } = await supabase
     .from("landing_pages")
     .select("*, products(title, thumbnail)")

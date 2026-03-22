@@ -3,7 +3,7 @@ import { createClient, createAdminClient } from "@/lib/supabase/server";
 
 // 1. Helper Admin (Sekarang sudah ada pembukanya)
 async function getAdminUser() {
-  const s = createClient(); // Di Next 14 panggil tanpa await
+  const s = await createClient(); // Di Next 14 panggil tanpa await
   const {
     data: { user },
   } = await s.auth.getUser();
@@ -23,7 +23,7 @@ export async function PATCH(
 
   try {
     const body = await req.json();
-    const s = createAdminClient(); // Bypass RLS
+    const s = await createAdminClient(); // Bypass RLS
 
     const { data, error } = await s
       .from("modules")
@@ -48,7 +48,7 @@ export async function DELETE(
   const admin = await getAdminUser();
   if (!admin) return unauthorized();
 
-  const s = createAdminClient();
+  const s = await createAdminClient();
   const { error } = await s.from("modules").delete().eq("id", params.id);
 
   if (error)

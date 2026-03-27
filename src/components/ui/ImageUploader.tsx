@@ -143,7 +143,7 @@ export function ImageUploader({
           ASPECT_CLASSES[aspect],
           dragging
             ? "border-accent bg-accent/10 scale-[0.99]"
-            : "border-white/[0.08]",
+            : "border-slate-200",
           !value && "bg-surface cursor-pointer",
           value && "cursor-default",
         )}
@@ -175,7 +175,7 @@ export function ImageUploader({
                   e.stopPropagation();
                   fileRef.current?.click();
                 }}
-                className="flex items-center gap-1.5 px-3 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl text-white text-xs font-semibold transition-all"
+                className="flex items-center gap-1.5 px-3 py-2 bg-slate-200 hover:bg-slate-200 backdrop-blur-sm rounded-xl text-white text-xs font-semibold transition-all"
               >
                 <Upload size={13} /> Ganti
               </button>
@@ -185,7 +185,7 @@ export function ImageUploader({
                   e.stopPropagation();
                   setShowUrlInput((p) => !p);
                 }}
-                className="flex items-center gap-1.5 px-3 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl text-white text-xs font-semibold transition-all"
+                className="flex items-center gap-1.5 px-3 py-2 bg-slate-200 hover:bg-slate-200 backdrop-blur-sm rounded-xl text-white text-xs font-semibold transition-all"
               >
                 <Link size={13} /> URL
               </button>
@@ -227,7 +227,7 @@ export function ImageUploader({
                     "rounded-2xl flex items-center justify-center transition-all",
                     dragging
                       ? "w-16 h-16 bg-accent/20"
-                      : "w-14 h-14 bg-white/5",
+                      : "w-14 h-14 bg-slate-50",
                   )}
                 >
                   {dragging ? (
@@ -256,7 +256,7 @@ export function ImageUploader({
                       e.stopPropagation();
                       setShowUrlInput((p) => !p);
                     }}
-                    className="px-3 py-1.5 bg-white/5 border border-white/[0.07] rounded-lg text-xs text-text-muted hover:text-[#EEEEFF] font-semibold transition-all"
+                    className="px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-text-muted hover:text-text font-semibold transition-all"
                   >
                     Dari URL
                   </button>
@@ -269,7 +269,7 @@ export function ImageUploader({
 
       {/* URL input panel */}
       {showUrlInput && (
-        <div className="mt-2 p-3 bg-surface border border-white/[0.07] rounded-xl flex gap-2">
+        <div className="mt-2 p-3 bg-surface border border-slate-200 rounded-xl flex gap-2">
           <input
             type="url"
             placeholder="https://example.com/image.jpg"
@@ -277,7 +277,7 @@ export function ImageUploader({
             onChange={(e) => setUrlInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleUrlSubmit()}
             autoFocus
-            className="flex-1 bg-transparent text-sm text-[#EEEEFF] placeholder:text-text-dim outline-none"
+            className="flex-1 bg-transparent text-sm text-text placeholder:text-text-dim outline-none"
           />
           <button
             type="button"
@@ -292,7 +292,7 @@ export function ImageUploader({
               setShowUrlInput(false);
               setUrlInput("");
             }}
-            className="px-2 text-text-muted hover:text-[#EEEEFF] transition-colors"
+            className="px-2 text-text-muted hover:text-text transition-colors"
           >
             <X size={14} />
           </button>

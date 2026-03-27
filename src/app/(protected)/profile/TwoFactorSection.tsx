@@ -128,7 +128,7 @@ export function TwoFactorSection() {
           
           <div className="space-y-2">
             {activeFactors.map(factor => (
-              <div key={factor.id} className="flex items-center justify-between p-4 bg-surface/50 border border-white/[0.05] rounded-xl">
+              <div key={factor.id} className="flex items-center justify-between p-4 bg-surface/50 border border-slate-200 rounded-xl">
                 <div className="flex items-center gap-3">
                   <Key size={16} className="text-text-muted" />
                   <div>
@@ -144,8 +144,8 @@ export function TwoFactorSection() {
           </div>
         </div>
       ) : !isEnrolling ? (
-        <div className="flex flex-col items-center justify-center p-8 border-2 border-dashed border-white/[0.1] rounded-3xl text-center space-y-4">
-          <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center">
+        <div className="flex flex-col items-center justify-center p-8 border-2 border-dashed border-slate-300 rounded-3xl text-center space-y-4">
+          <div className="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center">
              <ShieldAlert size={32} className="text-text-dim" />
           </div>
           <div>

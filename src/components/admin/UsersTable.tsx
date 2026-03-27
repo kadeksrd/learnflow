@@ -107,10 +107,10 @@ export function UsersTable({ initialUsers }: { initialUsers: User[] }) {
       {/* Mobile list */}
       <div className="sm:hidden space-y-3">
         {filteredUsers.map(user => (
-          <div key={user.id} className="bg-card border border-white/[0.07] rounded-xl p-4">
+          <div key={user.id} className="bg-card border border-slate-200 rounded-xl p-4">
             <div className="flex items-start justify-between mb-3">
               <div className="min-w-0">
-                <div className="font-bold text-[#EEEEFF] truncate">
+                <div className="font-bold text-text truncate">
                   {user.user_metadata?.full_name || 'No Name'}
                 </div>
                 {editingEmail?.id === user.id ? (
@@ -121,10 +121,10 @@ export function UsersTable({ initialUsers }: { initialUsers: User[] }) {
                       onChange={(e) => setEditingEmail({ ...editingEmail, email: e.target.value })}
                       autoFocus
                     />
-                    <button onClick={handleUpdateEmail} className="text-accent-light hover:text-white transition-colors">
+                    <button onClick={handleUpdateEmail} className="text-accent-light hover:text-accent transition-colors">
                       <ShieldCheck size={12} />
                     </button>
-                    <button onClick={() => setEditingEmail(null)} className="text-text-dim hover:text-white transition-colors">
+                    <button onClick={() => setEditingEmail(null)} className="text-text-dim hover:text-accent transition-colors">
                       <Trash2 size={12} />
                     </button>
                   </div>
@@ -139,16 +139,16 @@ export function UsersTable({ initialUsers }: { initialUsers: User[] }) {
               </div>
               <span className={cn(
                 "px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider shrink-0",
-                user.user_metadata?.role === 'admin' ? "bg-cta/20 text-cta" : "bg-white/5 text-text-muted"
+                user.user_metadata?.role === 'admin' ? "bg-cta/20 text-cta" : "bg-slate-50 text-text-muted"
               )}>
                 {user.user_metadata?.role || 'user'}
               </span>
             </div>
             
-            <div className="flex items-center justify-between pt-3 border-t border-white/[0.05]">
+            <div className="flex items-center justify-between pt-3 border-t border-slate-200">
               <div className="flex items-center gap-2">
                 <select 
-                  className="bg-surface border border-white/[0.1] rounded-lg text-xs px-2 py-1 outline-none"
+                  className="bg-surface border border-slate-300 rounded-lg text-xs px-2 py-1 outline-none"
                   value={user.user_metadata?.role || 'user'}
                   onChange={(e) => handleUpdateRole(user.id, e.target.value)}
                   disabled={!!loading}
@@ -172,7 +172,7 @@ export function UsersTable({ initialUsers }: { initialUsers: User[] }) {
       </div>
 
       {/* Desktop table */}
-      <div className="hidden sm:block bg-card border border-white/[0.07] rounded-2xl overflow-hidden">
+      <div className="hidden sm:block bg-card border border-slate-200 rounded-2xl overflow-hidden">
         <div className="grid grid-cols-[2fr_1fr_1.5fr_100px] gap-4 px-5 py-3 bg-surface text-xs font-bold text-text-muted uppercase tracking-wider">
           <span>User</span>
           <span>Role</span>
@@ -184,7 +184,7 @@ export function UsersTable({ initialUsers }: { initialUsers: User[] }) {
           {filteredUsers.map(user => (
             <div key={user.id} className="grid grid-cols-[2fr_1fr_1.5fr_100px] gap-4 px-5 py-4 items-center hover:bg-card-hover transition-colors">
               <div className="min-w-0">
-                <div className="font-semibold text-sm text-[#EEEEFF] truncate">
+                <div className="font-semibold text-sm text-text truncate">
                   {user.user_metadata?.full_name || 'No Name'}
                 </div>
                 {editingEmail?.id === user.id ? (
@@ -195,10 +195,10 @@ export function UsersTable({ initialUsers }: { initialUsers: User[] }) {
                       onChange={(e) => setEditingEmail({ ...editingEmail, email: e.target.value })}
                       autoFocus
                     />
-                    <button onClick={handleUpdateEmail} className="text-accent-light hover:text-white transition-colors">
+                    <button onClick={handleUpdateEmail} className="text-accent-light hover:text-accent transition-colors">
                       <ShieldCheck size={14} />
                     </button>
-                    <button onClick={() => setEditingEmail(null)} className="text-text-dim hover:text-white transition-colors">
+                    <button onClick={() => setEditingEmail(null)} className="text-text-dim hover:text-accent transition-colors">
                       <Trash2 size={14} />
                     </button>
                   </div>
@@ -215,7 +215,7 @@ export function UsersTable({ initialUsers }: { initialUsers: User[] }) {
               <div>
                 <select 
                   className={cn(
-                    "bg-surface border border-white/[0.1] rounded-lg text-xs px-3 py-1.5 outline-none transition-all focus:border-accent/50",
+                    "bg-surface border border-slate-300 rounded-lg text-xs px-3 py-1.5 outline-none transition-all focus:border-accent/50",
                     user.user_metadata?.role === 'admin' ? "text-cta font-bold" : "text-text-muted"
                   )}
                   value={user.user_metadata?.role || 'user'}

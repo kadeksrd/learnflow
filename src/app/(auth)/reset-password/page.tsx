@@ -31,7 +31,7 @@ export default function ResetPasswordPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-card border border-white/[0.08] rounded-3xl p-8 shadow-2xl shadow-black/30">
+        <div className="bg-card border border-slate-200 rounded-3xl p-8 shadow-2xl shadow-slate-200/50">
           <ResetPasswordForm />
         </div>
       </div>

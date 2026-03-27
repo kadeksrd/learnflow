@@ -55,7 +55,7 @@ export function CertificatePage({
                 url: window.location.href,
               })
             }
-            className="flex items-center gap-2 px-4 py-2.5 bg-card border border-white/[0.07] rounded-xl text-sm text-text-muted hover:text-[#EEEEFF] transition-all"
+            className="flex items-center gap-2 px-4 py-2.5 bg-card border border-slate-200 rounded-xl text-sm text-text-muted hover:text-text transition-all"
           >
             <Share2 size={15} /> Bagikan
           </button>

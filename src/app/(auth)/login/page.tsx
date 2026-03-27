@@ -36,21 +36,21 @@ export default function LoginPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-card border border-white/[0.08] rounded-3xl p-8 shadow-2xl shadow-black/30">
+        <div className="bg-card border border-slate-200 rounded-3xl p-8 shadow-2xl shadow-slate-200/50">
           {/* OAuth Buttons */}
           <OAuthButtons redirectTo="/dashboard" mode="login" />
 
           {/* Divider */}
           <div className="flex items-center gap-3 my-6">
-            <div className="flex-1 h-px bg-white/[0.08]" />
+            <div className="flex-1 h-px bg-slate-200" />
             <span className="text-xs text-text-dim font-medium px-2">
               atau dengan email
             </span>
-            <div className="flex-1 h-px bg-white/[0.08]" />
+            <div className="flex-1 h-px bg-slate-200" />
           </div>
 
           {/* Email form */}
-          <Suspense fallback={<div className="h-40 animate-pulse bg-white/5 rounded-xl border border-white/10" />}>
+          <Suspense fallback={<div className="h-40 animate-pulse bg-slate-50 rounded-xl border border-slate-200" />}>
             <LoginForm />
           </Suspense>
           {/* Forgot password */}

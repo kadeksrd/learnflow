@@ -11,7 +11,7 @@ export function ProfileHeader({ user }: { user: User }) {
   })
 
   return (
-    <div className="flex flex-col sm:flex-row items-center gap-6 p-6 bg-card border border-white/[0.07] rounded-3xl relative overflow-hidden">
+    <div className="flex flex-col sm:flex-row items-center gap-6 p-6 bg-card border border-slate-200 rounded-3xl relative overflow-hidden">
       {/* Glow */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-accent/10 rounded-full blur-3xl -z-10" />
       

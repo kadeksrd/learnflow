@@ -7,8 +7,9 @@ import { ArrowLeft } from "lucide-react";
 export default async function CourseBuilderPage({
   params,
 }: {
-  params: { courseId: string };
+  params: Promise<{ courseId: string }>;
 }) {
+  const { courseId } = await params;
   const supabase = await createClient();
   const { data: course } = (await supabase
     .from("courses")
@@ -22,7 +23,7 @@ export default async function CourseBuilderPage({
       )
     `,
     )
-    .eq("id", params.courseId)
+    .eq("id", courseId)
     .single()) as any;
 
   if (!course) notFound();
@@ -45,7 +46,7 @@ export default async function CourseBuilderPage({
       <div className="mb-6">
         <Link
           href="/admin/courses"
-          className="flex items-center gap-1.5 text-sm text-text-muted hover:text-[#EEEEFF] transition-colors w-fit mb-4"
+          className="flex items-center gap-1.5 text-sm text-text-muted hover:text-text transition-colors w-fit mb-4"
         >
           <ArrowLeft size={14} /> Kembali ke Daftar Kursus
         </Link>

@@ -55,15 +55,15 @@ export function TrackingEditor({ initialSettings }: { initialSettings: any }) {
         <div className="font-semibold text-sm">{label}</div>
         {sub && <div className="text-text-muted text-xs mt-0.5">{sub}</div>}
       </div>
-      <div onClick={onChange} className={`w-10 h-6 rounded-full relative cursor-pointer transition-colors ${value ? 'bg-green-500' : 'bg-surface border border-white/20'}`}>
+      <div onClick={onChange} className={`w-10 h-6 rounded-full relative cursor-pointer transition-colors ${value ? 'bg-green-500' : 'bg-surface border border-slate-300'}`}>
         <div className={`absolute top-0.5 w-5 h-5 rounded-full bg-white transition-all ${value ? 'left-4' : 'left-0.5'}`} />
       </div>
     </div>
   )
 
   const Section = ({ icon, title, color, children }: any) => (
-    <div className="bg-card border border-white/[0.07] rounded-2xl overflow-hidden">
-      <div className={`flex items-center gap-3 px-5 py-4 border-b border-white/[0.07]`} style={{ background: `${color}08` }}>
+    <div className="bg-card border border-slate-200 rounded-2xl overflow-hidden">
+      <div className={`flex items-center gap-3 px-5 py-4 border-b border-slate-200`} style={{ background: `${color}08` }}>
         <span className="text-2xl">{icon}</span>
         <h2 className="font-syne font-bold text-base">{title}</h2>
       </div>
@@ -80,7 +80,7 @@ export function TrackingEditor({ initialSettings }: { initialSettings: any }) {
       <div className="p-4 bg-accent/5 border border-accent/20 rounded-xl flex items-start gap-3">
         <Zap size={16} className="text-accent-light shrink-0 mt-0.5" />
         <div className="text-sm text-text-muted">
-          <span className="text-accent-light font-semibold">Rekomendasi:</span> Gunakan <strong className="text-[#EEEEFF]">Google Tag Manager (GTM)</strong> sebagai pusat — lalu pasang FB Pixel, TikTok Pixel, dan GA4 dari dalam GTM. Lebih fleksibel dan tidak perlu deploy ulang setiap ganti tracking.
+          <span className="text-accent-light font-semibold">Rekomendasi:</span> Gunakan <strong className="text-text">Google Tag Manager (GTM)</strong> sebagai pusat — lalu pasang FB Pixel, TikTok Pixel, dan GA4 dari dalam GTM. Lebih fleksibel dan tidak perlu deploy ulang setiap ganti tracking.
         </div>
       </div>
 
@@ -94,7 +94,7 @@ export function TrackingEditor({ initialSettings }: { initialSettings: any }) {
             value={s.gtm_id} onChange={e => set('gtm_id', e.target.value)}
             hint="Format: GTM-XXXXXXX — bisa ditemukan di tagmanager.google.com" />
           <a href={PLATFORM_DOCS.gtm} target="_blank" rel="noopener noreferrer"
-            className="mb-0.5 flex items-center gap-1.5 px-3 py-2.5 bg-surface border border-white/[0.07] rounded-xl text-xs text-text-muted hover:text-[#EEEEFF] transition-all shrink-0">
+            className="mb-0.5 flex items-center gap-1.5 px-3 py-2.5 bg-surface border border-slate-200 rounded-xl text-xs text-text-muted hover:text-text transition-all shrink-0">
             <ExternalLink size={12}/> Dashboard
           </a>
         </div>
@@ -115,7 +115,7 @@ export function TrackingEditor({ initialSettings }: { initialSettings: any }) {
             value={s.ga4_id} onChange={e => set('ga4_id', e.target.value)}
             hint="Format: G-XXXXXXXXXX — dari Google Analytics → Admin → Data Streams" />
           <a href={PLATFORM_DOCS.ga4} target="_blank" rel="noopener noreferrer"
-            className="mb-0.5 flex items-center gap-1.5 px-3 py-2.5 bg-surface border border-white/[0.07] rounded-xl text-xs text-text-muted hover:text-[#EEEEFF] transition-all shrink-0">
+            className="mb-0.5 flex items-center gap-1.5 px-3 py-2.5 bg-surface border border-slate-200 rounded-xl text-xs text-text-muted hover:text-text transition-all shrink-0">
             <ExternalLink size={12}/> Analytics
           </a>
         </div>
@@ -134,7 +134,7 @@ export function TrackingEditor({ initialSettings }: { initialSettings: any }) {
                 value={s.facebook_pixel_id} onChange={e => set('facebook_pixel_id', e.target.value)}
                 hint="Temukan di Events Manager → Data Sources" />
               <a href={PLATFORM_DOCS.facebook} target="_blank" rel="noopener noreferrer"
-                className="mb-0.5 flex items-center gap-1.5 px-3 py-2.5 bg-surface border border-white/[0.07] rounded-xl text-xs text-text-muted hover:text-[#EEEEFF] transition-all shrink-0">
+                className="mb-0.5 flex items-center gap-1.5 px-3 py-2.5 bg-surface border border-slate-200 rounded-xl text-xs text-text-muted hover:text-text transition-all shrink-0">
                 <ExternalLink size={12}/> Events Manager
               </a>
             </div>
@@ -159,7 +159,7 @@ export function TrackingEditor({ initialSettings }: { initialSettings: any }) {
                 value={s.tiktok_pixel_id} onChange={e => set('tiktok_pixel_id', e.target.value)}
                 hint="Temukan di TikTok Ads Manager → Library → Events" />
               <a href={PLATFORM_DOCS.tiktok} target="_blank" rel="noopener noreferrer"
-                className="mb-0.5 flex items-center gap-1.5 px-3 py-2.5 bg-surface border border-white/[0.07] rounded-xl text-xs text-text-muted hover:text-[#EEEEFF] transition-all shrink-0">
+                className="mb-0.5 flex items-center gap-1.5 px-3 py-2.5 bg-surface border border-slate-200 rounded-xl text-xs text-text-muted hover:text-text transition-all shrink-0">
                 <ExternalLink size={12}/> Events Manager
               </a>
             </div>
@@ -182,7 +182,7 @@ export function TrackingEditor({ initialSettings }: { initialSettings: any }) {
             <Input label="Snapchat Pixel ID" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
               value={s.snapchat_pixel_id} onChange={e => set('snapchat_pixel_id', e.target.value)} />
             <a href={PLATFORM_DOCS.snapchat} target="_blank" rel="noopener noreferrer"
-              className="mb-0.5 flex items-center gap-1.5 px-3 py-2.5 bg-surface border border-white/[0.07] rounded-xl text-xs text-text-muted hover:text-[#EEEEFF] transition-all shrink-0">
+              className="mb-0.5 flex items-center gap-1.5 px-3 py-2.5 bg-surface border border-slate-200 rounded-xl text-xs text-text-muted hover:text-text transition-all shrink-0">
               <ExternalLink size={12}/> Snap Ads
             </a>
           </div>
@@ -199,7 +199,7 @@ export function TrackingEditor({ initialSettings }: { initialSettings: any }) {
             <Code size={11} className="inline mr-1" />Skrip di &lt;head&gt; (setelah semua tag lain)
           </label>
           <textarea rows={4}
-            className="w-full px-4 py-3 bg-surface border border-white/[0.07] rounded-xl text-[#EEEEFF] text-xs font-mono outline-none focus:border-accent resize-none"
+            className="w-full px-4 py-3 bg-surface border border-slate-200 rounded-xl text-text text-xs font-mono outline-none focus:border-accent resize-none"
             placeholder={'// Contoh: Hotjar\n(function(h,o,t,j,a,r){ h.hj = h.hj || function()... })();'}
             value={s.head_scripts}
             onChange={e => set('head_scripts', e.target.value)} />
@@ -209,7 +209,7 @@ export function TrackingEditor({ initialSettings }: { initialSettings: any }) {
             <Code size={11} className="inline mr-1" />Skrip tambahan (body)
           </label>
           <textarea rows={3}
-            className="w-full px-4 py-3 bg-surface border border-white/[0.07] rounded-xl text-[#EEEEFF] text-xs font-mono outline-none focus:border-accent resize-none"
+            className="w-full px-4 py-3 bg-surface border border-slate-200 rounded-xl text-text text-xs font-mono outline-none focus:border-accent resize-none"
             placeholder="// Skrip tambahan di body..."
             value={s.body_scripts}
             onChange={e => set('body_scripts', e.target.value)} />
@@ -217,7 +217,7 @@ export function TrackingEditor({ initialSettings }: { initialSettings: any }) {
       </Section>
 
       {/* Status summary */}
-      <div className="bg-card border border-white/[0.07] rounded-2xl p-5">
+      <div className="bg-card border border-slate-200 rounded-2xl p-5">
         <h2 className="font-syne font-bold text-base mb-4">Status Tracking</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
@@ -226,7 +226,7 @@ export function TrackingEditor({ initialSettings }: { initialSettings: any }) {
             { label: 'Facebook', active: s.facebook_pixel_enabled && !!s.facebook_pixel_id, icon: '📘' },
             { label: 'TikTok',   active: s.tiktok_pixel_enabled   && !!s.tiktok_pixel_id,   icon: '🎵' },
           ].map(({ label, active, icon }) => (
-            <div key={label} className={`flex items-center gap-2.5 p-3 rounded-xl border ${active ? 'bg-green-500/5 border-green-500/20' : 'bg-surface border-white/[0.06]'}`}>
+            <div key={label} className={`flex items-center gap-2.5 p-3 rounded-xl border ${active ? 'bg-green-500/5 border-green-500/20' : 'bg-surface border-slate-200'}`}>
               <span className="text-lg">{icon}</span>
               <div>
                 <div className="font-semibold text-xs">{label}</div>

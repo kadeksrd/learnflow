@@ -1,6 +1,6 @@
 # 🚀 LearnFlow — Panduan Instalasi Lengkap
 
-Platform kursus online full-stack: Next.js 14 + Supabase + Payment Gateway
+Platform kursus online full-stack: Next.js 15 + Supabase + Payment Gateway
 
 ---
 

@@ -1,58 +1,47 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient, createAdminClient } from "@/lib/supabase/server";
+import {
+  getAdminUser,
+  unauthorized,
+  dbError,
+  createAdminClient,
+} from "@/lib/api-helpers";
 
-// 1. Helper Admin (Sekarang sudah ada pembukanya)
-async function getAdminUser() {
-  const s = createClient(); // Di Next 14 panggil tanpa await
-  const {
-    data: { user },
-  } = await s.auth.getUser();
-  return user?.user_metadata?.role === "admin" ? user : null;
-}
-
-const unauthorized = () =>
-  NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-
-// 2. Handler PATCH (Update Module)
+// Handler PATCH (Update Module)
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const admin = await getAdminUser();
-  if (!admin) return unauthorized();
+  const { id } = await params;
+  if (!(await getAdminUser())) return unauthorized();
 
   try {
     const body = await req.json();
-    const s = createAdminClient(); // Bypass RLS
+    const s = await createAdminClient();
 
-    const { data, error } = await s
-      .from("modules")
+    const { data, error } = await (s.from("modules") as any)
       .update(body)
-      .eq("id", params.id)
+      .eq("id", id)
       .select()
       .single();
 
-    if (error)
-      return NextResponse.json({ message: error.message }, { status: 500 });
+    if (error) return dbError(error);
     return NextResponse.json(data);
   } catch (err) {
     return NextResponse.json({ message: "Invalid JSON" }, { status: 400 });
   }
 }
 
-// 3. Handler DELETE (Hapus Module)
+// Handler DELETE (Hapus Module)
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const admin = await getAdminUser();
-  if (!admin) return unauthorized();
+  const { id } = await params;
+  if (!(await getAdminUser())) return unauthorized();
 
-  const s = createAdminClient();
-  const { error } = await s.from("modules").delete().eq("id", params.id);
+  const s = await createAdminClient();
+  const { error } = await s.from("modules").delete().eq("id", id);
 
-  if (error)
-    return NextResponse.json({ message: error.message }, { status: 500 });
-
+  if (error) return dbError(error);
   return NextResponse.json({ message: "Deleted" });
 }

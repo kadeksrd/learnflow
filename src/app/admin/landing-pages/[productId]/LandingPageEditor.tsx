@@ -18,25 +18,25 @@ const SECTIONS = [
 type SectionId = typeof SECTIONS[number]['id']
 
 const Toggle = ({ value, onChange, label, sub }: any) => (
-  <div className="flex items-center justify-between p-4 bg-surface border border-white/[0.06] rounded-xl">
+  <div className="flex items-center justify-between p-4 bg-surface border border-slate-200 rounded-xl">
     <div>
       <div className="font-semibold text-sm">{label}</div>
       {sub && <div className="text-text-muted text-xs mt-0.5">{sub}</div>}
     </div>
-    <div onClick={onChange} className={`w-11 h-6 rounded-full relative cursor-pointer transition-colors ${value ? 'bg-green-500' : 'bg-card border border-white/20'}`}>
+    <div onClick={onChange} className={`w-11 h-6 rounded-full relative cursor-pointer transition-colors ${value ? 'bg-green-500' : 'bg-card border border-slate-300'}`}>
       <div className={`absolute top-0.5 w-5 h-5 rounded-full bg-white transition-all ${value ? 'left-5' : 'left-0.5'}`} />
     </div>
   </div>
 )
 
 const PixelCard = ({ icon, title, color, docUrl, docLabel, children }: any) => (
-  <div className="bg-card border border-white/[0.07] rounded-2xl overflow-hidden">
-    <div className="flex items-center gap-3 px-5 py-4 border-b border-white/[0.07]" style={{ background: `${color}08` }}>
+  <div className="bg-card border border-slate-200 rounded-2xl overflow-hidden">
+    <div className="flex items-center gap-3 px-5 py-4 border-b border-slate-200" style={{ background: `${color}08` }}>
       <span className="text-2xl">{icon}</span>
       <h2 className="font-syne font-bold text-base">{title}</h2>
       {docUrl && (
         <a href={docUrl} target="_blank" rel="noopener noreferrer"
-          className="ml-auto flex items-center gap-1.5 text-xs text-text-muted hover:text-[#EEEEFF] transition-colors">
+          className="ml-auto flex items-center gap-1.5 text-xs text-text-muted hover:text-text transition-colors">
           <ExternalLink size={11} /> {docLabel}
         </a>
       )}
@@ -108,7 +108,7 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
     <div className="space-y-6 max-w-3xl">
       {/* Top bar */}
       <div className="flex items-center justify-between py-1">
-        <button onClick={() => router.push('/admin/products')} className="flex items-center gap-1.5 text-sm text-text-muted hover:text-[#EEEEFF] transition-colors">
+        <button onClick={() => router.push('/admin/products')} className="flex items-center gap-1.5 text-sm text-text-muted hover:text-text transition-colors">
           <ArrowLeft size={14} /> Kembali ke Products
         </button>
         {!isNew && form.slug && (
@@ -128,10 +128,10 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
 
       {/* Section tabs */}
       <div className="overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
-        <div className="flex gap-1 min-w-max bg-surface p-1 rounded-2xl border border-white/[0.06]">
+        <div className="flex gap-1 min-w-max bg-surface p-1 rounded-2xl border border-slate-200">
           {SECTIONS.map(s => (
             <button key={s.id} onClick={() => setSection(s.id)}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap ${section === s.id ? 'bg-card text-[#EEEEFF] shadow-sm' : 'text-text-muted hover:text-[#EEEEFF]'}`}>
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap ${section === s.id ? 'bg-card text-text shadow-sm' : 'text-text-muted hover:text-text'}`}>
               <span>{s.icon}</span> {s.label}
             </button>
           ))}
@@ -140,7 +140,7 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
 
       {/* ─── BASIC ─── */}
       {section === 'basic' && (
-        <div className="bg-card border border-white/[0.07] rounded-2xl p-6 space-y-5">
+        <div className="bg-card border border-slate-200 rounded-2xl p-6 space-y-5">
           <h2 className="font-syne font-bold text-base">📝 Teks & Copy Halaman</h2>
           <Input label="Slug URL *" placeholder="tiktok-viral-mastery"
             hint={`URL halaman: /course/${form.slug || '[slug]'}`}
@@ -149,7 +149,7 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
             value={form.headline} onChange={e => setF('headline', e.target.value)} />
           <div>
             <label className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Sub-headline</label>
-            <textarea className="w-full px-4 py-3 bg-surface border border-white/[0.07] rounded-xl text-[#EEEEFF] text-sm outline-none focus:border-accent resize-none"
+            <textarea className="w-full px-4 py-3 bg-surface border border-slate-200 rounded-xl text-text text-sm outline-none focus:border-accent resize-none"
               rows={3} value={form.subheadline} onChange={e => setF('subheadline', e.target.value)} placeholder="Deskripsi lebih detail..." />
           </div>
           <div className="grid sm:grid-cols-2 gap-4">
@@ -158,7 +158,7 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
               <label className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Warna Tema</label>
               <div className="flex items-center gap-2">
                 <input type="color" value={form.theme_color} onChange={e => setF('theme_color', e.target.value)}
-                  className="w-10 h-10 rounded-xl border border-white/[0.07] bg-surface cursor-pointer p-0.5" />
+                  className="w-10 h-10 rounded-xl border border-slate-200 bg-surface cursor-pointer p-0.5" />
                 <Input value={form.theme_color} onChange={e => setF('theme_color', e.target.value)} className="flex-1" />
               </div>
             </div>
@@ -168,7 +168,7 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
 
       {/* ─── MEDIA ─── */}
       {section === 'media' && (
-        <div className="bg-card border border-white/[0.07] rounded-2xl p-6 space-y-6">
+        <div className="bg-card border border-slate-200 rounded-2xl p-6 space-y-6">
           <h2 className="font-syne font-bold text-base">🖼️ Gambar & Video</h2>
           <ImageUploader label="Gambar Hero (opsional)"
             value={form.hero_image} onChange={url => setF('hero_image', url)}
@@ -182,7 +182,7 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
 
       {/* ─── BENEFITS ─── */}
       {section === 'benefits' && (
-        <div className="bg-card border border-white/[0.07] rounded-2xl p-6">
+        <div className="bg-card border border-slate-200 rounded-2xl p-6">
           <div className="flex items-center justify-between mb-5">
             <div>
               <h2 className="font-syne font-bold text-base">✅ Benefits</h2>
@@ -196,14 +196,14 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
           <div className="space-y-3">
             {benefits.map((b, i) => (
               <div key={i} className="flex gap-3 items-start p-4 bg-surface rounded-xl">
-                <input className="w-12 h-10 text-center text-xl bg-card border border-white/[0.07] rounded-lg outline-none focus:border-accent"
+                <input className="w-12 h-10 text-center text-xl bg-card border border-slate-200 rounded-lg outline-none focus:border-accent"
                   placeholder="🎯" value={b.icon} maxLength={2}
                   onChange={e => setBenefits(p => p.map((x, j) => j===i ? {...x, icon: e.target.value} : x))} />
                 <div className="flex-1 space-y-2">
-                  <input className="w-full px-3 py-2.5 bg-card border border-white/[0.07] rounded-xl text-sm text-[#EEEEFF] outline-none focus:border-accent"
+                  <input className="w-full px-3 py-2.5 bg-card border border-slate-200 rounded-xl text-sm text-text outline-none focus:border-accent"
                     placeholder="Judul benefit" value={b.title}
                     onChange={e => setBenefits(p => p.map((x, j) => j===i ? {...x, title: e.target.value} : x))} />
-                  <input className="w-full px-3 py-2.5 bg-card border border-white/[0.07] rounded-xl text-sm text-[#EEEEFF] outline-none focus:border-accent"
+                  <input className="w-full px-3 py-2.5 bg-card border border-slate-200 rounded-xl text-sm text-text outline-none focus:border-accent"
                     placeholder="Deskripsi singkat" value={b.description}
                     onChange={e => setBenefits(p => p.map((x, j) => j===i ? {...x, description: e.target.value} : x))} />
                 </div>
@@ -217,7 +217,7 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
 
       {/* ─── TESTIMONIALS ─── */}
       {section === 'testimonials' && (
-        <div className="bg-card border border-white/[0.07] rounded-2xl p-6">
+        <div className="bg-card border border-slate-200 rounded-2xl p-6">
           <div className="flex items-center justify-between mb-5">
             <div>
               <h2 className="font-syne font-bold text-base">💬 Testimonials</h2>
@@ -245,10 +245,10 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
                       ))}
                     </div>
                     <div className="grid sm:grid-cols-2 gap-3">
-                      <input className="px-3 py-2.5 bg-card border border-white/[0.07] rounded-xl text-sm text-[#EEEEFF] outline-none focus:border-accent"
+                      <input className="px-3 py-2.5 bg-card border border-slate-200 rounded-xl text-sm text-text outline-none focus:border-accent"
                         placeholder="Nama lengkap" value={t.name}
                         onChange={e => setTestimonials(p => p.map((x, j) => j===i ? {...x, name: e.target.value} : x))} />
-                      <input className="px-3 py-2.5 bg-card border border-white/[0.07] rounded-xl text-sm text-[#EEEEFF] outline-none focus:border-accent"
+                      <input className="px-3 py-2.5 bg-card border border-slate-200 rounded-xl text-sm text-text outline-none focus:border-accent"
                         placeholder="Jabatan / Role" value={t.role}
                         onChange={e => setTestimonials(p => p.map((x, j) => j===i ? {...x, role: e.target.value} : x))} />
                     </div>
@@ -256,7 +256,7 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
                   <button onClick={() => setTestimonials(p => p.filter((_, j) => j!==i))}
                     className="text-text-dim hover:text-red-400 p-1 shrink-0"><Trash2 size={16}/></button>
                 </div>
-                <textarea className="w-full px-4 py-3 bg-card border border-white/[0.07] rounded-xl text-sm text-[#EEEEFF] outline-none focus:border-accent resize-none"
+                <textarea className="w-full px-4 py-3 bg-card border border-slate-200 rounded-xl text-sm text-text outline-none focus:border-accent resize-none"
                   rows={2} placeholder="Kalimat testimoni..." value={t.text}
                   onChange={e => setTestimonials(p => p.map((x, j) => j===i ? {...x, text: e.target.value} : x))} />
               </div>
@@ -269,7 +269,7 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
       {section === 'seo' && (
         <div className="space-y-5">
           {/* Primary SEO */}
-          <div className="bg-card border border-white/[0.07] rounded-2xl p-6 space-y-4">
+          <div className="bg-card border border-slate-200 rounded-2xl p-6 space-y-4">
             <div className="flex items-center gap-2">
               <Search size={16} className="text-accent-light" />
               <h2 className="font-syne font-bold text-base">SEO — Hasil Pencarian Google</h2>
@@ -285,7 +285,7 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
             <div>
               <label className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">SEO Description (maks 160 karakter)</label>
               <textarea rows={3}
-                className="w-full px-4 py-3 bg-surface border border-white/[0.07] rounded-xl text-[#EEEEFF] text-sm outline-none focus:border-accent resize-none"
+                className="w-full px-4 py-3 bg-surface border border-slate-200 rounded-xl text-text text-sm outline-none focus:border-accent resize-none"
                 placeholder={form.subheadline || 'Deskripsi untuk Google Search (1-2 kalimat)'}
                 maxLength={160}
                 value={form.seo_description}
@@ -301,7 +301,7 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
 
             {/* SERP Preview */}
             {(form.headline || form.seo_title) && (
-              <div className="p-4 bg-[#1A1A2E] border border-white/[0.05] rounded-xl">
+              <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl">
                 <p className="text-xs text-text-dim mb-3 font-semibold uppercase tracking-wider">Preview Google Search</p>
                 <div className="max-w-lg">
                   <div className="flex items-center gap-2 mb-1.5">
@@ -323,7 +323,7 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
           </div>
 
           {/* Open Graph */}
-          <div className="bg-card border border-white/[0.07] rounded-2xl p-6 space-y-4">
+          <div className="bg-card border border-slate-200 rounded-2xl p-6 space-y-4">
             <div className="flex items-center gap-2">
               <Share2 size={16} className="text-accent-light" />
               <h2 className="font-syne font-bold text-base">Open Graph — Preview di Sosial Media</h2>
@@ -337,7 +337,7 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
             <div>
               <label className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">OG Description</label>
               <textarea rows={2}
-                className="w-full px-4 py-3 bg-surface border border-white/[0.07] rounded-xl text-[#EEEEFF] text-sm outline-none focus:border-accent resize-none"
+                className="w-full px-4 py-3 bg-surface border border-slate-200 rounded-xl text-text text-sm outline-none focus:border-accent resize-none"
                 placeholder={form.seo_description || form.subheadline || 'Deskripsi saat link dibagikan'}
                 value={form.og_description} onChange={e => setF('og_description', e.target.value)} />
             </div>
@@ -348,15 +348,15 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
               hint="Gambar preview saat link dibagikan. Fallback ke hero image jika kosong." />
 
             {/* OG Preview */}
-            <div className="p-4 bg-surface border border-white/[0.05] rounded-xl">
+            <div className="p-4 bg-surface border border-slate-200 rounded-xl">
               <p className="text-xs text-text-dim mb-3 font-semibold uppercase tracking-wider">Preview WhatsApp / Facebook</p>
-              <div className="border border-white/[0.1] rounded-xl overflow-hidden max-w-sm">
-                <div className="aspect-[1200/630] bg-[#1A1A2E] flex items-center justify-center overflow-hidden">
+              <div className="border border-slate-300 rounded-xl overflow-hidden max-w-sm">
+                <div className="aspect-[1200/630] bg-slate-50 flex items-center justify-center overflow-hidden">
                   {(form.og_image || form.hero_image || product.thumbnail)
                     ? <img src={form.og_image || form.hero_image || product.thumbnail} alt="" className="w-full h-full object-cover" />
                     : <span className="text-4xl">🖼️</span>}
                 </div>
-                <div className="p-3 bg-[#1A1A2E]">
+                <div className="p-3 bg-slate-50">
                   <div className="text-text-dim text-xs mb-1 uppercase tracking-wider">learnflow.id</div>
                   <div className="font-semibold text-sm">{form.og_title || form.seo_title || form.headline || 'Judul halaman'}</div>
                   <div className="text-text-muted text-xs mt-1 line-clamp-2">{form.og_description || form.seo_description || form.subheadline || 'Deskripsi halaman'}</div>
@@ -366,7 +366,7 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
           </div>
 
           {/* Advanced */}
-          <div className="bg-card border border-white/[0.07] rounded-2xl p-6 space-y-4">
+          <div className="bg-card border border-slate-200 rounded-2xl p-6 space-y-4">
             <div className="flex items-center gap-2">
               <Code size={16} className="text-accent-light" />
               <h2 className="font-syne font-bold text-base">Pengaturan Lanjutan</h2>
@@ -374,7 +374,7 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
 
             <div>
               <label className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Robots Directive</label>
-              <select className="w-full px-4 py-3 bg-surface border border-white/[0.07] rounded-xl text-[#EEEEFF] text-sm outline-none focus:border-accent"
+              <select className="w-full px-4 py-3 bg-surface border border-slate-200 rounded-xl text-text text-sm outline-none focus:border-accent"
                 value={form.robots} onChange={e => setF('robots', e.target.value)}>
                 <option value="index,follow">index, follow — Halaman bisa diindex Google (default)</option>
                 <option value="noindex,follow">noindex, follow — Tidak diindex, link tetap diikuti</option>
@@ -382,7 +382,7 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
                 <option value="noindex,nofollow">noindex, nofollow — Tidak diindex sama sekali</option>
               </select>
               <p className="text-xs text-text-dim mt-1.5">
-                Gunakan <code className="bg-black/20 px-1 rounded text-xs">noindex</code> untuk halaman checkout, thank you, atau halaman yang tidak perlu muncul di Google.
+                Gunakan <code className="bg-slate-100 px-1 rounded text-xs">noindex</code> untuk halaman checkout, thank you, atau halaman yang tidak perlu muncul di Google.
               </p>
             </div>
 
@@ -394,7 +394,7 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
             <div>
               <label className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">JSON-LD Schema Markup (opsional)</label>
               <textarea rows={7}
-                className="w-full px-4 py-3 bg-surface border border-white/[0.07] rounded-xl text-[#EEEEFF] text-xs font-mono outline-none focus:border-accent resize-none"
+                className="w-full px-4 py-3 bg-surface border border-slate-200 rounded-xl text-text text-xs font-mono outline-none focus:border-accent resize-none"
                 placeholder={'{\n  "@context": "https://schema.org",\n  "@type": "Course",\n  "name": "TikTok Viral Mastery",\n  "provider": {\n    "@type": "Organization",\n    "name": "LearnFlow"\n  },\n  "offers": {\n    "@type": "Offer",\n    "price": "0",\n    "priceCurrency": "IDR"\n  }\n}'}
                 value={form.schema_markup} onChange={e => setF('schema_markup', e.target.value)} />
               <p className="text-xs text-text-dim mt-1.5">
@@ -410,7 +410,7 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
       {section === 'pixels' && (
         <div className="space-y-5">
           {/* Master toggle */}
-          <div className="bg-card border border-white/[0.07] rounded-2xl p-5 space-y-3">
+          <div className="bg-card border border-slate-200 rounded-2xl p-5 space-y-3">
             <Toggle
               value={form.pixel_override_enabled}
               onChange={() => setF('pixel_override_enabled', !form.pixel_override_enabled)}
@@ -509,14 +509,14 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
               <PixelCard icon="💻" title="Skrip Kustom (Head)" color="#8B5CF6">
                 <p className="text-text-muted text-xs">Skrip tambahan khusus halaman kursus ini — misalnya retargeting pixel lain, live chat khusus, atau tracking konversi custom.</p>
                 <textarea rows={5}
-                  className="w-full px-4 py-3 bg-surface border border-white/[0.07] rounded-xl text-[#EEEEFF] text-xs font-mono outline-none focus:border-accent resize-none"
+                  className="w-full px-4 py-3 bg-surface border border-slate-200 rounded-xl text-text text-xs font-mono outline-none focus:border-accent resize-none"
                   placeholder={'// Contoh:\nconsole.log("user on landing page");'}
                   value={form.custom_head_script} onChange={e => setF('custom_head_script', e.target.value)} />
                 <p className="text-xs text-text-dim">Tulis kode JavaScript langsung — jangan pakai tag &lt;script&gt;</p>
               </PixelCard>
 
               {/* Status summary */}
-              <div className="bg-card border border-white/[0.07] rounded-2xl p-5">
+              <div className="bg-card border border-slate-200 rounded-2xl p-5">
                 <h3 className="font-syne font-bold text-sm mb-4">Status Pixel Halaman Ini</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {[
@@ -525,7 +525,7 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
                     { label: 'Facebook', active: form.fb_pixel_enabled     && !!form.fb_pixel_id,     icon: '📘', id: form.fb_pixel_id },
                     { label: 'TikTok',   active: form.tiktok_pixel_enabled && !!form.tiktok_pixel_id, icon: '🎵', id: form.tiktok_pixel_id },
                   ].map(({ label, active, icon, id }) => (
-                    <div key={label} className={`p-3 rounded-xl border ${active ? 'bg-green-500/5 border-green-500/20' : 'bg-surface border-white/[0.06]'}`}>
+                    <div key={label} className={`p-3 rounded-xl border ${active ? 'bg-green-500/5 border-green-500/20' : 'bg-surface border-slate-200'}`}>
                       <div className="flex items-center gap-2 mb-1.5">
                         <span className="text-lg">{icon}</span>
                         <div className={`text-xs font-semibold ${active ? 'text-green-400' : 'text-text-dim'}`}>{active ? '✓ Aktif' : '○ Off'}</div>
@@ -549,7 +549,7 @@ export function LandingPageEditor({ product, landingPage }: { product: any; land
         </Button>
         {!isNew && form.slug && (
           <a href={`/course/${form.slug}`} target="_blank"
-            className="flex items-center gap-2 px-5 rounded-xl text-sm text-text-muted bg-card border border-white/[0.07] hover:text-[#EEEEFF] transition-all">
+            className="flex items-center gap-2 px-5 rounded-xl text-sm text-text-muted bg-card border border-slate-200 hover:text-text transition-all">
             <Eye size={15} /> Preview
           </a>
         )}

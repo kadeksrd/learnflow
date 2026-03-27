@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAdminUser, unauthorized, dbError, createAdminClient } from '@/lib/api-helpers'
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   if (!await getAdminUser()) return unauthorized()
   const body = await req.json()
   const s = await createAdminClient()
@@ -45,10 +46,10 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     updated_at: new Date().toISOString(),
   }
 
-  const { data, error } = await s
-    .from('landing_pages')
+  const { data, error } = await (s
+    .from('landing_pages') as any)
     .update(payload)
-    .eq('id', params.id)
+    .eq('id', id)
     .select()
     .single()
 
@@ -56,9 +57,10 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   return NextResponse.json(data)
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   if (!await getAdminUser()) return unauthorized()
   const s = await createAdminClient()
-  await s.from('landing_pages').delete().eq('id', params.id)
+  await s.from('landing_pages').delete().eq('id', id)
   return NextResponse.json({ message: 'Deleted' })
 }

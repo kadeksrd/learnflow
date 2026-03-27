@@ -29,4 +29,4 @@ export function dbError(error: { message: string }) {
 }
 
 /** Run a Supabase admin query with standard error handling. */
-export { createAdminClient }
+export { createClient, createAdminClient }

@@ -5,28 +5,33 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        // Ganti font lama kamu dengan ini
         poppins: ["var(--font-poppins)", "sans-serif"],
       },
       colors: {
-        bg: "#05050C",
-        surface: "#0C0C1A",
-        card: "#10101F",
-        "card-hover": "#161628",
+        bg: "var(--bg)",
+        surface: "var(--surface)",
+        card: "var(--card)",
+        "card-hover": "var(--hover-bg)",
         accent: {
-          DEFAULT: "#7C6BFF",
-          light: "#9F91FF",
+          DEFAULT: "var(--accent)",
+          light: "var(--accent-light)",
         },
         cta: {
-          DEFAULT: "#F59E0B",
-          hover: "#FBBF24",
+          DEFAULT: "var(--cta)",
+          hover: "var(--cta-hover)",
         },
-        "text-muted": "#7070A0",
-        "text-dim": "#4A4A70",
+        text: {
+          DEFAULT: "var(--text)",
+          muted: "var(--text-muted)",
+          dim: "var(--text-dim)",
+        },
+        "text-muted": "var(--text-muted)",
+        "text-dim": "var(--text-dim)",
+        border: "var(--border)",
       },
       backgroundImage: {
-        "gradient-accent": "linear-gradient(135deg, #7C6BFF, #B794F4)",
-        "gradient-cta": "linear-gradient(135deg, #F59E0B, #FBBF24)",
+        "gradient-accent": "linear-gradient(135deg, var(--accent), #A855F7)",
+        "gradient-cta": "linear-gradient(135deg, var(--cta), var(--cta-hover))",
       },
     },
   },

@@ -32,7 +32,7 @@ export function ReviewsManager({ reviews: initial }: { reviews: any[] }) {
       {/* Stats - 2x2 on mobile */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
         {[[stats.total,'Total Review','#7C6BFF'],[stats.visible,'Tampil di LP','#10B981'],[stats.hidden,'Disembunyikan','#F59E0B'],[stats.avg,'Rating Rata²','#EF4444']].map(([v,l,c]) => (
-          <div key={String(l)} className="bg-card border border-white/[0.07] rounded-xl p-3 sm:p-4">
+          <div key={String(l)} className="bg-card border border-slate-200 rounded-xl p-3 sm:p-4">
             <div className="font-syne font-extrabold text-xl sm:text-2xl mb-1" style={{ color: String(c) }}>{v}</div>
             <div className="text-text-muted text-xs">{String(l)}</div>
           </div>
@@ -43,16 +43,16 @@ export function ReviewsManager({ reviews: initial }: { reviews: any[] }) {
       <div className="flex gap-2 mb-4">
         {[['all','Semua'],['visible','Visible'],['hidden','Hidden']].map(([id,label]) => (
           <button key={id} onClick={() => setFilter(id as any)}
-            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all ${filter === id ? 'bg-accent/20 text-accent-light border border-accent/40' : 'bg-card border border-white/[0.07] text-text-muted'}`}>
+            className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all ${filter === id ? 'bg-accent/20 text-accent-light border border-accent/40' : 'bg-card border border-slate-200 text-text-muted'}`}>
             {label}
           </button>
         ))}
       </div>
 
       {/* Review list - card style on all sizes */}
-      <div className="bg-card border border-white/[0.07] rounded-2xl overflow-hidden">
+      <div className="bg-card border border-slate-200 rounded-2xl overflow-hidden">
         {filtered.map((r, i) => (
-          <div key={r.id} className={`p-4 ${i < filtered.length - 1 ? 'border-b border-white/[0.05]' : ''} ${!r.is_visible ? 'opacity-50' : ''}`}>
+          <div key={r.id} className={`p-4 ${i < filtered.length - 1 ? 'border-b border-slate-200' : ''} ${!r.is_visible ? 'opacity-50' : ''}`}>
             <div className="flex items-start gap-3">
               {/* Stars */}
               <div className="flex gap-0.5 shrink-0 mt-0.5">
@@ -77,11 +77,11 @@ export function ReviewsManager({ reviews: initial }: { reviews: any[] }) {
               {/* Actions */}
               <div className="flex gap-1.5 shrink-0">
                 <button onClick={() => toggleVisible(r.id, r.is_visible)} title={r.is_visible ? 'Sembunyikan' : 'Tampilkan'}
-                  className={`p-2 rounded-lg transition-all ${r.is_visible ? 'bg-green-500/10 text-green-400 hover:bg-green-500/20' : 'bg-white/5 text-text-muted hover:bg-white/10'}`}>
+                  className={`p-2 rounded-lg transition-all ${r.is_visible ? 'bg-green-500/10 text-green-400 hover:bg-green-500/20' : 'bg-slate-50 text-text-muted hover:bg-slate-100'}`}>
                   {r.is_visible ? <Eye size={14} /> : <EyeOff size={14} />}
                 </button>
                 <button onClick={() => deleteReview(r.id)}
-                  className="p-2 rounded-lg bg-white/5 text-text-muted hover:bg-red-500/10 hover:text-red-400 transition-all">
+                  className="p-2 rounded-lg bg-slate-50 text-text-muted hover:bg-red-500/10 hover:text-red-400 transition-all">
                   <Trash2 size={14} />
                 </button>
               </div>
@@ -91,7 +91,7 @@ export function ReviewsManager({ reviews: initial }: { reviews: any[] }) {
         {filtered.length === 0 && <div className="text-center py-12 text-text-muted text-sm">Belum ada review</div>}
       </div>
 
-      <div className="mt-3 p-3 bg-surface border border-white/[0.06] rounded-xl">
+      <div className="mt-3 p-3 bg-surface border border-slate-200 rounded-xl">
         <p className="text-xs text-text-muted">
           <span className="text-green-400 font-semibold">👁 Visible</span> = tampil di landing page.
           {' '}<span className="font-semibold">Hidden</span> = tersimpan tapi tidak publik.

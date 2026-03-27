@@ -13,7 +13,7 @@ interface StickyCTAProps {
 export function StickyCTA({ visible, product, ctaText, onCTA, isProcessing }: StickyCTAProps) {
   return (
     <div className={`fixed bottom-0 left-0 right-0 z-40 transition-all duration-300 ${visible ? 'translate-y-0' : 'translate-y-full'}`}>
-      <div className="bg-bg/95 backdrop-blur-xl border-t border-white/[0.07] px-4 sm:px-6 py-3.5 sm:py-4">
+      <div className="bg-bg/95 backdrop-blur-xl border-t border-slate-200 px-4 sm:px-6 py-3.5 sm:py-4">
         <div className="max-w-5xl mx-auto flex items-center gap-3">
           {/* Title + price — hide price label on very small screens */}
           <div className="flex-1 min-w-0">

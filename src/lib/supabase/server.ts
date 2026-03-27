@@ -2,8 +2,8 @@ import { createServerClient } from "@supabase/ssr";
 import type { Database } from "@/types/database";
 import { cookies } from "next/headers";
 
-export function createClient() {
-  const cookieStore = cookies();
+export async function createClient() {
+  const cookieStore = await cookies();
 
   return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -28,8 +28,8 @@ export function createClient() {
 }
 
 // Admin client — bypass RLS. Gunakan HANYA di server/API routes
-export function createAdminClient() {
-  const cookieStore = cookies();
+export async function createAdminClient() {
+  const cookieStore = await cookies();
 
   return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

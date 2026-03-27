@@ -86,7 +86,7 @@ export function GlobalSEOEditor({ initialSettings }: { initialSettings: any }) {
         <div className="text-sm text-text-muted">
           <span className="text-accent-light font-semibold">Cara kerja:</span>{" "}
           Setting ini berlaku untuk{" "}
-          <strong className="text-[#EEEEFF]">semua halaman</strong> sebagai
+          <strong className="text-text">semua halaman</strong> sebagai
           default. Setiap landing page kursus bisa override dengan setting
           SEO-nya masing-masing di tab{" "}
           <span className="text-accent-light">🔍 SEO & Meta</span> editor
@@ -95,12 +95,12 @@ export function GlobalSEOEditor({ initialSettings }: { initialSettings: any }) {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-surface p-1 rounded-2xl border border-white/[0.06]">
+      <div className="flex gap-1 bg-surface p-1 rounded-2xl border border-slate-200">
         {TABS.map(({ id, icon: Icon, label }) => (
           <button
             key={id}
             onClick={() => setTab(id)}
-            className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-semibold transition-all ${tab === id ? "bg-card text-[#EEEEFF] shadow-sm" : "text-text-muted hover:text-[#EEEEFF]"}`}
+            className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-semibold transition-all ${tab === id ? "bg-card text-text shadow-sm" : "text-text-muted hover:text-text"}`}
           >
             <Icon size={13} /> {label}
           </button>
@@ -109,7 +109,7 @@ export function GlobalSEOEditor({ initialSettings }: { initialSettings: any }) {
 
       {/* ── BASIC ── */}
       {tab === "basic" && (
-        <div className="bg-card border border-white/[0.07] rounded-2xl p-6 space-y-5">
+        <div className="bg-card border border-slate-200 rounded-2xl p-6 space-y-5">
           <h2 className="font-syne font-bold text-base flex items-center gap-2">
             <Search size={16} className="text-accent-light" /> SEO Dasar
           </h2>
@@ -136,7 +136,7 @@ export function GlobalSEOEditor({ initialSettings }: { initialSettings: any }) {
             </label>
             <textarea
               rows={3}
-              className="w-full px-4 py-3 bg-surface border border-white/[0.07] rounded-xl text-[#EEEEFF] text-sm outline-none focus:border-accent resize-none transition-all"
+              className="w-full px-4 py-3 bg-surface border border-slate-200 rounded-xl text-text text-sm outline-none focus:border-accent resize-none transition-all"
               maxLength={160}
               placeholder="Platform kursus digital terbaik..."
               value={s.site_description}
@@ -160,7 +160,7 @@ export function GlobalSEOEditor({ initialSettings }: { initialSettings: any }) {
               Default Robots Directive
             </label>
             <select
-              className="w-full px-4 py-3 bg-surface border border-white/[0.07] rounded-xl text-[#EEEEFF] text-sm outline-none focus:border-accent"
+              className="w-full px-4 py-3 bg-surface border border-slate-200 rounded-xl text-text text-sm outline-none focus:border-accent"
               value={s.robots}
               onChange={(e) => set("robots", e.target.value)}
             >
@@ -174,7 +174,7 @@ export function GlobalSEOEditor({ initialSettings }: { initialSettings: any }) {
           </div>
 
           {/* SERP Preview */}
-          <div className="p-4 bg-bg border border-white/[0.05] rounded-xl">
+          <div className="p-4 bg-bg border border-slate-200 rounded-xl">
             <p className="text-xs text-text-dim mb-3 font-semibold">
               🔍 Preview di Google Search:
             </p>
@@ -202,7 +202,7 @@ export function GlobalSEOEditor({ initialSettings }: { initialSettings: any }) {
 
       {/* ── SOCIAL ── */}
       {tab === "social" && (
-        <div className="bg-card border border-white/[0.07] rounded-2xl p-6 space-y-5">
+        <div className="bg-card border border-slate-200 rounded-2xl p-6 space-y-5">
           <h2 className="font-syne font-bold text-base flex items-center gap-2">
             <Share2 size={16} className="text-accent-light" /> Open Graph &
             Social
@@ -230,11 +230,11 @@ export function GlobalSEOEditor({ initialSettings }: { initialSettings: any }) {
           />
 
           {/* Social Preview */}
-          <div className="p-4 bg-bg border border-white/[0.05] rounded-xl">
+          <div className="p-4 bg-bg border border-slate-200 rounded-xl">
             <p className="text-xs text-text-dim mb-3 font-semibold">
               💬 Preview saat dibagikan:
             </p>
-            <div className="border border-white/[0.1] rounded-xl overflow-hidden max-w-sm">
+            <div className="border border-slate-300 rounded-xl overflow-hidden max-w-sm">
               <div className="aspect-[1200/630] bg-surface flex items-center justify-center overflow-hidden">
                 {s.og_image ? (
                   <img
@@ -265,7 +265,7 @@ export function GlobalSEOEditor({ initialSettings }: { initialSettings: any }) {
 
       {/* ── TECHNICAL ── */}
       {tab === "technical" && (
-        <div className="bg-card border border-white/[0.07] rounded-2xl p-6 space-y-5">
+        <div className="bg-card border border-slate-200 rounded-2xl p-6 space-y-5">
           <h2 className="font-syne font-bold text-base flex items-center gap-2">
             <ShieldCheck size={16} className="text-accent-light" /> Verifikasi &
             Teknikal
@@ -327,7 +327,7 @@ export function GlobalSEOEditor({ initialSettings }: { initialSettings: any }) {
             ].map(({ label, active, icon }) => (
               <div
                 key={label}
-                className={`flex items-center gap-3 p-3 rounded-xl border ${active ? "bg-green-500/5 border-green-500/20" : "bg-surface border-white/[0.06]"}`}
+                className={`flex items-center gap-3 p-3 rounded-xl border ${active ? "bg-green-500/5 border-green-500/20" : "bg-surface border-slate-200"}`}
               >
                 <span className="text-lg">{icon}</span>
                 <div>

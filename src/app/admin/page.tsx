@@ -29,7 +29,7 @@ export default async function AdminOverviewPage() {
           { label: 'Active Products', value: (productCount || 0).toString(), color: 'text-accent-light' },
           { label: 'Enrolled Users', value: (userCount || 0).toString(), color: 'text-purple-400' },
         ].map(stat => (
-          <div key={stat.label} className="bg-card border border-white/[0.07] rounded-2xl p-4">
+          <div key={stat.label} className="bg-card border border-slate-200 rounded-2xl p-4">
             <div className={`font-syne font-extrabold text-2xl ${stat.color} mb-1`}>{stat.value}</div>
             <div className="text-text-muted text-xs">{stat.label}</div>
           </div>
@@ -37,11 +37,11 @@ export default async function AdminOverviewPage() {
       </div>
 
       {/* Recent Orders */}
-      <div className="bg-card border border-white/[0.07] rounded-2xl p-4 sm:p-6">
+      <div className="bg-card border border-slate-200 rounded-2xl p-4 sm:p-6">
         <h2 className="font-syne font-bold text-base mb-4">Order Terbaru</h2>
         <div className="space-y-3">
           {recentOrders?.map(order => (
-            <div key={order.id} className="flex items-center justify-between py-2.5 border-b border-white/[0.05] last:border-0 gap-3">
+            <div key={order.id} className="flex items-center justify-between py-2.5 border-b border-slate-200 last:border-0 gap-3">
               <div className="min-w-0">
                 <div className="text-sm font-medium truncate">{(order.products as any)?.title}</div>
                 <div className="text-text-muted text-xs">{order.paid_at ? new Date(order.paid_at).toLocaleDateString('id-ID') : '-'}</div>

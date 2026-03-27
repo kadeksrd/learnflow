@@ -5,8 +5,8 @@ import { headers } from 'next/headers'
 
 export const runtime = 'nodejs'
 
-export async function POST(request: NextRequest, { params }: { params: { gateway: string } }) {
-  const { gateway } = params
+export async function POST(request: NextRequest, { params }: { params: Promise<{ gateway: string }> }) {
+  const { gateway } = await params
   const body = await request.json()
   const headersList = await headers()
 
@@ -44,20 +44,22 @@ export async function POST(request: NextRequest, { params }: { params: { gateway
 
     if (!orderId || !paymentStatus) return NextResponse.json({ message: 'OK - skipped' })
 
-    const supabase = await createAdminClient()
+    const supabase = (await createAdminClient()) as any
     const { data: order } = await supabase.from('orders').select('*, products(id, courses(id))').eq('id', orderId).single()
     if (!order) return NextResponse.json({ message: 'Order not found' })
     if (order.status === 'paid') return NextResponse.json({ message: 'Already processed' })
 
-    await supabase.from('orders').update({
+    const updateData = {
       status: paymentStatus,
       payment_ref: paymentRef,
       paid_at: paymentStatus === 'paid' ? new Date().toISOString() : null,
       updated_at: new Date().toISOString(),
-    }).eq('id', orderId)
+    }
+
+    await supabase.from('orders').update(updateData).eq('id', orderId)
 
     if (paymentStatus === 'paid') {
-      const courseId = (order.products as any)?.courses?.[0]?.id
+      const courseId = order.products?.courses?.[0]?.id
       if (courseId) {
         await supabase.from('user_courses').upsert(
           { user_id: order.user_id, course_id: courseId },

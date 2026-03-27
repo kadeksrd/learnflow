@@ -24,7 +24,7 @@ export default async function SeoPage() {
         <p className="text-text-muted text-sm max-w-xl">
           Berlaku untuk seluruh website — homepage, store, dan semua halaman
           yang tidak punya SEO custom. Setiap landing page kursus bisa override
-          ini dari tab <strong className="text-[#EEEEFF]">SEO & Meta</strong> di
+          ini dari tab <strong className="text-text">SEO & Meta</strong> di
           editor landing page.
         </p>
       </div>

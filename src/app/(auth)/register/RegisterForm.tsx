@@ -109,7 +109,7 @@ export function RegisterForm() {
             type={showPass ? 'text' : 'password'}
             placeholder="Min. 8 karakter"
             autoComplete="new-password"
-            className="w-full px-4 py-3 pr-11 bg-surface border border-white/[0.07] rounded-xl text-[#EEEEFF] placeholder:text-text-dim text-sm outline-none transition-all focus:border-accent focus:ring-1 focus:ring-accent/30"
+            className="w-full px-4 py-3 pr-11 bg-surface border border-slate-200 rounded-xl text-text placeholder:text-text-dim text-sm outline-none transition-all focus:border-accent focus:ring-1 focus:ring-accent/30"
             {...register('password', { onChange: e => setPasswordVal(e.target.value) })}
           />
           <button type="button" onClick={() => setShowPass(p => !p)}

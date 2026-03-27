@@ -110,7 +110,7 @@ export function PaymentSettingsEditor({ initialSettings }: { initialSettings: an
       {saved  && <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-sm text-green-400 flex items-center gap-2"><CheckCircle size={15} /> Tersimpan! Pengaturan gateway langsung aktif.</div>}
 
       {/* Overview */}
-      <div className="bg-card border border-white/[0.07] rounded-2xl p-5">
+      <div className="bg-card border border-slate-200 rounded-2xl p-5">
         <h2 className="font-syne font-bold text-base mb-4">Status Gateway</h2>
         <div className="grid sm:grid-cols-3 gap-3">
           {GATEWAYS.map(gw => {
@@ -118,11 +118,11 @@ export function PaymentSettingsEditor({ initialSettings }: { initialSettings: an
             const isDefault = settings.default_gateway === gw
             return (
               <div key={gw}
-                className={`p-4 rounded-xl border-2 transition-all cursor-pointer ${g.enabled ? 'border-green-500/30 bg-green-500/5' : 'border-white/[0.06] bg-surface opacity-60'}`}
+                className={`p-4 rounded-xl border-2 transition-all cursor-pointer ${g.enabled ? 'border-green-500/30 bg-green-500/5' : 'border-slate-200 bg-surface opacity-60'}`}
                 onClick={() => toggleGateway(gw)}>
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-2xl">{g.logo}</span>
-                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${g.enabled ? 'border-green-500 bg-green-500' : 'border-white/20'}`}>
+                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${g.enabled ? 'border-green-500 bg-green-500' : 'border-slate-300'}`}>
                     {g.enabled && <CheckCircle size={12} className="text-white" />}
                   </div>
                 </div>
@@ -140,7 +140,7 @@ export function PaymentSettingsEditor({ initialSettings }: { initialSettings: an
       </div>
 
       {/* Default gateway */}
-      <div className="bg-card border border-white/[0.07] rounded-2xl p-5">
+      <div className="bg-card border border-slate-200 rounded-2xl p-5">
         <h2 className="font-syne font-bold text-base mb-2">Gateway Default</h2>
         <p className="text-text-muted text-xs mb-4">Gateway ini yang pertama dipilih saat user checkout. User tetap bisa ganti ke gateway lain yang aktif.</p>
         <div className="flex gap-3 flex-wrap">
@@ -149,7 +149,7 @@ export function PaymentSettingsEditor({ initialSettings }: { initialSettings: an
             const isDefault = settings.default_gateway === gw
             return (
               <button key={gw} onClick={() => setDefault(gw)}
-                className={`flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-semibold border-2 transition-all ${isDefault ? 'border-accent bg-accent/10 text-accent-light' : 'border-white/[0.07] bg-surface text-text-muted hover:border-accent/30'}`}>
+                className={`flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-semibold border-2 transition-all ${isDefault ? 'border-accent bg-accent/10 text-accent-light' : 'border-slate-200 bg-surface text-text-muted hover:border-accent/30'}`}>
                 <span className="text-lg">{g.logo}</span> {g.label}
                 {isDefault && <span className="text-xs">⭐</span>}
               </button>
@@ -167,9 +167,9 @@ export function PaymentSettingsEditor({ initialSettings }: { initialSettings: an
         const res = testResult[gw]
 
         return (
-          <div key={gw} className={`bg-card border rounded-2xl overflow-hidden transition-all ${g.enabled ? 'border-white/[0.08]' : 'border-white/[0.04] opacity-70'}`}>
+          <div key={gw} className={`bg-card border rounded-2xl overflow-hidden transition-all ${g.enabled ? 'border-slate-200' : 'border-slate-100 opacity-70'}`}>
             {/* Header */}
-            <div className="flex items-center gap-4 p-5 border-b border-white/[0.07]">
+            <div className="flex items-center gap-4 p-5 border-b border-slate-200">
               <span className="text-3xl">{g.logo}</span>
               <div className="flex-1">
                 <div className="flex items-center gap-2 flex-wrap">
@@ -185,14 +185,14 @@ export function PaymentSettingsEditor({ initialSettings }: { initialSettings: an
                 {/* Test button */}
                 {g.enabled && (
                   <button onClick={() => testConnection(gw)} disabled={testing === gw}
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-surface border border-white/[0.07] rounded-lg text-xs text-text-muted hover:text-[#EEEEFF] transition-all">
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-surface border border-slate-200 rounded-lg text-xs text-text-muted hover:text-text transition-all">
                     <RefreshCw size={12} className={testing === gw ? 'animate-spin' : ''} />
                     {testing === gw ? 'Testing...' : 'Test Koneksi'}
                   </button>
                 )}
                 {/* Enable toggle */}
                 <div onClick={() => toggleGateway(gw)}
-                  className={`w-11 h-6 rounded-full relative cursor-pointer transition-colors ${g.enabled ? 'bg-green-500' : 'bg-surface border border-white/20'}`}>
+                  className={`w-11 h-6 rounded-full relative cursor-pointer transition-colors ${g.enabled ? 'bg-green-500' : 'bg-surface border border-slate-300'}`}>
                   <div className={`absolute top-0.5 w-5 h-5 rounded-full bg-white transition-all ${g.enabled ? 'left-5' : 'left-0.5'}`} />
                 </div>
               </div>
@@ -211,10 +211,10 @@ export function PaymentSettingsEditor({ initialSettings }: { initialSettings: an
                 <div className="grid sm:grid-cols-2 gap-4 items-center">
                   <Input label="Nama Label" value={g.label}
                     onChange={e => updateGateway(gw, 'label', e.target.value)} />
-                  <div className="flex items-center justify-between p-3.5 bg-surface rounded-xl border border-white/[0.06] mt-5">
+                  <div className="flex items-center justify-between p-3.5 bg-surface rounded-xl border border-slate-200 mt-5">
                     <span className="text-sm font-medium">Tampilkan badge &quot;Populer&quot;</span>
                     <div onClick={() => updateGateway(gw, 'is_popular', !g.is_popular)}
-                      className={`w-10 h-6 rounded-full relative cursor-pointer transition-colors ${g.is_popular ? 'bg-green-500' : 'bg-card border border-white/20'}`}>
+                      className={`w-10 h-6 rounded-full relative cursor-pointer transition-colors ${g.is_popular ? 'bg-green-500' : 'bg-card border border-slate-300'}`}>
                       <div className={`absolute top-0.5 w-5 h-5 rounded-full bg-white transition-all ${g.is_popular ? 'left-4' : 'left-0.5'}`} />
                     </div>
                   </div>
@@ -227,7 +227,7 @@ export function PaymentSettingsEditor({ initialSettings }: { initialSettings: an
                   </label>
                   <div className="flex flex-wrap gap-2 mb-3">
                     {g.methods.map((m: string, i: number) => (
-                      <span key={i} className="flex items-center gap-1.5 px-3 py-1.5 bg-surface border border-white/[0.08] rounded-full text-xs text-text-muted">
+                      <span key={i} className="flex items-center gap-1.5 px-3 py-1.5 bg-surface border border-slate-200 rounded-full text-xs text-text-muted">
                         {m}
                         <button onClick={() => removeMethod(gw, i)} className="text-text-dim hover:text-red-400 transition-colors ml-0.5">×</button>
                       </span>
@@ -235,7 +235,7 @@ export function PaymentSettingsEditor({ initialSettings }: { initialSettings: an
                   </div>
                   <div className="flex gap-2">
                     <input
-                      className="flex-1 px-3 py-2 bg-surface border border-white/[0.07] rounded-xl text-sm text-[#EEEEFF] outline-none focus:border-accent"
+                      className="flex-1 px-3 py-2 bg-surface border border-slate-200 rounded-xl text-sm text-text outline-none focus:border-accent"
                       placeholder="Tambah metode (contoh: BCA Virtual Account)"
                       value={newMethod}
                       onChange={e => setNewMethod(e.target.value)}
@@ -252,9 +252,9 @@ export function PaymentSettingsEditor({ initialSettings }: { initialSettings: an
                 <div className="p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-xl">
                   <p className="text-xs text-yellow-300/70 font-semibold mb-2">⚙️ Konfigurasi API Key</p>
                   <p className="text-xs text-text-dim leading-relaxed mb-2">
-                    API key tidak disimpan di sini karena alasan keamanan. Pastikan sudah diisi di <code className="bg-black/30 px-1.5 py-0.5 rounded text-xs">.env.local</code>:
+                    API key tidak disimpan di sini karena alasan keamanan. Pastikan sudah diisi di <code className="bg-slate-100 px-1.5 py-0.5 rounded text-xs">.env.local</code>:
                   </p>
-                  <code className="block text-xs text-green-300/70 bg-black/30 p-3 rounded-lg leading-relaxed">
+                  <code className="block text-xs text-green-300/70 bg-slate-100 p-3 rounded-lg leading-relaxed">
                     {gw === 'xendit'   && `XENDIT_SECRET_KEY=xnd_production_xxxxx\nXENDIT_WEBHOOK_TOKEN=your_token`}
                     {gw === 'midtrans' && `MIDTRANS_SERVER_KEY=Mid-server-xxxxx\nMIDTRANS_CLIENT_KEY=Mid-client-xxxxx`}
                     {gw === 'doku'     && `DOKU_CLIENT_ID=your_client_id\nDOKU_SECRET_KEY=your_secret_key`}
@@ -271,7 +271,7 @@ export function PaymentSettingsEditor({ initialSettings }: { initialSettings: an
       })}
 
       {/* Webhook info */}
-      <div className="bg-card border border-white/[0.07] rounded-2xl p-5">
+      <div className="bg-card border border-slate-200 rounded-2xl p-5">
         <h2 className="font-syne font-bold text-base mb-2">Webhook URL</h2>
         <p className="text-text-muted text-xs mb-4">Daftarkan URL ini di dashboard masing-masing gateway agar status pembayaran terupdate otomatis.</p>
         <div className="space-y-3">
@@ -280,9 +280,9 @@ export function PaymentSettingsEditor({ initialSettings }: { initialSettings: an
             { gw: 'Midtrans', url: '/api/webhook/midtrans' },
             { gw: 'DOKU',     url: '/api/webhook/doku'     },
           ].map(({ gw, url }) => (
-            <div key={gw} className="flex items-center gap-3 p-3 bg-surface rounded-xl border border-white/[0.06]">
+            <div key={gw} className="flex items-center gap-3 p-3 bg-surface rounded-xl border border-slate-200">
               <span className="text-xs text-text-muted w-16 shrink-0">{gw}</span>
-              <code className="flex-1 text-xs text-accent-light bg-black/20 px-3 py-2 rounded-lg overflow-x-auto">
+              <code className="flex-1 text-xs text-accent-light bg-slate-100 px-3 py-2 rounded-lg overflow-x-auto">
                 https://yourdomain.com{url}
               </code>
             </div>

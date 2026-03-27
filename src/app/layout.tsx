@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Syne, DM_Sans } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/components/providers/AuthProvider'
+import { ThemeProvider } from '@/components/providers/ThemeProvider'
 import { TrackingScripts, GTMNoScript } from '@/components/tracking/TrackingScripts'
 import { createClient } from '@/lib/supabase/server'
 
@@ -46,15 +47,22 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id" className={`${syne.variable} ${dmSans.variable}`}>
+    <html lang="id" className={`${syne.variable} ${dmSans.variable}`} suppressHydrationWarning>
       <head>
         <TrackingScripts />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}})()`
+          }}
+        />
       </head>
-      <body className="bg-bg text-[#EEEEFF] font-dm-sans antialiased">
+      <body className="bg-bg text-text font-dm-sans antialiased">
         <GTMNoScript />
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

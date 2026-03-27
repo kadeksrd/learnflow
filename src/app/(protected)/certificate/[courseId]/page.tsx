@@ -5,8 +5,9 @@ import { CertificatePage } from "./CertificatePage";
 export default async function CertificateRoute({
   params,
 }: {
-  params: { courseId: string };
+  params: Promise<{ courseId: string }>;
 }) {
+  const { courseId } = await params;
   const supabase = await createClient();
   const {
     data: { user },
@@ -16,14 +17,14 @@ export default async function CertificateRoute({
     .from("user_courses")
     .select("enrolled_at")
     .eq("user_id", user!.id)
-    .eq("course_id", params.courseId)
+    .eq("course_id", courseId)
     .single()) as any;
   if (!access) redirect("/dashboard");
 
   const { data: course } = await supabase
     .from("courses")
     .select("id, title, products(title), modules(lessons(id))")
-    .eq("id", params.courseId)
+    .eq("id", courseId)
     .single();
   if (!course) notFound();
 
@@ -38,7 +39,7 @@ export default async function CertificateRoute({
     .in("lesson_id", allIds.length ? allIds : ["none"]);
 
   if (!allIds.length || (prog?.length || 0) < allIds.length)
-    redirect(`/dashboard/course/${params.courseId}`);
+    redirect(`/dashboard/course/${courseId}`);
 
   return (
     <CertificatePage

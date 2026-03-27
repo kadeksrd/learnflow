@@ -4,12 +4,24 @@ import { Plus } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
+interface LandingPageWithProduct {
+  id: string;
+  slug: string;
+  product_id: string;
+  products: {
+    title: string;
+    thumbnail: string | null;
+  } | null;
+}
+
 export default async function AdminLandingPagesPage() {
-  const supabase = createClient();
-  const { data: pages } = await supabase
+  const supabase = await createClient();
+  const { data: pages } = (await supabase
     .from("landing_pages")
     .select("*, products(title, thumbnail)")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })) as {
+    data: LandingPageWithProduct[] | null;
+  };
 
   return (
     <div className="p-4 sm:p-8">
@@ -27,12 +39,12 @@ export default async function AdminLandingPagesPage() {
         {pages?.map((page) => (
           <div
             key={page.id}
-            className="flex items-center gap-4 p-5 bg-card border border-white/[0.07] rounded-2xl hover:border-accent/30 transition-all"
+            className="flex items-center gap-4 p-5 bg-card border border-slate-200 rounded-2xl hover:border-accent/30 transition-all"
           >
             <div className="w-14 h-10 rounded-lg bg-surface flex items-center justify-center overflow-hidden shrink-0">
-              {(page.products as any)?.thumbnail ? (
+              {page.products?.thumbnail ? (
                 <img
-                  src={(page.products as any).thumbnail}
+                  src={page.products.thumbnail}
                   alt=""
                   className="w-full h-full object-cover"
                 />
@@ -42,7 +54,7 @@ export default async function AdminLandingPagesPage() {
             </div>
             <div className="flex-1 min-w-0">
               <div className="font-semibold text-sm truncate">
-                {(page.products as any)?.title}
+                {page.products?.title}
               </div>
               <div className="text-text-muted text-xs mt-0.5">
                 /course/{page.slug}
@@ -52,7 +64,7 @@ export default async function AdminLandingPagesPage() {
               <Link
                 href={`/course/${page.slug}`}
                 target="_blank"
-                className="px-3 py-1.5 rounded-lg border border-white/[0.07] text-xs text-text-muted hover:text-[#EEEEFF] transition-all"
+                className="px-3 py-1.5 rounded-lg border border-slate-200 text-xs text-text-muted hover:text-text transition-all"
               >
                 Preview
               </Link>

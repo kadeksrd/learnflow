@@ -39,9 +39,9 @@ export function ProductForm({ product, categories }: { product: any; categories:
   }
 
   const Toggle = ({ label, sub, value, onChange }: any) => (
-    <div className="flex items-center justify-between p-4 bg-card border border-white/[0.07] rounded-xl">
+    <div className="flex items-center justify-between p-4 bg-card border border-slate-200 rounded-xl">
       <div><div className="font-semibold text-sm">{label}</div><div className="text-text-muted text-xs mt-0.5">{sub}</div></div>
-      <div onClick={onChange} className={`w-10 h-6 rounded-full transition-colors relative cursor-pointer ${value ? 'bg-green-500' : 'bg-surface border border-white/20'}`}>
+      <div onClick={onChange} className={`w-10 h-6 rounded-full transition-colors relative cursor-pointer ${value ? 'bg-green-500' : 'bg-surface border border-slate-300'}`}>
         <div className={`absolute top-0.5 w-5 h-5 rounded-full bg-white transition-transform ${value ? 'left-4' : 'left-0.5'}`} />
       </div>
     </div>
@@ -95,13 +95,13 @@ export function ProductForm({ product, categories }: { product: any; categories:
 
       <div>
         <label className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Deskripsi Singkat</label>
-        <textarea className="w-full px-4 py-3 bg-surface border border-white/[0.07] rounded-xl text-[#EEEEFF] text-sm outline-none focus:border-accent resize-none" rows={3}
+        <textarea className="w-full px-4 py-3 bg-surface border border-slate-200 rounded-xl text-text text-sm outline-none focus:border-accent resize-none" rows={3}
           value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} placeholder="Deskripsi yang muncul di store..." />
       </div>
 
       <div>
         <label className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Kategori</label>
-        <select className="w-full px-4 py-3 bg-surface border border-white/[0.07] rounded-xl text-[#EEEEFF] text-sm outline-none focus:border-accent" value={form.category_id} onChange={e => setForm(p => ({ ...p, category_id: e.target.value }))}>
+        <select className="w-full px-4 py-3 bg-surface border border-slate-200 rounded-xl text-text text-sm outline-none focus:border-accent" value={form.category_id} onChange={e => setForm(p => ({ ...p, category_id: e.target.value }))}>
           <option value="">-- Pilih Kategori --</option>
           {categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
@@ -124,7 +124,7 @@ export function ProductForm({ product, categories }: { product: any; categories:
       </div>
 
       {!isNew && (
-        <div className="pt-2 border-t border-white/[0.07]">
+        <div className="pt-2 border-t border-slate-200">
           <Button variant="outline" size="sm" onClick={() => router.push(`/admin/landing-pages/${product.id}`)}>
             <FileText size={14} /> Edit Landing Page
           </Button>

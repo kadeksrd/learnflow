@@ -3,27 +3,68 @@
 @tailwind utilities;
 
 @layer base {
+  /* ═══ LIGHT MODE (default) ═══ */
   :root {
-    --bg: #05050c;
-    --surface: #0c0c1a;
-    --card: #10101f;
-    --accent: #7c6bff;
-    --accent-light: #9f91ff;
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --card: #ffffff;
+    --accent: #6366f1;
+    --accent-light: #818cf8;
     --cta: #f59e0b;
+    --cta-hover: #d97706;
+    --green: #10b981;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --text-dim: #94a3b8;
+    --border: #e2e8f0;
+    --border-light: #f1f5f9;
+    --border-heavy: #cbd5e1;
+    --hover-bg: #f1f5f9;
+    --hover-bg-strong: #e2e8f0;
+    --card-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 6px 16px rgba(99,102,241,0.04);
+    --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.06), 0 12px 28px rgba(99,102,241,0.08);
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(0, 0, 0, 0.04);
+    --code-bg: #f1f5f9;
+    --gradient-text-from: #6366f1;
+    --gradient-text-to: #a855f7;
+  }
+
+  /* ═══ DARK MODE ═══ */
+  [data-theme="dark"] {
+    --bg: #05050C;
+    --surface: #0C0C1A;
+    --card: #10101F;
+    --accent: #6366f1;
+    --accent-light: #818cf8;
+    --cta: #f59e0b;
+    --cta-hover: #fbbf24;
     --green: #10b981;
     --text: #eeeeff;
     --text-muted: #7070a0;
+    --text-dim: #4a4a70;
+    --border: rgba(255,255,255,0.07);
+    --border-light: rgba(255,255,255,0.04);
+    --border-heavy: rgba(255,255,255,0.12);
+    --hover-bg: rgba(255,255,255,0.05);
+    --hover-bg-strong: rgba(255,255,255,0.1);
+    --card-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 6px 16px rgba(99,102,241,0.06);
+    --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.4), 0 12px 28px rgba(99,102,241,0.12);
+    --glass-bg: rgba(12, 12, 26, 0.7);
+    --glass-border: rgba(255,255,255,0.07);
+    --code-bg: #0C0C1A;
+    --gradient-text-from: #a855f7;
+    --gradient-text-to: #f59e0b;
   }
 
-  /* KUNCI AGAR TIDAK BANTET: Set font global dan line-height */
   html,
   body {
-    font-family:
-      var(--font-poppins), sans-serif; /* Pastikan ini sesuai variable di layout.tsx */
-    line-height: 1.6; /* Jarak antar baris lebih lega */
+    font-family: var(--font-poppins), sans-serif;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     background-color: var(--bg);
     color: var(--text);
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   * {
@@ -31,7 +72,6 @@
     scrollbar-color: var(--accent) var(--bg);
   }
 
-  /* Scrollbar styling tetap sama */
   *::-webkit-scrollbar {
     width: 4px;
   }
@@ -49,12 +89,9 @@
 }
 
 @layer utilities {
-  /* Update utilities agar sesuai dengan Poppins */
   .font-poppins {
     font-family: var(--font-poppins), sans-serif;
   }
-
-  /* Kalau masih butuh Syne/DM Sans silakan biarkan, tapi Poppins harus ada */
   .font-syne {
     font-family: var(--font-poppins), sans-serif;
   }
@@ -63,16 +100,25 @@
   }
 
   .text-gradient {
-    background: linear-gradient(135deg, #9f91ff, #f59e0b);
+    background: linear-gradient(135deg, var(--gradient-text-from), var(--gradient-text-to));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .glass {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  }
+
+  .card-shadow {
+    box-shadow: var(--card-shadow);
+    transition: box-shadow 0.3s ease;
+  }
+  .card-shadow:hover {
+    box-shadow: var(--card-shadow-hover);
   }
 
   /* Hide scrollbar for Chrome, Safari and Opera */
@@ -82,14 +128,13 @@
 
   /* Hide scrollbar for IE, Edge and Firefox */
   .scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 
   .hover-scrollbar-show:hover::-webkit-scrollbar {
     display: block;
   }
-
 
   @keyframes marquee-bounce {
     0%, 20% { left: 0; transform: translateX(0); }
@@ -101,3 +146,31 @@
     animation: marquee-bounce 10s ease-in-out infinite alternate;
   }
 }
+
+/* ═══ DARK MODE OVERRIDES for Tailwind utility classes ═══ */
+/* Borders: slate-* → dark mode equivalents */
+[data-theme="dark"] .border-slate-100 { border-color: var(--border-light) !important; }
+[data-theme="dark"] .border-slate-200 { border-color: var(--border) !important; }
+[data-theme="dark"] .border-slate-300 { border-color: var(--border-heavy) !important; }
+
+/* Backgrounds: slate-* → dark mode equivalents */
+[data-theme="dark"] .bg-slate-50  { background-color: var(--surface) !important; }
+[data-theme="dark"] .bg-slate-100 { background-color: var(--card) !important; }
+[data-theme="dark"] .bg-slate-200 { background-color: #161628 !important; }
+
+/* Hover backgrounds */
+[data-theme="dark"] .hover\:bg-slate-50:hover  { background-color: var(--hover-bg) !important; }
+[data-theme="dark"] .hover\:bg-slate-100:hover { background-color: var(--hover-bg-strong) !important; }
+[data-theme="dark"] .hover\:bg-slate-200:hover { background-color: rgba(255,255,255,0.15) !important; }
+
+/* Shadows */
+[data-theme="dark"] .shadow-slate-200\/50 { --tw-shadow-color: rgba(0,0,0,0.3) !important; }
+[data-theme="dark"] .shadow-slate-200\/60 { --tw-shadow-color: rgba(0,0,0,0.4) !important; }
+
+/* Text overrides for remaining hardcoded slate text */
+[data-theme="dark"] .text-slate-600 { color: var(--text-muted) !important; }
+[data-theme="dark"] .text-slate-500 { color: var(--text-muted) !important; }
+[data-theme="dark"] .text-slate-400 { color: var(--text-dim) !important; }
+
+/* Code blocks */
+[data-theme="dark"] code { background-color: var(--code-bg); }

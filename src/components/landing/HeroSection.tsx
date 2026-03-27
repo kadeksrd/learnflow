@@ -72,7 +72,7 @@ export function HeroSection({ landingPage, product, ctaText, onCTA, isProcessing
 
         {/* Media card */}
         <div className="w-full">
-          <div className="bg-card border border-white/[0.07] rounded-2xl overflow-hidden shadow-2xl shadow-black/20">
+          <div className="bg-card border border-slate-200 rounded-2xl overflow-hidden shadow-2xl shadow-black/20">
             {/* 16:9 media area */}
             <div className="relative w-full overflow-hidden bg-surface" style={{ aspectRatio: '16/9' }}>
               {landingPage.preview_video ? (
@@ -83,7 +83,7 @@ export function HeroSection({ landingPage, product, ctaText, onCTA, isProcessing
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-4"
                   style={{ background: 'linear-gradient(135deg, #0A0015, #1A0A2E)' }}>
                   <span className="text-4xl">🎬</span>
-                  <div className="w-14 h-14 rounded-full bg-white/10 border-2 border-white/30 flex items-center justify-center">
+                  <div className="w-14 h-14 rounded-full bg-slate-100 border-2 border-slate-300 flex items-center justify-center">
                     <Play size={20} className="text-white ml-1" />
                   </div>
                   <p className="text-text-muted text-sm">Preview tersedia setelah daftar</p>
@@ -93,9 +93,9 @@ export function HeroSection({ landingPage, product, ctaText, onCTA, isProcessing
             {/* Stats */}
             <div className="p-4">
               <p className="text-text-muted text-xs mb-3">Yang kamu dapatkan:</p>
-              <div className="grid grid-cols-3 border border-white/[0.07] rounded-xl overflow-hidden">
+              <div className="grid grid-cols-3 border border-slate-200 rounded-xl overflow-hidden">
                 {[{ value: `${totalModules}`, label: 'Modul' }, { value: `${totalLessons}+`, label: 'Lesson' }, { value: '∞', label: 'Akses' }].map((s, i) => (
-                  <div key={i} className={`p-3 text-center ${i < 2 ? 'border-r border-white/[0.07]' : ''}`}>
+                  <div key={i} className={`p-3 text-center ${i < 2 ? 'border-r border-slate-200' : ''}`}>
                     <div className="font-syne font-extrabold text-lg">{s.value}</div>
                     <div className="text-text-muted text-xs mt-0.5">{s.label}</div>
                   </div>

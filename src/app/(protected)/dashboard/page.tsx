@@ -151,7 +151,7 @@ export default async function DashboardPage() {
           </div>
           <Link
             href="/store"
-            className="px-3 sm:px-4 py-2 bg-card border border-white/[0.07] rounded-xl text-xs sm:text-sm text-text-muted hover:text-[#EEEEFF] hover:border-accent/30 transition-all shrink-0 ml-3"
+            className="px-3 sm:px-4 py-2 bg-card border border-slate-200 rounded-xl text-xs sm:text-sm text-text-muted hover:text-text hover:border-accent/30 transition-all shrink-0 ml-3"
           >
             + Kursus
           </Link>
@@ -210,14 +210,14 @@ export default async function DashboardPage() {
               </div>
 
               {/* Overall progress bar */}
-              <div className="relative mt-5 pt-4 border-t border-white/[0.07]">
+              <div className="relative mt-5 pt-4 border-t border-slate-200">
                 <div className="flex justify-between text-xs text-text-muted mb-2">
                   <span>Progress keseluruhan</span>
                   <span className="font-semibold text-accent-light">
                     {overallProgress}%
                   </span>
                 </div>
-                <div className="h-2 bg-black/30 rounded-full overflow-hidden">
+                <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-gradient-to-r from-accent to-accent-light rounded-full transition-all"
                     style={{ width: `${overallProgress}%` }}
@@ -255,7 +255,7 @@ export default async function DashboardPage() {
           ].map(({ icon: Icon, value, label, color, bg }) => (
             <div
               key={label}
-              className="bg-card border border-white/[0.07] rounded-2xl p-3 sm:p-5"
+              className="bg-card border border-slate-200 rounded-2xl p-3 sm:p-5"
             >
               <div
                 className={`w-8 h-8 sm:w-10 sm:h-10 ${bg} rounded-xl flex items-center justify-center mb-2 sm:mb-3`}
@@ -315,10 +315,10 @@ export default async function DashboardPage() {
               return (
                 <div
                   key={course.id}
-                  className="bg-card border border-white/[0.07] rounded-2xl overflow-hidden hover:border-white/[0.12] transition-all"
+                  className="bg-card border border-slate-200 rounded-2xl overflow-hidden hover:border-accent/30 transition-all"
                 >
                   <div className="flex flex-col sm:grid sm:grid-cols-[260px_1fr]">
-                    <div className="p-4 sm:p-5 sm:border-r border-b sm:border-b-0 border-white/[0.07]">
+                    <div className="p-4 sm:p-5 sm:border-r border-b sm:border-b-0 border-slate-200">
                       <MyCourseCard
                         course={course}
                         progress={progress}
@@ -385,7 +385,7 @@ export default async function DashboardPage() {
             })}
           </div>
         ) : (
-          <div className="text-center py-12 sm:py-16 bg-card border border-white/[0.07] rounded-2xl">
+          <div className="text-center py-12 sm:py-16 bg-card border border-slate-200 rounded-2xl">
             <div className="text-5xl mb-4">📚</div>
             <h3 className="font-syne font-bold text-lg mb-2">
               Belum ada kursus

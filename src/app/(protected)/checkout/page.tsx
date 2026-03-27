@@ -5,15 +5,15 @@ import { CheckoutContent } from "./CheckoutContent";
 export default async function CheckoutPage({
   searchParams,
 }: {
-  searchParams: { product_id?: string };
+  searchParams: Promise<{ product_id?: string }>;
 }) {
+  const { product_id: productId } = await searchParams;
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/login?redirect=/checkout");
 
-  const productId = searchParams.product_id;
   if (!productId) redirect("/store");
 
   const results = await Promise.all([

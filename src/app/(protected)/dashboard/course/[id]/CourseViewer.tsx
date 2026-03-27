@@ -206,7 +206,7 @@ export function CourseViewer({
   const renderSidebarContent = () => (
     <div className={cn("flex flex-col h-full bg-surface overscroll-contain transition-all duration-300", isSidebarCollapsed ? "w-[80px]" : "w-full")}>
       {/* Fixed Part */}
-      <div className={cn("p-6 border-b border-white/[0.07] shrink-0", isSidebarCollapsed && "p-4")}>
+      <div className={cn("p-6 border-b border-slate-200 shrink-0", isSidebarCollapsed && "p-4")}>
         {/* Logo & Brand & Toggle */}
         <div className={cn("flex items-center justify-between gap-3 mb-8", isSidebarCollapsed && "flex-col mb-6")}>
           {!isSidebarCollapsed && (
@@ -224,7 +224,7 @@ export function CourseViewer({
           )}
           <button
             onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-            className="p-2 text-text-dim hover:text-white hover:bg-white/5 rounded-lg transition-all"
+            className="p-2 text-text-dim hover:text-accent hover:bg-slate-50 rounded-lg transition-all"
             title={isSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
           >
             {isSidebarCollapsed ? <PanelLeftOpen size={20} /> : <PanelLeftClose size={20} />}
@@ -235,7 +235,7 @@ export function CourseViewer({
           <>
             <Link 
               href="/dashboard" 
-              className="flex items-center gap-2 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-xs font-extrabold text-text-muted hover:text-white hover:bg-accent/10 hover:border-accent/30 transition-all w-full group/back mb-6"
+              className="flex items-center gap-2 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-extrabold text-text-muted hover:text-accent hover:bg-accent/10 hover:border-accent/30 transition-all w-full group/back mb-6"
             >
               <ArrowLeft size={16} className="group-hover/back:-translate-x-1 transition-transform" />
               <span>Kembali ke Dashboard</span>
@@ -274,7 +274,7 @@ export function CourseViewer({
                 className={cn(
                   "w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-left transition-all group relative",
                   active
-                    ? "bg-white/5 shadow-lg border border-white/[0.05]"
+                    ? "bg-slate-50 shadow-lg border border-slate-200"
                     : "hover:bg-white/[0.02]",
                   isSidebarCollapsed && "justify-center px-0 py-4 h-12 w-12 mx-auto rounded-xl"
                 )}
@@ -286,7 +286,7 @@ export function CourseViewer({
                     ? "border-accent bg-accent text-white" 
                     : done 
                       ? "border-green-500/50 text-green-400" 
-                      : "border-white/10 text-text-dim group-hover:border-white/20",
+                      : "border-slate-200 text-text-dim group-hover:border-slate-300",
                   isSidebarCollapsed && "w-7 h-7"
                 )}>
                   {idx + 1}
@@ -367,7 +367,7 @@ export function CourseViewer({
         {/* Header Section */}
         <header className="px-6 sm:px-10 py-8">
           <div className="max-w-[1200px] mx-auto">
-            <div className="flex items-center justify-between gap-6 pb-2 border-b border-white/[0.03]">
+            <div className="flex items-center justify-between gap-6 pb-2 border-b border-slate-100">
               <div className="flex-1 min-w-0">
                 <div className="flex-1 min-w-0 overflow-hidden relative py-1">
                   <div className="flex w-max animate-marquee-bounce">
@@ -387,7 +387,7 @@ export function CourseViewer({
                       "flex items-center gap-2 px-3 py-1.5 rounded-lg text-[10px] font-bold tracking-wider transition-all border",
                       autoNext 
                         ? "bg-accent/20 text-accent-light border-accent/30" 
-                        : "bg-white/5 text-text-dim border-white/10 hover:text-white"
+                        : "bg-slate-50 text-text-dim border-slate-200 hover:text-accent"
                     )}
                    >
                      <Zap size={12} fill={autoNext ? "currentColor" : "none"} />
@@ -404,7 +404,7 @@ export function CourseViewer({
                       }
                     }}
                     title="Muat Ulang Video (Mulai dari 0)"
-                    className="p-2 rounded-lg bg-white/5 border border-white/10 text-text-dim hover:text-white hover:bg-white/10 transition-all active:scale-95"
+                    className="p-2 rounded-lg bg-slate-50 border border-slate-200 text-text-dim hover:text-accent hover:bg-slate-100 transition-all active:scale-95"
                    >
                      <RotateCcw size={14} />
                    </button>
@@ -417,7 +417,7 @@ export function CourseViewer({
                   <button
                     disabled={!prevLesson}
                     onClick={() => prevLesson && openLesson(prevLesson.id)}
-                    className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-text-muted hover:bg-white/5 hover:text-white transition-all disabled:opacity-30 shadow-sm"
+                    className="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center text-text-muted hover:bg-slate-50 hover:text-accent transition-all disabled:opacity-30 shadow-sm"
                   >
                     <ChevronLeft size={20} />
                   </button>
@@ -437,7 +437,7 @@ export function CourseViewer({
         {/* Video Player */}
         <section className="px-4 sm:px-10 pb-8">
           <div className="max-w-[1200px] mx-auto">
-            <div className="relative w-full bg-black aspect-video rounded-[2rem] overflow-hidden shadow-2xl border border-white/[0.05]">
+            <div className="relative w-full bg-black aspect-video rounded-[2rem] overflow-hidden shadow-2xl border border-slate-200">
               {getYoutubeId(lesson.video_url || '') ? (
                 <YouTube
                   key={`${lesson.id}-${videoReloadKey}`}
@@ -473,7 +473,7 @@ export function CourseViewer({
                 />
               ) : (
                 <div className="w-full h-full bg-gradient-to-br from-[#0A0015] to-[#1A0A2E] flex flex-col items-center justify-center gap-4">
-                  <div className="w-16 h-16 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center text-3xl">🎬</div>
+                  <div className="w-16 h-16 rounded-3xl bg-slate-50 border border-slate-200 flex items-center justify-center text-3xl">🎬</div>
                   <p className="text-text-muted text-sm font-bold">Video tidak tersedia</p>
                 </div>
               )}
@@ -498,13 +498,13 @@ export function CourseViewer({
 
               {/* Progress Overlay */}
               {player && (
-                <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-white/10 z-[50]">
+                <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-slate-100 z-[50]">
                   <div
                     className="h-full bg-accent shadow-[0_0_15px_rgba(168,85,247,0.6)] transition-all duration-300 relative"
                     style={{ width: `${watchProgress}%` }}
                   >
                     {/* Percentage Indicator */}
-                    <div className="absolute -top-7 -right-4 flex items-center justify-center px-1.5 py-0.5 bg-accent/90 backdrop-blur-sm text-[10px] font-bold text-white rounded-md shadow-lg border border-white/10 select-none">
+                    <div className="absolute -top-7 -right-4 flex items-center justify-center px-1.5 py-0.5 bg-accent/90 backdrop-blur-sm text-[10px] font-bold text-white rounded-md shadow-lg border border-slate-200 select-none">
                       {Math.round(watchProgress)}%
                     </div>
                   </div>
@@ -518,7 +518,7 @@ export function CourseViewer({
         <section className="px-6 sm:px-10 pb-20">
           <div className="max-w-[1200px] mx-auto">
             {/* Tabs */}
-            <div className="flex items-center gap-8 border-b border-white/[0.05] mb-10 overflow-x-auto no-scrollbar">
+            <div className="flex items-center gap-8 border-b border-slate-200 mb-10 overflow-x-auto no-scrollbar">
               {[
                 { id: "notes", label: "Catatan" },
                 { id: "resources", label: "Materi" }
@@ -528,7 +528,7 @@ export function CourseViewer({
                   onClick={() => setActiveTab(t.id as any)}
                   className={cn(
                     "pb-4 text-sm font-bold transition-all relative whitespace-nowrap",
-                    activeTab === t.id ? "text-accent-light" : "text-text-dim hover:text-white"
+                    activeTab === t.id ? "text-accent-light" : "text-text-dim hover:text-accent"
                   )}
                 >
                   {t.label}
@@ -572,7 +572,7 @@ export function CourseViewer({
                         key={s.id}
                         href={s.url}
                         target="_blank" rel="noopener noreferrer"
-                        className="flex items-center gap-4 p-5 bg-surface border border-white/5 rounded-2xl hover:border-accent/40 hover:shadow-xl hover:shadow-accent/5 transition-all group"
+                        className="flex items-center gap-4 p-5 bg-surface border border-slate-200 rounded-2xl hover:border-accent/40 hover:shadow-xl hover:shadow-accent/5 transition-all group"
                       >
                         <span className="text-3xl shrink-0">{s.icon || "📎"}</span>
                         <div className="flex-1 min-w-0">
@@ -598,7 +598,7 @@ export function CourseViewer({
   return (
     <div className="flex flex-col h-screen bg-bg text-white overflow-hidden font-sans">
       {/* Mobile Top Bar */}
-      <div className="lg:hidden h-14 bg-surface border-b border-white/5 flex items-center justify-between px-4 shrink-0 z-50">
+      <div className="lg:hidden h-14 bg-surface border-b border-slate-200 flex items-center justify-between px-4 shrink-0 z-50">
         <button
           onClick={() => setMobileOpen(true)}
           className="p-2 -ml-2 text-accent-light"
@@ -614,7 +614,7 @@ export function CourseViewer({
       <div className="flex flex-1 overflow-hidden relative">
         {/* Desktop Sidebar (Left) */}
         <aside className={cn(
-          "hidden lg:flex flex-col bg-surface border-r border-white/5 shrink-0 shadow-sm transition-all duration-300 ease-in-out",
+          "hidden lg:flex flex-col bg-surface border-r border-slate-200 shrink-0 shadow-sm transition-all duration-300 ease-in-out",
           isSidebarCollapsed ? "w-[80px]" : "w-[380px]"
         )}>
           {renderSidebarContent()}
@@ -633,9 +633,9 @@ export function CourseViewer({
               onClick={() => setMobileOpen(false)}
             />
             <div className="fixed top-0 left-0 bottom-0 w-[85%] max-w-[320px] bg-surface z-[70] lg:hidden flex flex-col shadow-2xl animate-in slide-in-from-left duration-300">
-              <div className="p-4 border-b border-white/5 flex items-center justify-between">
+              <div className="p-4 border-b border-slate-200 flex items-center justify-between">
                 <span className="font-syne font-extrabold text-white">Menu Materi</span>
-                <button onClick={() => setMobileOpen(false)} className="p-2 text-text-muted hover:text-white">
+                <button onClick={() => setMobileOpen(false)} className="p-2 text-text-muted hover:text-accent">
                   <X size={22} />
                 </button>
               </div>
@@ -652,7 +652,7 @@ export function CourseViewer({
             className="absolute inset-0 bg-black/80 backdrop-blur-xl animate-in fade-in duration-500"
             onClick={() => setShowCompleteModal(false)}
           />
-          <div className="relative bg-[#1A0A2E] border border-white/10 rounded-[3rem] p-10 max-w-sm w-full text-center shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-300">
+          <div className="relative bg-gradient-to-br from-indigo-50 to-purple-50 border border-slate-200 rounded-[3rem] p-10 max-w-sm w-full text-center shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-300">
             <div className="w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-[2rem] mx-auto mb-8 flex items-center justify-center shadow-[0_20px_40px_rgba(234,179,8,0.3)] animate-bounce">
               <Trophy size={48} className="text-white" />
             </div>
@@ -672,7 +672,7 @@ export function CourseViewer({
               </Link>
               <button
                 onClick={() => setShowCompleteModal(false)}
-                className="text-text-dim text-xs font-bold hover:text-white transition-colors py-2"
+                className="text-text-dim text-xs font-bold hover:text-accent transition-colors py-2"
               >
                 Nanti Saja
               </button>

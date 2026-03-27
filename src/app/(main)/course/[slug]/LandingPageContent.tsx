@@ -123,7 +123,7 @@ export function LandingPageContent({
 
       {/* Final CTA */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-20 text-center">
-        <div className="bg-card border border-white/[0.07] rounded-2xl p-6 sm:p-12">
+        <div className="bg-card border border-slate-200 rounded-2xl p-6 sm:p-12">
           <h2 className="font-syne font-extrabold text-2xl sm:text-3xl mb-4">
             Siap Memulai?
           </h2>

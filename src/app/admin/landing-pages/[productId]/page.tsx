@@ -6,19 +6,20 @@ export const dynamic = "force-dynamic";
 export default async function EditLandingPage({
   params,
 }: {
-  params: { productId: string };
+  params: Promise<{ productId: string }>;
 }) {
-  const supabase = createClient();
+  const { productId } = await params;
+  const supabase = await createClient();
   const [{ data: product }, { data: landingPage }] = await Promise.all([
     supabase
       .from("products")
       .select("id, title, is_free")
-      .eq("id", params.productId)
+      .eq("id", productId)
       .single(),
     supabase
       .from("landing_pages")
       .select("*")
-      .eq("product_id", params.productId)
+      .eq("product_id", productId)
       .single(),
   ]) as any;
   if (!product)

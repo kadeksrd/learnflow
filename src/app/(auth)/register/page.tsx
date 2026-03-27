@@ -53,7 +53,7 @@ export default function RegisterPage() {
           </ul>
 
           {/* Social proof */}
-          <div className="mt-10 p-5 bg-card border border-white/[0.07] rounded-2xl">
+          <div className="mt-10 p-5 bg-card border border-slate-200 rounded-2xl">
             <div className="flex -space-x-2 mb-3">
               {['A','B','C','D','E'].map((l, i) => (
                 <div key={i} className="w-8 h-8 rounded-full border-2 border-bg bg-gradient-accent flex items-center justify-center text-white text-xs font-bold">
@@ -78,7 +78,7 @@ export default function RegisterPage() {
             </Link>
           </div>
 
-          <div className="bg-card border border-white/[0.08] rounded-3xl p-8 shadow-2xl shadow-black/30">
+          <div className="bg-card border border-slate-200 rounded-3xl p-8 shadow-2xl shadow-slate-200/50">
             <h1 className="font-syne font-bold text-xl mb-1">Buat akun gratis</h1>
             <p className="text-text-muted text-sm mb-6">Gratis selamanya, tidak butuh kartu kredit</p>
 
@@ -87,9 +87,9 @@ export default function RegisterPage() {
 
             {/* Divider */}
             <div className="flex items-center gap-3 my-6">
-              <div className="flex-1 h-px bg-white/[0.08]" />
+              <div className="flex-1 h-px bg-slate-200" />
               <span className="text-xs text-text-dim font-medium px-2">atau dengan email</span>
-              <div className="flex-1 h-px bg-white/[0.08]" />
+              <div className="flex-1 h-px bg-slate-200" />
             </div>
 
             {/* Email form */}

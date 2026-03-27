@@ -12,7 +12,7 @@ export function CurriculumSection({ course }: { course: any }) {
     s + m.lessons.reduce((ls: number, l: any) => ls + (l.duration || 0), 0), 0) || 0
 
   return (
-    <section className="py-10 sm:py-16 border-t border-white/[0.05]">
+    <section className="py-10 sm:py-16 border-t border-slate-200">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-8 sm:mb-12">
           <p className="text-xs font-bold text-accent-light uppercase tracking-widest mb-3">Kurikulum</p>
@@ -27,11 +27,11 @@ export function CurriculumSection({ course }: { course: any }) {
 
         {/* Flat mode: no accordion, just list */}
         {!useChapters && course.modules?.[0] && (
-          <div className="bg-card border border-white/[0.07] rounded-2xl overflow-hidden">
+          <div className="bg-card border border-slate-200 rounded-2xl overflow-hidden">
             {course.modules[0].lessons.map((lesson: any, li: number) => (
               <div key={li}
-                className="flex items-center gap-3 px-5 py-4 border-b border-white/[0.04] last:border-0 hover:bg-card-hover transition-colors">
-                <div className="w-7 h-7 rounded-full border border-white/[0.1] flex items-center justify-center shrink-0">
+                className="flex items-center gap-3 px-5 py-4 border-b border-slate-100 last:border-0 hover:bg-card-hover transition-colors">
+                <div className="w-7 h-7 rounded-full border border-slate-300 flex items-center justify-center shrink-0">
                   {li < 2 ? <Play size={11} className="text-accent-light ml-0.5" /> : <Lock size={10} className="text-text-dim" />}
                 </div>
                 <span className="flex-1 text-sm text-text-muted">{lesson.title}</span>
@@ -48,7 +48,7 @@ export function CurriculumSection({ course }: { course: any }) {
         {useChapters && (
           <div className="space-y-3">
             {course.modules?.map((mod: any, mi: number) => (
-              <div key={mi} className="bg-card border border-white/[0.07] rounded-2xl overflow-hidden">
+              <div key={mi} className="bg-card border border-slate-200 rounded-2xl overflow-hidden">
                 <button onClick={() => toggle(mi)}
                   className="w-full flex items-center gap-3 px-5 py-4 text-left hover:bg-card-hover transition-colors">
                   <div className="w-8 h-8 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-xs font-bold text-accent-light shrink-0">
@@ -62,10 +62,10 @@ export function CurriculumSection({ course }: { course: any }) {
                   <ChevronDown size={16} className={`text-text-muted transition-transform shrink-0 ${expanded.includes(mi) ? 'rotate-180' : ''}`} />
                 </button>
                 {expanded.includes(mi) && (
-                  <div className="border-t border-white/[0.06]">
+                  <div className="border-t border-slate-200">
                     {mod.lessons.map((lesson: any, li: number) => (
-                      <div key={li} className="flex items-center gap-3 px-5 py-3.5 border-b border-white/[0.04] last:border-0 hover:bg-surface/50 transition-colors">
-                        <div className="w-6 h-6 rounded-full border border-white/[0.08] flex items-center justify-center shrink-0">
+                      <div key={li} className="flex items-center gap-3 px-5 py-3.5 border-b border-slate-100 last:border-0 hover:bg-surface/50 transition-colors">
+                        <div className="w-6 h-6 rounded-full border border-slate-200 flex items-center justify-center shrink-0">
                           {mi === 0 && li === 0 ? <Play size={10} className="text-accent-light ml-0.5" /> : <Lock size={9} className="text-text-dim" />}
                         </div>
                         <span className="flex-1 text-sm text-text-muted">{lesson.title}</span>

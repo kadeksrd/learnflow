@@ -53,7 +53,7 @@ export function ReviewForm({ productId, existingReview }: ReviewFormProps) {
   // ── Already reviewed, not editing ──
   if (existingReview && !editing) {
     return (
-      <div className="bg-card border border-white/[0.07] rounded-2xl p-5">
+      <div className="bg-card border border-slate-200 rounded-2xl p-5">
         <div className="flex items-center justify-between mb-3">
           <h3 className="font-syne font-bold text-sm">Rating Kamu</h3>
           <button
@@ -92,7 +92,7 @@ export function ReviewForm({ productId, existingReview }: ReviewFormProps) {
 
   // ── Form ──
   return (
-    <div className="bg-card border border-white/[0.07] rounded-2xl p-5">
+    <div className="bg-card border border-slate-200 rounded-2xl p-5">
       <h3 className="font-syne font-bold text-sm mb-4">
         {existingReview ? '✏️ Ubah Rating' : '⭐ Beri Rating Kursus Ini'}
       </h3>
@@ -130,7 +130,7 @@ export function ReviewForm({ productId, existingReview }: ReviewFormProps) {
           value={comment}
           onChange={e => setComment(e.target.value)}
           maxLength={500}
-          className="w-full px-4 py-3 bg-surface border border-white/[0.07] rounded-xl text-[#EEEEFF] placeholder:text-text-dim text-sm outline-none focus:border-accent transition-all resize-none"
+          className="w-full px-4 py-3 bg-surface border border-slate-200 rounded-xl text-text placeholder:text-text-dim text-sm outline-none focus:border-accent transition-all resize-none"
         />
         <div className="flex justify-between mt-1">
           <span className="text-xs text-text-dim">

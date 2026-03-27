@@ -6,14 +6,15 @@ import { CourseViewer } from "./CourseViewer";
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
+  const { id } = await params;
   const supabase = await createClient();
-  const { data: course } = await supabase
+  const { data: course } = await (supabase
     .from("courses")
     .select("title")
-    .eq("id", params.id)
-    .single();
+    .eq("id", id)
+    .single() as any);
 
   return {
     title: course?.title || "Kursus",
@@ -23,8 +24,9 @@ export async function generateMetadata({
 export default async function CourseDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
   const supabase = await createClient();
   const {
     data: { user },
@@ -34,13 +36,13 @@ export default async function CourseDetailPage({
     .from("user_courses")
     .select("id")
     .eq("user_id", user!.id)
-    .eq("course_id", params.id)
+    .eq("course_id", id)
     .single();
   if (!access) {
     const { data: course } = await supabase
       .from("courses")
       .select("products(landing_pages(slug))")
-      .eq("id", params.id)
+      .eq("id", id)
       .single();
     const slug = (course as any)?.products?.landing_pages?.[0]?.slug;
     redirect(slug ? `/course/${slug}` : "/store");
@@ -51,7 +53,7 @@ export default async function CourseDetailPage({
     .select(
       "id, title, use_chapters, products(title, thumbnail), modules(id, title, order, lessons(id, title, duration, order, video_url, description, notes, suggestions(id, title, url, type, icon)))",
     )
-    .eq("id", params.id)
+    .eq("id", id)
     .single()) as any;
 
   if (!course) notFound();

@@ -37,9 +37,9 @@ const socials = [
 
 export function Footer() {
   return (
-    <footer className="bg-surface border-t border-white/[0.06] mt-24">
+    <footer className="bg-surface border-t border-slate-200 mt-24">
       {/* Top CTA Strip */}
-      <div className="border-b border-white/[0.06]">
+      <div className="border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-6">
           <div>
             <h3 className="font-syne font-extrabold text-xl mb-1">
@@ -49,11 +49,11 @@ export function Footer() {
           </div>
           <div className="flex gap-3 shrink-0">
             <Link href="/register"
-              className="px-5 py-2.5 bg-cta hover:bg-cta-hover text-black font-syne font-bold rounded-xl text-sm transition-all hover:-translate-y-0.5">
+              className="px-5 py-2.5 bg-cta hover:bg-cta-hover text-black font-syne font-bold rounded-xl text-sm transition-all hover:-translate-y-0.5 shadow-lg shadow-cta/20">
               Daftar Gratis →
             </Link>
             <Link href="/store"
-              className="px-5 py-2.5 bg-white/5 hover:bg-white/10 text-[#EEEEFF] rounded-xl text-sm transition-all border border-white/[0.07]">
+              className="px-5 py-2.5 bg-surface hover:bg-slate-50 text-text rounded-xl text-sm transition-all border border-slate-200 shadow-sm">
               Lihat Kursus
             </Link>
           </div>
@@ -66,7 +66,7 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="inline-flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-gradient-accent flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-accent flex items-center justify-center shadow-md shadow-accent/20">
                 <Zap size={16} className="text-white" />
               </div>
               <span className="font-syne font-extrabold text-xl text-gradient">LearnFlow</span>
@@ -78,7 +78,7 @@ export function Footer() {
             <div className="flex gap-3">
               {socials.map(({ icon: Icon, href, label }) => (
                 <a key={label} href={href} aria-label={label}
-                  className="w-9 h-9 rounded-xl bg-card border border-white/[0.07] flex items-center justify-center text-text-muted hover:text-accent-light hover:border-accent/30 transition-all">
+                  className="w-9 h-9 rounded-xl bg-surface border border-slate-200 flex items-center justify-center text-text-muted hover:text-accent hover:border-accent/30 transition-all shadow-sm">
                   <Icon size={16} />
                 </a>
               ))}
@@ -88,14 +88,14 @@ export function Footer() {
           {/* Link Groups */}
           {Object.entries(footerLinks).map(([group, links]) => (
             <div key={group}>
-              <h4 className="font-syne font-bold text-xs uppercase tracking-widest text-text-muted mb-4">
+              <h4 className="font-syne font-bold text-xs uppercase tracking-widest text-text-dim mb-4">
                 {group}
               </h4>
               <ul className="space-y-3">
                 {links.map(link => (
                   <li key={link.label}>
                     <Link href={link.href}
-                      className="text-sm text-text-muted hover:text-[#EEEEFF] transition-colors">
+                      className="text-sm text-text-muted hover:text-text transition-colors">
                       {link.label}
                     </Link>
                   </li>
@@ -107,7 +107,7 @@ export function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-white/[0.06]">
+      <div className="border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-text-dim text-xs">
             © {new Date().getFullYear()} LearnFlow. Hak cipta dilindungi.

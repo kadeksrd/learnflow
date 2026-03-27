@@ -43,7 +43,7 @@ export function AdminMobileNav() {
   return (
     <>
       {/* Top bar */}
-      <header className="sticky top-0 z-50 bg-surface/95 backdrop-blur-xl border-b border-white/[0.07] h-14 flex items-center justify-between px-4">
+      <header className="sticky top-0 z-50 bg-surface/95 backdrop-blur-xl border-b border-slate-200 h-14 flex items-center justify-between px-4">
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg bg-gradient-accent flex items-center justify-center">
             <Zap size={13} className="text-white" />
@@ -54,7 +54,7 @@ export function AdminMobileNav() {
           </div>
         </div>
         <button onClick={() => setDrawerOpen(true)}
-          className="p-2 rounded-xl bg-card border border-white/[0.07] text-text-muted">
+          className="p-2 rounded-xl bg-card border border-slate-200 text-text-muted">
           <Menu size={18} />
         </button>
       </header>
@@ -63,13 +63,13 @@ export function AdminMobileNav() {
       {drawerOpen && (
         <>
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50" onClick={() => setDrawerOpen(false)} />
-          <div className="fixed top-0 right-0 bottom-0 w-72 bg-surface border-l border-white/[0.07] z-50 flex flex-col">
-            <div className="p-4 border-b border-white/[0.07] flex items-center justify-between">
+          <div className="fixed top-0 right-0 bottom-0 w-72 bg-surface border-l border-slate-200 z-50 flex flex-col">
+            <div className="p-4 border-b border-slate-200 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="w-7 h-7 rounded-lg bg-gradient-accent flex items-center justify-center"><Zap size={13} className="text-white" /></div>
                 <span className="font-syne font-bold text-sm text-gradient">LearnFlow Admin</span>
               </div>
-              <button onClick={() => setDrawerOpen(false)} className="p-1.5 rounded-lg hover:bg-white/5 text-text-muted"><X size={18} /></button>
+              <button onClick={() => setDrawerOpen(false)} className="p-1.5 rounded-lg hover:bg-slate-50 text-text-muted"><X size={18} /></button>
             </div>
             <nav className="flex-1 p-3 overflow-auto">
               {/* Overview first */}
@@ -78,7 +78,7 @@ export function AdminMobileNav() {
                 const Icon = item.icon
                 return (
                   <Link key={item.href} href={item.href} onClick={() => setDrawerOpen(false)}
-                    className={cn('flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all mb-0.5', isActive ? 'bg-accent/15 text-accent-light font-semibold' : 'text-text-muted hover:text-[#EEEEFF] hover:bg-white/5')}>
+                    className={cn('flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all mb-0.5', isActive ? 'bg-accent/15 text-accent-light font-semibold' : 'text-text-muted hover:text-text hover:bg-slate-50')}>
                     <Icon size={16} />{item.label}
                   </Link>
                 )
@@ -92,7 +92,7 @@ export function AdminMobileNav() {
                     const Icon = item.icon
                     return (
                       <Link key={item.href} href={item.href} onClick={() => setDrawerOpen(false)}
-                        className={cn('flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all mb-0.5', isActive ? 'bg-accent/15 text-accent-light font-semibold' : 'text-text-muted hover:text-[#EEEEFF] hover:bg-white/5')}>
+                        className={cn('flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all mb-0.5', isActive ? 'bg-accent/15 text-accent-light font-semibold' : 'text-text-muted hover:text-text hover:bg-slate-50')}>
                         <Icon size={16} />{item.label}
                       </Link>
                     )
@@ -100,7 +100,7 @@ export function AdminMobileNav() {
                 </div>
               ))}
             </nav>
-            <div className="p-3 border-t border-white/[0.07]">
+            <div className="p-3 border-t border-slate-200">
               <Link href="/store" onClick={() => setDrawerOpen(false)}
                 className="flex items-center gap-2 px-4 py-3 text-sm text-text-muted">
                 ← Lihat Website
@@ -111,7 +111,7 @@ export function AdminMobileNav() {
       )}
 
       {/* Bottom tab bar */}
-      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-xl border-t border-white/[0.07] flex">
+      <nav className="fixed bottom-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-xl border-t border-slate-200 flex">
         {BOTTOM_TABS.map(({ href, icon: Icon, label, exact }: any) => {
           const isActive = exact ? pathname === href : pathname.startsWith(href)
           return (

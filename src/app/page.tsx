@@ -151,16 +151,16 @@ export default async function HomePage() {
       {/* ─── HERO ─── */}
       <section className="relative overflow-hidden min-h-[90vh] flex items-center">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-accent/8 rounded-full blur-[120px] animate-pulse" />
+          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-indigo-500/8 rounded-full blur-[120px] animate-pulse" />
           <div
-            className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-cta/6 rounded-full blur-[100px] animate-pulse"
+            className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-purple-400/6 rounded-full blur-[100px] animate-pulse"
             style={{ animationDelay: "1s" }}
           />
           <div
-            className="absolute inset-0 opacity-[0.02]"
+            className="absolute inset-0 opacity-[0.03]"
             style={{
               backgroundImage:
-                "linear-gradient(rgba(124,107,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(124,107,255,1) 1px, transparent 1px)",
+                "linear-gradient(rgba(99,102,241,1) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,1) 1px, transparent 1px)",
               backgroundSize: "60px 60px",
             }}
           />
@@ -168,7 +168,7 @@ export default async function HomePage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 w-full">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/25 text-accent-light text-xs font-bold mb-7">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/10 border border-accent/20 text-accent text-xs font-bold mb-7">
               ✨ {hero_badge}
             </div>
             <h1 className="font-syne font-extrabold text-5xl sm:text-6xl leading-[1.05] tracking-tight mb-6">
@@ -193,11 +193,11 @@ export default async function HomePage() {
               >
                 {hero_cta_primary} <ArrowRight size={18} />
               </Link>
-              <Link
+               <Link
                 href="#how-it-works"
-                className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-white/5 border border-white/10 text-[#EEEEFF] font-semibold text-base rounded-2xl hover:bg-white/10 transition-all"
+                className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-surface border border-slate-200 text-text font-semibold text-base rounded-2xl hover:bg-slate-50 transition-all shadow-sm"
               >
-                <Play size={16} className="text-accent-light" />{" "}
+                <Play size={16} className="text-accent" />{" "}
                 {hero_cta_secondary}
               </Link>
             </div>
@@ -226,7 +226,7 @@ export default async function HomePage() {
                 </div>
                 <p className="text-text-muted text-xs">
                   Dipercaya{" "}
-                  <span className="text-[#EEEEFF] font-semibold">10,000+</span>{" "}
+                  <span className="text-text font-semibold">10,000+</span>{" "}
                   pelajar
                 </p>
               </div>
@@ -236,7 +236,7 @@ export default async function HomePage() {
       </section>
 
       {/* ─── STATS ─── */}
-      <section className="border-y border-white/[0.05] bg-surface/50">
+      <section className="border-y border-slate-200 bg-surface/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             {stats.map((s: any) => (
@@ -266,7 +266,7 @@ export default async function HomePage() {
               </div>
               <Link
                 href="/store"
-                className="hidden sm:flex items-center gap-1.5 text-sm text-accent-light hover:underline font-semibold"
+                className="hidden sm:flex items-center gap-1.5 text-sm text-accent hover:underline font-semibold"
               >
                 Lihat Semua <ChevronRight size={16} />
               </Link>
@@ -283,7 +283,7 @@ export default async function HomePage() {
       {/* ─── HOW IT WORKS ─── */}
       <section
         id="how-it-works"
-        className="py-12 sm:py-20 bg-surface/30 border-y border-white/[0.05]"
+        className="py-12 sm:py-20 bg-slate-50 border-y border-slate-200"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-14">
@@ -302,12 +302,12 @@ export default async function HomePage() {
             {steps.map((step: any) => (
               <div
                 key={step.num}
-                className="bg-card border border-white/[0.07] rounded-2xl p-7 text-center hover:border-accent/30 transition-all hover:-translate-y-1"
+                className="bg-card border border-slate-200 rounded-2xl p-7 text-center hover:border-accent/30 transition-all hover:-translate-y-1 shadow-sm"
               >
-                <div className="w-16 h-16 rounded-2xl bg-gradient-accent flex items-center justify-center mx-auto mb-5 shadow-lg shadow-accent/25 text-3xl">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-accent flex items-center justify-center mx-auto mb-5 shadow-lg shadow-accent/20 text-3xl">
                   {step.icon}
                 </div>
-                <div className="font-syne font-extrabold text-3xl text-accent/30 mb-2">
+                <div className="font-syne font-extrabold text-3xl text-accent/20 mb-2">
                   {step.num}
                 </div>
                 <h3 className="font-syne font-bold text-lg mb-3">
@@ -361,7 +361,7 @@ export default async function HomePage() {
                 ].map(({ icon: Icon, title, desc }) => (
                   <div
                     key={title}
-                    className="p-4 bg-card border border-white/[0.07] rounded-xl"
+                    className="p-4 bg-card border border-slate-200 rounded-xl"
                   >
                     <Icon size={18} className="text-accent-light mb-2" />
                     <div className="font-semibold text-sm mb-1">{title}</div>
@@ -372,7 +372,7 @@ export default async function HomePage() {
             </div>
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-cta/5 rounded-3xl blur-2xl" />
-              <div className="relative bg-card border border-white/[0.08] rounded-3xl p-5 sm:p-8">
+              <div className="relative bg-card border border-slate-200 rounded-3xl p-5 sm:p-8 shadow-xl">
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   {[
                     {
@@ -448,7 +448,7 @@ export default async function HomePage() {
       </section>
 
       {/* ─── TESTIMONIALS ─── */}
-      <section className="py-12 sm:py-20 bg-surface/30 border-y border-white/[0.05]">
+      <section className="py-12 sm:py-20 bg-slate-50 border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
             <p className="text-xs font-bold text-accent-light uppercase tracking-widest mb-3">
@@ -460,7 +460,7 @@ export default async function HomePage() {
             {testimonials.map((t: any, i: number) => (
               <div
                 key={i}
-                className="bg-card border border-white/[0.07] rounded-2xl p-7 hover:border-accent/25 transition-all hover:-translate-y-1"
+                className="bg-card border border-slate-200 rounded-2xl p-7 hover:border-accent/25 transition-all hover:-translate-y-1 shadow-sm"
               >
                 <div className="flex gap-0.5 mb-4">
                   {[1, 2, 3, 4, 5].map((s) => (
@@ -497,7 +497,7 @@ export default async function HomePage() {
       {/* ─── CTA ─── */}
       <section className="py-12 sm:py-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <div className="relative bg-card border border-white/[0.08] rounded-3xl p-6 sm:p-14 overflow-hidden">
+          <div className="relative bg-card border border-slate-200 rounded-3xl p-6 sm:p-14 overflow-hidden shadow-2xl shadow-accent/5">
             <div className="absolute inset-0 pointer-events-none">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-accent/10 blur-3xl" />
             </div>
@@ -520,7 +520,7 @@ export default async function HomePage() {
                 </Link>
                 <Link
                   href="/store"
-                  className="inline-flex items-center justify-center gap-2.5 px-10 py-5 bg-white/5 border border-white/10 text-[#EEEEFF] font-semibold text-lg rounded-2xl hover:bg-white/10 transition-all"
+                  className="inline-flex items-center justify-center gap-2.5 px-10 py-5 bg-surface border border-slate-200 text-text font-semibold text-lg rounded-2xl hover:bg-slate-50 transition-all"
                 >
                   {cta_secondary}
                 </Link>

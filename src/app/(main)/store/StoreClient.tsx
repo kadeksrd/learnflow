@@ -50,10 +50,10 @@ export function StoreClient({ initialProducts, categories }: { initialProducts: 
           placeholder="Cari kursus..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="w-full pl-10 pr-10 py-3 bg-card border border-white/[0.07] rounded-xl text-sm text-[#EEEEFF] placeholder:text-text-dim outline-none focus:border-accent transition-colors"
+          className="w-full pl-10 pr-10 py-3 bg-card border border-slate-200 rounded-xl text-sm text-text placeholder:text-text-dim outline-none focus:border-accent transition-colors"
         />
         {search && (
-          <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-dim hover:text-[#EEEEFF]">
+          <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-dim hover:text-text">
             <X size={15} />
           </button>
         )}
@@ -72,7 +72,7 @@ export function StoreClient({ initialProducts, categories }: { initialProducts: 
             className={`px-4 py-2 rounded-xl text-sm font-medium transition-all shrink-0 ${
               priceFilter === f.id
                 ? 'bg-accent/20 text-accent-light border border-accent/40'
-                : 'bg-card border border-white/[0.07] text-text-muted hover:text-[#EEEEFF]'
+                : 'bg-card border border-slate-200 text-text-muted hover:text-text'
             }`}
           >
             {f.label}
@@ -87,7 +87,7 @@ export function StoreClient({ initialProducts, categories }: { initialProducts: 
 
       {/* Category pills — horizontally scrollable on mobile */}
       <div
-        className="flex gap-2 overflow-x-auto pb-2 mb-6 border-b border-white/[0.05]"
+        className="flex gap-2 overflow-x-auto pb-2 mb-6 border-b border-slate-200"
         style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
       >
         <button
@@ -95,7 +95,7 @@ export function StoreClient({ initialProducts, categories }: { initialProducts: 
           className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all shrink-0 ${
             selectedCategory === 'all'
               ? 'bg-accent text-white shadow-lg shadow-accent/25'
-              : 'bg-card border border-white/[0.07] text-text-muted'
+              : 'bg-card border border-slate-200 text-text-muted'
           }`}
         >
           Semua
@@ -107,7 +107,7 @@ export function StoreClient({ initialProducts, categories }: { initialProducts: 
             className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all shrink-0 ${
               selectedCategory === cat.slug
                 ? 'bg-accent text-white shadow-lg shadow-accent/25'
-                : 'bg-card border border-white/[0.07] text-text-muted'
+                : 'bg-card border border-slate-200 text-text-muted'
             }`}
           >
             {cat.name}
@@ -117,7 +117,7 @@ export function StoreClient({ initialProducts, categories }: { initialProducts: 
 
       {/* Result count */}
       <p className="text-sm text-text-muted mb-5">
-        <span className="text-[#EEEEFF] font-semibold">{filtered.length}</span> kursus
+        <span className="text-text font-semibold">{filtered.length}</span> kursus
         {search && <span className="ml-1">untuk &quot;<span className="text-accent-light">{search}</span>&quot;</span>}
       </p>
 

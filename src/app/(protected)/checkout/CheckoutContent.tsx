@@ -32,7 +32,7 @@ export function CheckoutContent({ product, user, enabledGateways, gatewayConfig,
   }
 
   const Summary = () => (
-    <div className="bg-card border border-white/[0.07] rounded-2xl p-5 lg:sticky lg:top-24">
+    <div className="bg-card border border-slate-200 rounded-2xl p-5 lg:sticky lg:top-24">
       <h2 className="font-syne font-bold text-sm mb-4">Ringkasan Order</h2>
       <div className="aspect-video rounded-xl overflow-hidden bg-surface mb-4 flex items-center justify-center text-4xl">
         {product.thumbnail ? <img src={product.thumbnail} alt="" className="w-full h-full object-cover"/> : '📚'}
@@ -46,11 +46,11 @@ export function CheckoutContent({ product, user, enabledGateways, gatewayConfig,
           </li>
         ))}
       </ul>
-      <div className="space-y-1.5 pt-3 border-t border-white/[0.07] mb-4">
+      <div className="space-y-1.5 pt-3 border-t border-slate-200 mb-4">
         <div className="flex justify-between text-xs"><span className="text-text-muted">Harga kursus</span><span className="line-through text-text-dim">{formatPrice(product.price*2)}</span></div>
         <div className="flex justify-between text-xs"><span className="text-text-muted">Diskon 50%</span><span className="text-green-400">-{formatPrice(product.price)}</span></div>
         <div className="flex justify-between text-xs"><span className="text-text-muted">Biaya admin (2.5%)</span><span>{formatPrice(adminFee)}</span></div>
-        <div className="flex justify-between font-syne font-extrabold text-base pt-2 border-t border-white/[0.07]">
+        <div className="flex justify-between font-syne font-extrabold text-base pt-2 border-t border-slate-200">
           <span>Total</span><span>{formatPrice(total)}</span>
         </div>
       </div>
@@ -70,7 +70,7 @@ export function CheckoutContent({ product, user, enabledGateways, gatewayConfig,
 
         <div className="grid lg:grid-cols-[1fr_340px] gap-6 items-start">
           <div className="space-y-4">
-            <div className="bg-card border border-white/[0.07] rounded-2xl p-5">
+            <div className="bg-card border border-slate-200 rounded-2xl p-5">
               <h2 className="font-syne font-bold text-sm mb-4">Informasi Pembeli</h2>
               <div className="grid sm:grid-cols-2 gap-3">
                 <Input label="Nama Lengkap" defaultValue={user?.user_metadata?.full_name||''} placeholder="John Doe"/>
@@ -79,7 +79,7 @@ export function CheckoutContent({ product, user, enabledGateways, gatewayConfig,
               </div>
             </div>
 
-            <div className="bg-card border border-white/[0.07] rounded-2xl p-5">
+            <div className="bg-card border border-slate-200 rounded-2xl p-5">
               <h2 className="font-syne font-bold text-sm mb-4">Metode Pembayaran</h2>
               {enabledGateways.length === 0 ? (
                 <div className="p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-xl text-sm text-yellow-300/70">
@@ -91,9 +91,9 @@ export function CheckoutContent({ product, user, enabledGateways, gatewayConfig,
                     const config = gatewayConfig[gw]
                     if (!config) return null
                     return (
-                      <label key={gw} className={`flex items-center gap-3 p-3.5 rounded-xl border-2 cursor-pointer transition-all ${gateway===gw?'border-accent bg-accent/5':'border-white/[0.07] hover:border-accent/30'}`}>
+                      <label key={gw} className={`flex items-center gap-3 p-3.5 rounded-xl border-2 cursor-pointer transition-all ${gateway===gw?'border-accent bg-accent/5':'border-slate-200 hover:border-accent/30'}`}>
                         <input type="radio" name="gateway" value={gw} checked={gateway===gw} onChange={()=>setGateway(gw)} className="sr-only"/>
-                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${gateway===gw?'border-accent':'border-white/30'}`}>
+                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${gateway===gw?'border-accent':'border-slate-300'}`}>
                           {gateway===gw&&<div className="w-2.5 h-2.5 rounded-full bg-accent"/>}
                         </div>
                         <span className="text-xl shrink-0">{config.logo}</span>

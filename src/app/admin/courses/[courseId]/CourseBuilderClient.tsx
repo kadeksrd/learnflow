@@ -56,9 +56,9 @@ const LessonEditor = memo(
     suggForm,
     setSuggForm,
   }: any) => (
-    <div className="ml-5 sm:ml-7 mt-1.5 mb-2 bg-surface rounded-xl border border-white/[0.05] overflow-hidden">
+    <div className="ml-5 sm:ml-7 mt-1.5 mb-2 bg-surface rounded-xl border border-slate-200 overflow-hidden">
       {/* Tabs */}
-      <div className="flex border-b border-white/[0.07]">
+      <div className="flex border-b border-slate-200">
         {[
           { id: "content", icon: Video, label: "🎬 Video & Info" },
           { id: "notes", icon: StickyNote, label: "📝 Catatan" },
@@ -70,8 +70,8 @@ const LessonEditor = memo(
             className={cn(
               "flex-1 py-2.5 text-xs font-semibold transition-all border-b-2",
               editTab === id
-                ? "text-[#EEEEFF] border-accent"
-                : "text-text-muted border-transparent hover:text-[#EEEEFF]",
+                ? "text-text border-accent"
+                : "text-text-muted border-transparent hover:text-text",
             )}
           >
             {label}
@@ -118,7 +118,7 @@ const LessonEditor = memo(
             </label>
             <textarea
               rows={3}
-              className="w-full px-4 py-3 bg-card border border-white/[0.07] rounded-xl text-[#EEEEFF] text-sm outline-none focus:border-accent resize-none"
+              className="w-full px-4 py-3 bg-card border border-slate-200 rounded-xl text-text text-sm outline-none focus:border-accent resize-none"
               placeholder="Ringkasan apa yang akan dipelajari di lesson ini..."
               value={lesson.description || ""}
               onChange={(e) =>
@@ -152,7 +152,7 @@ const LessonEditor = memo(
             </label>
             <textarea
               rows={7}
-              className="w-full px-4 py-3 bg-card border border-yellow-500/20 rounded-xl text-[#EEEEFF] text-sm outline-none focus:border-yellow-400/50 resize-none font-mono"
+              className="w-full px-4 py-3 bg-card border border-yellow-500/20 rounded-xl text-text text-sm outline-none focus:border-yellow-400/50 resize-none font-mono"
               placeholder={
                 "• Poin penting dari lesson ini\n• Tips dan trik\n• Referensi tambahan\n• Kesimpulan materi"
               }
@@ -201,7 +201,7 @@ const LessonEditor = memo(
                     "px-2.5 py-1 rounded-lg text-xs font-semibold transition-all",
                     (suggForm[lesson.id]?.type || "tool") === t.value
                       ? "bg-accent/20 text-accent-light border border-accent/30"
-                      : "bg-surface border border-white/[0.07] text-text-muted",
+                      : "bg-surface border border-slate-200 text-text-muted",
                   )}
                 >
                   {t.label}
@@ -210,7 +210,7 @@ const LessonEditor = memo(
             </div>
             <div className="grid grid-cols-[40px_1fr] gap-2">
               <input
-                className="text-center px-2 py-2 bg-surface border border-white/[0.07] rounded-lg text-sm outline-none focus:border-accent text-[#EEEEFF]"
+                className="text-center px-2 py-2 bg-surface border border-slate-200 rounded-lg text-sm outline-none focus:border-accent text-text"
                 placeholder="🔗"
                 maxLength={2}
                 value={suggForm[lesson.id]?.icon || ""}
@@ -225,7 +225,7 @@ const LessonEditor = memo(
                 }
               />
               <input
-                className="px-3 py-2 bg-surface border border-white/[0.07] rounded-lg text-sm text-[#EEEEFF] outline-none focus:border-accent"
+                className="px-3 py-2 bg-surface border border-slate-200 rounded-lg text-sm text-text outline-none focus:border-accent"
                 placeholder="Nama tool / resource"
                 value={suggForm[lesson.id]?.title || ""}
                 onChange={(e) =>
@@ -240,7 +240,7 @@ const LessonEditor = memo(
               />
             </div>
             <input
-              className="w-full px-3 py-2 bg-surface border border-white/[0.07] rounded-lg text-sm text-[#EEEEFF] outline-none focus:border-accent"
+              className="w-full px-3 py-2 bg-surface border border-slate-200 rounded-lg text-sm text-text outline-none focus:border-accent"
               placeholder="https://..."
               value={suggForm[lesson.id]?.url || ""}
               onChange={(e) =>
@@ -329,7 +329,7 @@ const LessonRow = memo(
             {index + 1}
           </span>
           <input
-            className="flex-1 bg-transparent text-sm outline-none text-[#EEEEFF] placeholder:text-text-dim min-w-0"
+            className="flex-1 bg-transparent text-sm outline-none text-text placeholder:text-text-dim min-w-0"
             value={lesson.title}
             onChange={(e) =>
               updateLesson(modId, lesson.id, "title", e.target.value)
@@ -369,7 +369,7 @@ const LessonRow = memo(
                   "w-7 h-7 rounded-lg transition-all flex items-center justify-center text-sm",
                   isEditing && editTab === tab
                     ? "bg-accent/20 text-accent-light"
-                    : "text-text-dim hover:bg-white/5 hover:text-[#EEEEFF]",
+                    : "text-text-dim hover:bg-slate-50 hover:text-text",
                 )}
               >
                 {tab === "content" ? "🎬" : tab === "notes" ? "📝" : "🔗"}
@@ -425,7 +425,73 @@ export function CourseBuilderClient({ course }: { course: any }) {
   );
   const [suggForm, setSuggForm] = useState<Record<string, any>>({});
 
+  const [showPlaylistModal, setShowPlaylistModal] = useState(false);
+  const [playlistUrl, setPlaylistUrl] = useState("");
+  const [importingPlaylist, setImportingPlaylist] = useState(false);
+
   const defaultModule = modules[0];
+
+  const handleImportPlaylist = async () => {
+    const reg = /[&?]list=([^&]+)/i;
+    const match = reg.exec(playlistUrl);
+    const playlistId = match ? match[1] : null;
+
+    if (!playlistId) return alert("URL Playlist tidak valid. Pastikan ada parameter 'list=' di URL.");
+
+    setImportingPlaylist(true);
+    try {
+      const res = await fetch(`/api/admin/youtube/playlist?playlistId=${playlistId}`);
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || "Gagal mengambil data playlist");
+      }
+      const videos = await res.json();
+      if (videos.length === 0) throw new Error("Playlist kosong atau tidak ditemukan");
+
+      // 1. Tambah Bab Baru
+      const newMod = await addModule();
+
+      // 2. Update Judul Bab (opsional, bisa pakai judul playlist kalau kita fetch)
+      // Untuk sekarang kita biarkan admin ganti sendiri atau kita set default
+      const moduleTitle = "Materi Playlist YouTube";
+      await fetch(`/api/admin/modules/${newMod.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: moduleTitle }),
+      });
+      updateModule(newMod.id, "title", moduleTitle);
+
+      // 3. Tambah semua video sebagai lesson
+      const lessonPromises = videos.map((v: any, idx: number) =>
+        fetch("/api/admin/lessons", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            module_id: newMod.id,
+            title: v.title,
+            video_url: `https://www.youtube.com/watch?v=${v.video_id}`,
+            order: idx,
+            duration: 0,
+          }),
+        }).then((r) => r.json()),
+      );
+
+      const addedLessons = await Promise.all(lessonPromises);
+
+      // 4. Update state lokal supaya langsung muncul
+      setModules((p) =>
+        p.map((m) => (m.id === newMod.id ? { ...m, lessons: addedLessons } : m)),
+      );
+
+      setShowPlaylistModal(false);
+      setPlaylistUrl("");
+      alert(`Berhasil mengimpor ${addedLessons.length} video!`);
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setImportingPlaylist(false);
+    }
+  };
 
   const saveCourseSettings = async (data: any) => {
     setSaving("course");
@@ -659,7 +725,7 @@ export function CourseBuilderClient({ course }: { course: any }) {
 
   return (
     <div className="space-y-5 max-w-3xl">
-      <div className="bg-card border border-white/[0.07] rounded-2xl p-5 space-y-4">
+      <div className="bg-card border border-slate-200 rounded-2xl p-5 space-y-4">
         <div className="flex items-start justify-between gap-4">
           <div>
             <h2 className="font-syne font-bold text-base">
@@ -681,14 +747,14 @@ export function CourseBuilderClient({ course }: { course: any }) {
               )}
             </div>
           </div>
-          <div className="flex items-center gap-2 p-1 bg-surface rounded-xl border border-white/[0.07] shrink-0">
+          <div className="flex items-center gap-2 p-1 bg-surface rounded-xl border border-slate-200 shrink-0">
             <button
               onClick={() => toggleChapters()}
               className={cn(
                 "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all",
                 useChapters
-                  ? "bg-card text-[#EEEEFF] shadow-sm"
-                  : "text-text-muted hover:text-[#EEEEFF]",
+                  ? "bg-card text-text shadow-sm"
+                  : "text-text-muted hover:text-text",
               )}
             >
               <Layers size={13} /> Pakai Bab
@@ -698,8 +764,8 @@ export function CourseBuilderClient({ course }: { course: any }) {
               className={cn(
                 "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all",
                 !useChapters
-                  ? "bg-card text-[#EEEEFF] shadow-sm"
-                  : "text-text-muted hover:text-[#EEEEFF]",
+                  ? "bg-card text-text shadow-sm"
+                  : "text-text-muted hover:text-text",
               )}
             >
               <List size={13} /> Langsung
@@ -713,7 +779,7 @@ export function CourseBuilderClient({ course }: { course: any }) {
           </label>
           <textarea
             rows={2}
-            className="w-full px-4 py-3 bg-surface border border-white/[0.07] rounded-xl text-[#EEEEFF] text-sm outline-none focus:border-accent resize-none"
+            className="w-full px-4 py-3 bg-surface border border-slate-200 rounded-xl text-text text-sm outline-none focus:border-accent resize-none"
             placeholder="Ringkasan kursus ini untuk ditampilkan di course viewer..."
             value={courseDesc}
             onChange={(e) => setCourseDesc(e.target.value)}
@@ -736,8 +802,8 @@ export function CourseBuilderClient({ course }: { course: any }) {
       </div>
 
       {!useChapters && (
-        <div className="bg-card border border-white/[0.07] rounded-2xl overflow-hidden">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.07]">
+        <div className="bg-card border border-slate-200 rounded-2xl overflow-hidden">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200">
             <span className="text-sm font-semibold">Daftar Lesson</span>
             <span className="text-xs text-text-muted">
               {defaultModule?.lessons?.length || 0} lesson
@@ -756,7 +822,7 @@ export function CourseBuilderClient({ course }: { course: any }) {
             {defaultModule && (
               <button
                 onClick={() => addLesson(defaultModule.id)}
-                className="w-full flex items-center justify-center gap-2 py-2.5 border border-dashed border-white/[0.1] rounded-xl text-xs text-text-muted hover:text-[#EEEEFF] hover:border-accent/30 hover:bg-accent/5 transition-all mt-1"
+                className="w-full flex items-center justify-center gap-2 py-2.5 border border-dashed border-slate-300 rounded-xl text-xs text-text-muted hover:text-text hover:border-accent/30 hover:bg-accent/5 transition-all mt-1"
               >
                 <Plus size={12} /> Tambah Lesson Baru
               </button>
@@ -769,7 +835,7 @@ export function CourseBuilderClient({ course }: { course: any }) {
         modules.map((mod, mi) => (
           <div
             key={mod.id}
-            className="bg-card border border-white/[0.07] rounded-2xl overflow-hidden mb-4"
+            className="bg-card border border-slate-200 rounded-2xl overflow-hidden mb-4"
           >
             <div className="flex items-center gap-3 p-4 bg-surface/50">
               <div className="w-7 h-7 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center text-xs font-bold text-accent-light shrink-0">
@@ -777,7 +843,7 @@ export function CourseBuilderClient({ course }: { course: any }) {
               </div>
               <div className="flex-1 min-w-0">
                 <input
-                  className="w-full bg-transparent text-sm font-semibold outline-none border-b border-transparent focus:border-accent/50 py-0.5 text-[#EEEEFF]"
+                  className="w-full bg-transparent text-sm font-semibold outline-none border-b border-transparent focus:border-accent/50 py-0.5 text-text"
                   value={mod.title}
                   onChange={(e) =>
                     updateModule(mod.id, "title", e.target.value)
@@ -821,7 +887,7 @@ export function CourseBuilderClient({ course }: { course: any }) {
                         : [...p, mod.id],
                     )
                   }
-                  className="p-1.5 rounded-lg hover:bg-white/5 text-text-dim transition-all"
+                  className="p-1.5 rounded-lg hover:bg-slate-50 text-text-dim transition-all"
                 >
                   {expanded.includes(mod.id) ? (
                     <ChevronDown size={16} />
@@ -844,7 +910,7 @@ export function CourseBuilderClient({ course }: { course: any }) {
                 ))}
                 <button
                   onClick={() => addLesson(mod.id)}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 border border-dashed border-white/[0.1] rounded-xl text-xs text-text-muted hover:text-[#EEEEFF] hover:border-accent/30 hover:bg-accent/5 transition-all"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 border border-dashed border-slate-300 rounded-xl text-xs text-text-muted hover:text-text hover:border-accent/30 hover:bg-accent/5 transition-all"
                 >
                   <Plus size={12} /> Tambah Lesson di Bab Ini
                 </button>
@@ -854,12 +920,58 @@ export function CourseBuilderClient({ course }: { course: any }) {
         ))}
 
       {useChapters && (
-        <button
-          onClick={addModule}
-          className="w-full flex items-center justify-center gap-2 py-4 border-2 border-dashed border-accent/20 rounded-2xl text-sm text-accent-light hover:bg-accent/5 hover:border-accent/40 transition-all font-semibold"
-        >
-          <Plus size={16} /> Tambah Bab Baru
-        </button>
+        <div className="space-y-3">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              onClick={addModule}
+              className="flex-1 flex items-center justify-center gap-2 py-4 border-2 border-dashed border-accent/20 rounded-2xl text-sm text-accent-light hover:bg-accent/5 hover:border-accent/40 transition-all font-semibold"
+            >
+              <Plus size={16} /> Tambah Bab Baru
+            </button>
+            <button
+              onClick={() => setShowPlaylistModal(true)}
+              className="flex-1 flex items-center justify-center gap-2 py-4 border-2 border-dashed border-red-500/20 rounded-2xl text-sm text-red-100 hover:bg-red-500/5 hover:border-red-500/40 transition-all font-semibold"
+            >
+              <Video size={16} /> Impor Playlist YouTube
+            </button>
+          </div>
+
+          {showPlaylistModal && (
+            <div className="bg-card border border-red-500/20 rounded-2xl p-4 space-y-3 animate-in fade-in slide-in-from-top-2">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-bold flex items-center gap-2">
+                  <Video size={14} className="text-red-400" /> Impor Playlist
+                  YouTube
+                </h3>
+                <button
+                  onClick={() => setShowPlaylistModal(false)}
+                  className="text-text-dim hover:text-accent"
+                >
+                  <X size={14} />
+                </button>
+              </div>
+              <p className="text-xs text-text-muted">
+                Masukkan link playlist YouTube. Semua video di dalamnya akan
+                otomatis jadi lesson dalam satu Bab baru.
+              </p>
+              <div className="flex gap-2">
+                <Input
+                  placeholder="https://www.youtube.com/playlist?list=..."
+                  className="flex-1"
+                  value={playlistUrl}
+                  onChange={(e) => setPlaylistUrl(e.target.value)}
+                />
+                <Button
+                  loading={importingPlaylist}
+                  onClick={handleImportPlaylist}
+                  className="bg-red-600 hover:bg-red-700 text-white border-none shrink-0"
+                >
+                  Impor
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );

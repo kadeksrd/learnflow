@@ -3,12 +3,13 @@ import { getAdminUser, unauthorized, dbError, createAdminClient } from '@/lib/ap
 
 export async function DELETE(
   _req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   if (!await getAdminUser()) return unauthorized()
 
   const s = await createAdminClient()
-  const { error } = await s.from('suggestions').delete().eq('id', params.id)
+  const { error } = await s.from('suggestions').delete().eq('id', id)
 
   if (error) return dbError(error)
   return NextResponse.json({ message: 'Deleted' })
@@ -16,8 +17,9 @@ export async function DELETE(
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   if (!await getAdminUser()) return unauthorized()
 
   const body = await req.json()
@@ -25,7 +27,7 @@ export async function PATCH(
   const { data, error } = await s
     .from('suggestions')
     .update(body)
-    .eq('id', params.id)
+    .eq('id', id)
     .select()
     .single()
 

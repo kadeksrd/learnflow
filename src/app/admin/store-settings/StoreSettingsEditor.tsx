@@ -106,7 +106,7 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
   }
 
   const SectionCard = ({ children, title, hint }: any) => (
-    <div className="bg-card border border-white/[0.07] rounded-2xl p-5 sm:p-6">
+    <div className="bg-card border border-slate-200 rounded-2xl p-5 sm:p-6">
       {title && (
         <div className="mb-5">
           <h2 className="font-syne font-bold text-base">{title}</h2>
@@ -125,11 +125,11 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
 
       {/* Tab navigation — scrollable */}
       <div className="overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
-        <div className="flex gap-1 min-w-max bg-surface p-1 rounded-2xl border border-white/[0.06]">
+        <div className="flex gap-1 min-w-max bg-surface p-1 rounded-2xl border border-slate-200">
           {SECTION_TABS.map(({ id, icon: Icon, label }) => (
             <button key={id} onClick={() => setTab(id)}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all whitespace-nowrap ${
-                tab === id ? 'bg-card text-[#EEEEFF] shadow-sm' : 'text-text-muted hover:text-[#EEEEFF]'
+                tab === id ? 'bg-card text-text shadow-sm' : 'text-text-muted hover:text-text'
               }`}>
               <Icon size={13} /> {label}
             </button>
@@ -150,7 +150,7 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
             <div>
               <label className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Sub-headline</label>
               <textarea rows={3}
-                className="w-full px-4 py-3 bg-surface border border-white/[0.07] rounded-xl text-[#EEEEFF] text-sm outline-none focus:border-accent resize-none transition-all"
+                className="w-full px-4 py-3 bg-surface border border-slate-200 rounded-xl text-text text-sm outline-none focus:border-accent resize-none transition-all"
                 value={hp.hero_subheadline || ''} onChange={e => hpSet('hero_subheadline', e.target.value)}
                 placeholder="Kalimat deskripsi di bawah headline..." />
             </div>
@@ -164,7 +164,7 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
             </div>
 
             {/* Preview */}
-            <div className="mt-2 p-4 bg-bg border border-white/[0.05] rounded-xl">
+            <div className="mt-2 p-4 bg-bg border border-slate-200 rounded-xl">
               <p className="text-xs text-text-dim mb-3">Preview:</p>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent-light text-xs font-bold mb-3">
                 ✨ {hp.hero_badge || '...'}
@@ -173,7 +173,7 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
               <p className="text-text-muted text-sm mb-4">{hp.hero_subheadline || '...'}</p>
               <div className="flex gap-3 flex-wrap">
                 <span className="px-4 py-2 bg-gradient-to-r from-accent to-accent-light text-white rounded-xl text-sm font-bold">{hp.hero_cta_primary || 'CTA Utama'}</span>
-                <span className="px-4 py-2 bg-white/5 border border-white/10 text-[#EEEEFF] rounded-xl text-sm">{hp.hero_cta_secondary || 'CTA Sekunder'}</span>
+                <span className="px-4 py-2 bg-slate-50 border border-slate-200 text-text rounded-xl text-sm">{hp.hero_cta_secondary || 'CTA Sekunder'}</span>
               </div>
             </div>
           </div>
@@ -207,7 +207,7 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
             )}
 
             {/* Preview */}
-            <div className="mt-2 p-4 bg-bg border border-white/[0.05] rounded-xl">
+            <div className="mt-2 p-4 bg-bg border border-slate-200 rounded-xl">
               <p className="text-xs text-text-dim mb-3">Preview:</p>
               <div className={`grid grid-cols-${Math.min(stats.length, 4)} gap-4`}>
                 {stats.slice(0, 4).map((s: any, i: number) => (
@@ -248,7 +248,7 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
                       className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer border transition-all ${
                         selected
                           ? 'bg-accent/10 border-accent/40'
-                          : 'bg-surface border-white/[0.06] hover:border-white/20'
+                          : 'bg-surface border-slate-200 hover:border-slate-300'
                       }`}>
                       {/* Thumbnail */}
                       <div className="w-12 h-9 rounded-lg bg-card flex items-center justify-center text-xl shrink-0 overflow-hidden">
@@ -259,7 +259,7 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
                         <div className="text-text-muted text-xs">{(p.categories as any)?.name} · {p.is_free ? 'Gratis' : formatPrice(p.price)}</div>
                       </div>
                       <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all ${
-                        selected ? 'border-accent bg-accent' : 'border-white/20'
+                        selected ? 'border-accent bg-accent' : 'border-slate-300'
                       }`}>
                         {selected && <CheckCircle size={12} className="text-white" />}
                       </div>
@@ -283,12 +283,12 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
         <SectionCard title="Section 'Cara Kerja'" hint="3 langkah yang menjelaskan alur belajar di platform">
           <div className="space-y-3">
             {steps.map((s: any, i: number) => (
-              <div key={i} className="p-4 bg-surface rounded-xl border border-white/[0.05] space-y-3">
+              <div key={i} className="p-4 bg-surface rounded-xl border border-slate-200 space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="font-syne font-bold text-sm text-accent-light">Langkah {s.num || i + 1}</span>
                   <div className="flex gap-2">
-                    <button onClick={() => moveStep(i, -1)} disabled={i === 0} className="p-1.5 rounded-lg hover:bg-white/5 text-text-dim disabled:opacity-30"><ArrowUp size={13} /></button>
-                    <button onClick={() => moveStep(i, 1)} disabled={i === steps.length - 1} className="p-1.5 rounded-lg hover:bg-white/5 text-text-dim disabled:opacity-30"><ArrowDown size={13} /></button>
+                    <button onClick={() => moveStep(i, -1)} disabled={i === 0} className="p-1.5 rounded-lg hover:bg-slate-50 text-text-dim disabled:opacity-30"><ArrowUp size={13} /></button>
+                    <button onClick={() => moveStep(i, 1)} disabled={i === steps.length - 1} className="p-1.5 rounded-lg hover:bg-slate-50 text-text-dim disabled:opacity-30"><ArrowDown size={13} /></button>
                     <button onClick={() => hpSet('how_it_works', steps.filter((_: any, j: number) => j !== i))} className="p-1.5 rounded-lg hover:bg-red-500/10 text-text-dim hover:text-red-400"><Trash2 size={13} /></button>
                   </div>
                 </div>
@@ -300,7 +300,7 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
                 <div>
                   <label className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Deskripsi</label>
                   <textarea rows={2}
-                    className="w-full px-4 py-3 bg-card border border-white/[0.07] rounded-xl text-[#EEEEFF] text-sm outline-none focus:border-accent resize-none"
+                    className="w-full px-4 py-3 bg-card border border-slate-200 rounded-xl text-text text-sm outline-none focus:border-accent resize-none"
                     value={s.desc} onChange={e => updateStep(i, 'desc', e.target.value)} />
                 </div>
               </div>
@@ -322,7 +322,7 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
             <div>
               <label className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Paragraf Tentang Kami</label>
               <textarea rows={5}
-                className="w-full px-4 py-3 bg-surface border border-white/[0.07] rounded-xl text-[#EEEEFF] text-sm outline-none focus:border-accent resize-none"
+                className="w-full px-4 py-3 bg-surface border border-slate-200 rounded-xl text-text text-sm outline-none focus:border-accent resize-none"
                 value={hp.about_body || ''} onChange={e => hpSet('about_body', e.target.value)}
                 placeholder="Cerita singkat tentang platform..." />
             </div>
@@ -338,7 +338,7 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
               <div>
                 <label className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Kalimat Quote</label>
                 <textarea rows={3}
-                  className="w-full px-4 py-3 bg-card border border-white/[0.07] rounded-xl text-[#EEEEFF] text-sm outline-none focus:border-accent resize-none italic"
+                  className="w-full px-4 py-3 bg-card border border-slate-200 rounded-xl text-text text-sm outline-none focus:border-accent resize-none italic"
                   value={hp.founder_quote || ''} onChange={e => hpSet('founder_quote', e.target.value)}
                   placeholder='"Kami percaya bahwa skill yang tepat bisa mengubah nasib seseorang..."' />
               </div>
@@ -358,12 +358,12 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
                 ].map(s => (
                   <div key={s.key} className="p-3 bg-surface rounded-xl space-y-2">
                     <input
-                      className="w-full bg-card border border-white/[0.07] px-2 py-1.5 rounded-lg text-sm font-bold text-accent-light outline-none focus:border-accent"
+                      className="w-full bg-card border border-slate-200 px-2 py-1.5 rounded-lg text-sm font-bold text-accent-light outline-none focus:border-accent"
                       placeholder={s.defaultVal}
                       value={hp[s.key + '_value'] || ''}
                       onChange={e => hpSet(s.key + '_value', e.target.value)} />
                     <input
-                      className="w-full bg-card border border-white/[0.07] px-2 py-1.5 rounded-lg text-xs text-text-muted outline-none focus:border-accent"
+                      className="w-full bg-card border border-slate-200 px-2 py-1.5 rounded-lg text-xs text-text-muted outline-none focus:border-accent"
                       placeholder={s.defaultLabel}
                       value={hp[s.key + '_label'] || ''}
                       onChange={e => hpSet(s.key + '_label', e.target.value)} />
@@ -380,7 +380,7 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
         <SectionCard title="Testimoni Homepage" hint="Ulasan yang tampil di section testimoni halaman utama">
           <div className="space-y-4">
             {testimonials.map((t: any, i: number) => (
-              <div key={i} className="bg-surface rounded-2xl p-5 space-y-3 border border-white/[0.05]">
+              <div key={i} className="bg-surface rounded-2xl p-5 space-y-3 border border-slate-200">
                 <div className="flex items-center justify-between">
                   <div className="flex gap-1">
                     {[1,2,3,4,5].map(s => (
@@ -403,7 +403,7 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
                       {t.name?.[0] || '?'}
                     </div>
                     <input placeholder="Initial" maxLength={2}
-                      className="mt-2 w-12 text-center px-2 py-1 bg-card border border-white/[0.07] rounded-lg text-sm outline-none focus:border-accent text-[#EEEEFF]"
+                      className="mt-2 w-12 text-center px-2 py-1 bg-card border border-slate-200 rounded-lg text-sm outline-none focus:border-accent text-text"
                       value={t.avatar || ''} onChange={e => updateTestimonial(i, 'avatar', e.target.value)} />
                   </div>
                   <Input label="Nama Lengkap" placeholder="Andi Pratama"
@@ -414,7 +414,7 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
                 <div>
                   <label className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Kalimat Testimoni</label>
                   <textarea rows={2}
-                    className="w-full px-4 py-3 bg-card border border-white/[0.07] rounded-xl text-[#EEEEFF] text-sm outline-none focus:border-accent resize-none italic"
+                    className="w-full px-4 py-3 bg-card border border-slate-200 rounded-xl text-text text-sm outline-none focus:border-accent resize-none italic"
                     placeholder="Kalimat testimoni yang jujur..."
                     value={t.text} onChange={e => updateTestimonial(i, 'text', e.target.value)} />
                 </div>
@@ -438,7 +438,7 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
             <div>
               <label className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Deskripsi CTA</label>
               <textarea rows={2}
-                className="w-full px-4 py-3 bg-surface border border-white/[0.07] rounded-xl text-[#EEEEFF] text-sm outline-none focus:border-accent resize-none"
+                className="w-full px-4 py-3 bg-surface border border-slate-200 rounded-xl text-text text-sm outline-none focus:border-accent resize-none"
                 value={hp.cta_body || ''} onChange={e => hpSet('cta_body', e.target.value)}
                 placeholder="Bergabung sekarang. Tidak butuh kartu kredit." />
             </div>
@@ -452,7 +452,7 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
             </div>
 
             {/* Preview */}
-            <div className="p-5 bg-bg border border-white/[0.05] rounded-xl text-center">
+            <div className="p-5 bg-bg border border-slate-200 rounded-xl text-center">
               <p className="text-xs text-text-dim mb-3">Preview:</p>
               <h3 className="font-syne font-extrabold text-2xl mb-3">
                 {hp.cta_headline || 'Headline CTA...'}
@@ -460,7 +460,7 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
               <p className="text-text-muted text-sm mb-5">{hp.cta_body || '...'}</p>
               <div className="flex gap-3 justify-center flex-wrap">
                 <span className="px-6 py-3 bg-cta text-black font-syne font-bold rounded-xl text-sm">{hp.cta_primary || 'CTA'} →</span>
-                <span className="px-6 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-[#EEEEFF]">{hp.cta_secondary || 'Secondary'}</span>
+                <span className="px-6 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm text-text">{hp.cta_secondary || 'Secondary'}</span>
               </div>
             </div>
           </div>
@@ -484,24 +484,24 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
             <div>
               <label className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Sub-headline Store</label>
               <textarea rows={2}
-                className="w-full px-4 py-3 bg-surface border border-white/[0.07] rounded-xl text-[#EEEEFF] text-sm outline-none focus:border-accent resize-none"
+                className="w-full px-4 py-3 bg-surface border border-slate-200 rounded-xl text-text text-sm outline-none focus:border-accent resize-none"
                 value={store.subheadline || ''} onChange={e => storeSet('subheadline', e.target.value)}
                 placeholder="Temukan ratusan kursus digital..." />
             </div>
 
-            <div className="flex items-center justify-between p-4 bg-surface border border-white/[0.06] rounded-xl">
+            <div className="flex items-center justify-between p-4 bg-surface border border-slate-200 rounded-xl">
               <div>
                 <div className="font-semibold text-sm">Tampilkan Stats di Store</div>
                 <div className="text-text-muted text-xs mt-0.5">Jumlah kursus, gratis, premium di header store</div>
               </div>
               <div onClick={() => storeSet('show_stats', !store.show_stats)}
-                className={`w-10 h-6 rounded-full relative cursor-pointer transition-colors ${store.show_stats !== false ? 'bg-green-500' : 'bg-surface border border-white/20'}`}>
+                className={`w-10 h-6 rounded-full relative cursor-pointer transition-colors ${store.show_stats !== false ? 'bg-green-500' : 'bg-surface border border-slate-300'}`}>
                 <div className={`absolute top-0.5 w-5 h-5 rounded-full bg-white transition-transform ${store.show_stats !== false ? 'left-4' : 'left-0.5'}`} />
               </div>
             </div>
 
             {/* Preview */}
-            <div className="p-5 bg-bg border border-white/[0.05] rounded-xl">
+            <div className="p-5 bg-bg border border-slate-200 rounded-xl">
               <p className="text-xs text-text-dim mb-3">Preview header store:</p>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 text-accent-light text-xs font-bold mb-3">
                 ✨ {store.badge || 'Badge'}
@@ -522,7 +522,7 @@ export function StoreSettingsEditor({ initialHomepage, initialStore, products }:
           <Save size={15} /> Simpan Semua Perubahan
         </Button>
         <a href="/" target="_blank"
-          className="flex items-center gap-2 px-5 rounded-xl text-sm text-text-muted bg-card border border-white/[0.07] hover:text-[#EEEEFF] transition-all">
+          className="flex items-center gap-2 px-5 rounded-xl text-sm text-text-muted bg-card border border-slate-200 hover:text-text transition-all">
           <Eye size={15} /> Preview
         </a>
       </div>

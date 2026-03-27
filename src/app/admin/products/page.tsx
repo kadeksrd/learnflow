@@ -23,7 +23,7 @@ export default async function AdminProductsPage() {
       {/* Card list on mobile, table on desktop */}
       <div className="sm:hidden space-y-3">
         {products?.map(p => (
-          <div key={p.id} className="bg-card border border-white/[0.07] rounded-xl p-4">
+          <div key={p.id} className="bg-card border border-slate-200 rounded-xl p-4">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 rounded-lg bg-surface flex items-center justify-center text-lg overflow-hidden shrink-0">
                 {p.thumbnail ? <img src={p.thumbnail} alt="" className="w-full h-full object-cover" /> : '📦'}
@@ -32,25 +32,25 @@ export default async function AdminProductsPage() {
                 <div className="font-semibold text-sm truncate">{p.title}</div>
                 <div className="text-text-muted text-xs">{(p.categories as any)?.name || '-'}</div>
               </div>
-              <span className={`px-2 py-0.5 rounded-full text-xs font-bold shrink-0 ${p.is_published ? 'bg-green-500/10 text-green-400' : 'bg-white/5 text-text-muted'}`}>
+              <span className={`px-2 py-0.5 rounded-full text-xs font-bold shrink-0 ${p.is_published ? 'bg-green-500/10 text-green-400' : 'bg-slate-50 text-text-muted'}`}>
                 {p.is_published ? '✓ Live' : 'Draft'}
               </span>
             </div>
             <div className="flex items-center justify-between">
               <span className={`font-bold text-sm ${p.is_free ? 'text-green-400' : ''}`}>{p.is_free ? 'GRATIS' : formatPrice(p.price)}</span>
-              <Link href={`/admin/products/${p.id}`} className="px-3 py-1.5 rounded-lg border border-white/[0.07] text-xs text-text-muted hover:text-[#EEEEFF] transition-all">Edit</Link>
+              <Link href={`/admin/products/${p.id}`} className="px-3 py-1.5 rounded-lg border border-slate-200 text-xs text-text-muted hover:text-text transition-all">Edit</Link>
             </div>
           </div>
         ))}
       </div>
 
       {/* Desktop table */}
-      <div className="hidden sm:block bg-card border border-white/[0.07] rounded-2xl overflow-hidden">
+      <div className="hidden sm:block bg-card border border-slate-200 rounded-2xl overflow-hidden">
         <div className="grid grid-cols-[2fr_1fr_1fr_1fr_100px] gap-4 px-5 py-3 bg-surface text-xs font-bold text-text-muted uppercase tracking-wider">
           <span>Produk</span><span>Kategori</span><span>Harga</span><span>Status</span><span>Aksi</span>
         </div>
         {products?.map(p => (
-          <div key={p.id} className="grid grid-cols-[2fr_1fr_1fr_1fr_100px] gap-4 px-5 py-4 border-t border-white/[0.05] items-center hover:bg-card-hover transition-colors">
+          <div key={p.id} className="grid grid-cols-[2fr_1fr_1fr_1fr_100px] gap-4 px-5 py-4 border-t border-slate-200 items-center hover:bg-card-hover transition-colors">
             <div className="flex items-center gap-3 min-w-0">
               <div className="w-9 h-9 rounded-lg bg-surface flex items-center justify-center text-lg shrink-0 overflow-hidden">
                 {p.thumbnail ? <img src={p.thumbnail} alt="" className="w-full h-full object-cover" /> : '📦'}
@@ -61,10 +61,10 @@ export default async function AdminProductsPage() {
             </div>
             <span className="text-sm text-text-muted">{(p.categories as any)?.name || '-'}</span>
             <span className={`text-sm font-bold ${p.is_free ? 'text-green-400' : ''}`}>{p.is_free ? 'GRATIS' : formatPrice(p.price)}</span>
-            <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-bold w-fit ${p.is_published ? 'bg-green-500/10 text-green-400' : 'bg-white/5 text-text-muted'}`}>
+            <span className={`inline-flex px-2.5 py-1 rounded-full text-xs font-bold w-fit ${p.is_published ? 'bg-green-500/10 text-green-400' : 'bg-slate-50 text-text-muted'}`}>
               {p.is_published ? 'Published' : 'Draft'}
             </span>
-            <Link href={`/admin/products/${p.id}`} className="px-3 py-1.5 rounded-lg border border-white/[0.07] text-xs text-text-muted hover:text-[#EEEEFF] hover:border-accent/30 transition-all">Edit</Link>
+            <Link href={`/admin/products/${p.id}`} className="px-3 py-1.5 rounded-lg border border-slate-200 text-xs text-text-muted hover:text-text hover:border-accent/30 transition-all">Edit</Link>
           </div>
         ))}
       </div>

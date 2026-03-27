@@ -3,7 +3,7 @@ import { createClient, createAdminClient } from "@/lib/supabase/server";
 
 // 1. Fungsi Helper Admin
 async function getAdminUser() {
-  const s = createClient();
+  const s = await createClient();
   const {
     data: { user },
   } = await s.auth.getUser();
@@ -24,19 +24,11 @@ export async function PATCH(req: NextRequest) {
     // TRIK SAKTI: Kita keluarkan 'id' untuk pencarian,
     // dan kita keluarkan 'course_id' supaya TIDAK ikut di-update ke tabel 'courses'
     const { id, course_id, ...updateData } = body;
-
-    if (!id) {
-      return NextResponse.json(
-        { message: "Course ID (id) is required" },
-        { status: 400 },
-      );
-    }
-
-    const s = createAdminClient();
+    const s = await createAdminClient();
 
     // Kita hanya memasukkan 'updateData' yang sudah bersih dari 'course_id'
-    const { data, error } = await s
-      .from("courses")
+    const { data, error } = await (s
+      .from("courses") as any)
       .update(updateData)
       .eq("id", id)
       .select()
@@ -59,7 +51,7 @@ export async function GET(req: NextRequest) {
   const admin = await getAdminUser();
   if (!admin) return unauthorized();
 
-  const s = createAdminClient();
+  const s = await createAdminClient();
   const { data, error } = await s
     .from("courses")
     .select("*")

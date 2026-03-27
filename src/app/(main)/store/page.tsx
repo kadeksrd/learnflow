@@ -91,7 +91,7 @@ export default async function StorePage() {
   return (
     <div className="min-h-screen bg-bg">
       {/* Header */}
-      <div className="relative overflow-hidden border-b border-white/[0.05]">
+      <div className="relative overflow-hidden border-b border-slate-200">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-accent/5 rounded-full blur-3xl" />
         </div>
@@ -133,7 +133,7 @@ export default async function StorePage() {
                 <div key={label} className="flex items-center gap-2 shrink-0">
                   <Icon size={14} className="text-accent-light" />
                   <span className="text-sm font-medium">
-                    <span className="text-[#EEEEFF] font-bold">{value}</span>
+                    <span className="text-text font-bold">{value}</span>
                     <span className="text-text-muted ml-1">{label}</span>
                   </span>
                 </div>

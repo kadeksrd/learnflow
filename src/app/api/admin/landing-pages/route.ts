@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
   const body = await req.json()
   const s = await createAdminClient()
   const payload = buildLPPayload(body)
-  const { data, error } = await s.from('landing_pages').insert(payload).select().single()
+  const { data, error } = await (s.from('landing_pages') as any).insert(payload).select().single()
   if (error) return NextResponse.json({ message: error.message }, { status: 500 })
   return NextResponse.json(data, { status: 201 })
 }

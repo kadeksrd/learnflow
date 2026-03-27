@@ -21,8 +21,8 @@ export default async function ProfilePage() {
 
         <div className="space-y-6 mt-8">
           {/* Basic Info */}
-          <section className="bg-card border border-white/[0.07] rounded-2xl overflow-hidden">
-            <div className="p-5 border-b border-white/[0.07] flex items-center gap-3">
+          <section className="bg-card border border-slate-200 rounded-2xl overflow-hidden">
+            <div className="p-5 border-b border-slate-200 flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
                 <UserIcon size={20} className="text-accent-light" />
               </div>
@@ -37,8 +37,8 @@ export default async function ProfilePage() {
           </section>
 
           {/* Password Section */}
-          <section className="bg-card border border-white/[0.07] rounded-2xl overflow-hidden">
-            <div className="p-5 border-b border-white/[0.07] flex items-center gap-3">
+          <section className="bg-card border border-slate-200 rounded-2xl overflow-hidden">
+            <div className="p-5 border-b border-slate-200 flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-cta/10 flex items-center justify-center">
                 <Key size={20} className="text-cta" />
               </div>
@@ -53,8 +53,8 @@ export default async function ProfilePage() {
           </section>
 
           {/* 2FA Section */}
-          <section className="bg-card border border-white/[0.07] rounded-2xl overflow-hidden">
-            <div className="p-5 border-b border-white/[0.07] flex items-center gap-3">
+          <section className="bg-card border border-slate-200 rounded-2xl overflow-hidden">
+            <div className="p-5 border-b border-slate-200 flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
                 <Shield size={20} className="text-green-400" />
               </div>

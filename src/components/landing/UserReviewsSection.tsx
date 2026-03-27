@@ -38,7 +38,7 @@ export function UserReviewsSection({ productId }: { productId: string }) {
   const topReviews = reviews.filter(r => r.comment && r.comment.length > 20).slice(0, 6)
 
   return (
-    <section className="py-10 sm:py-16 border-t border-white/[0.05]">
+    <section className="py-10 sm:py-16 border-t border-slate-200">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-8 sm:mb-12">
           <p className="text-xs font-bold text-accent-light uppercase tracking-widest mb-3">Review Pelajar</p>
@@ -47,7 +47,7 @@ export function UserReviewsSection({ productId }: { productId: string }) {
 
         {/* Stats block */}
         {stats && (
-          <div className="max-w-xl mx-auto bg-card border border-white/[0.07] rounded-2xl p-5 sm:p-7 mb-10 sm:mb-12">
+          <div className="max-w-xl mx-auto bg-card border border-slate-200 rounded-2xl p-5 sm:p-7 mb-10 sm:mb-12">
             <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
               {/* Big score */}
               <div className="text-center shrink-0">
@@ -88,7 +88,7 @@ export function UserReviewsSection({ productId }: { productId: string }) {
             {topReviews.map(review => {
               const date = new Date(review.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' })
               return (
-                <div key={review.id} className="bg-card border border-white/[0.07] rounded-2xl p-5 flex flex-col">
+                <div key={review.id} className="bg-card border border-slate-200 rounded-2xl p-5 flex flex-col">
                   <div className="flex gap-0.5 mb-3">
                     {[1,2,3,4,5].map(s => (
                       <Star key={s} size={14} fill={s <= review.rating ? '#F59E0B' : 'transparent'}
@@ -100,7 +100,7 @@ export function UserReviewsSection({ productId }: { productId: string }) {
                   )}
                   <div className="flex items-center gap-3 mt-auto">
                     {review.user_avatar ? (
-                      <img src={review.user_avatar} alt={review.user_name} className="w-9 h-9 rounded-full object-cover shrink-0 border border-white/10" />
+                      <img src={review.user_avatar} alt={review.user_name} className="w-9 h-9 rounded-full object-cover shrink-0 border border-slate-200" />
                     ) : (
                       <div className="w-9 h-9 rounded-full bg-gradient-to-br from-accent to-accent-light flex items-center justify-center text-white text-sm font-bold shrink-0">
                         {review.user_name[0]?.toUpperCase() || '?'}

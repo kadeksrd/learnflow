@@ -2,11 +2,12 @@ import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { CheckCircle, ArrowRight } from 'lucide-react'
 
-export default async function PaymentSuccessPage({ searchParams }: { searchParams: { order_id?: string } }) {
-  let orderData = null
-  if (searchParams.order_id) {
+export default async function PaymentSuccessPage({ searchParams }: { searchParams: Promise<{ order_id?: string }> }) {
+  const { order_id } = await searchParams;
+  let orderData: any = null
+  if (order_id) {
     const supabase = await createClient()
-    const { data } = await supabase.from('orders').select('*, products(title)').eq('id', searchParams.order_id).single()
+    const { data } = await supabase.from('orders').select('*, products(title)').eq('id', order_id).single()
     orderData = data
   }
   return (
@@ -17,13 +18,13 @@ export default async function PaymentSuccessPage({ searchParams }: { searchParam
         </div>
         <h1 className="font-syne font-extrabold text-3xl mb-3">Pembayaran Berhasil! 🎉</h1>
         <p className="text-text-muted mb-8">
-          {(orderData?.products as any)?.title ? `Kursus "${(orderData.products as any).title}" sudah aktif.` : 'Kursusmu sudah aktif. Selamat belajar!'}
+          {orderData?.products?.title ? `Kursus "${orderData.products.title}" sudah aktif.` : 'Kursusmu sudah aktif. Selamat belajar!'}
         </p>
         <div className="flex flex-col gap-3">
           <Link href="/dashboard" className="flex items-center justify-center gap-2 px-6 py-4 bg-cta hover:bg-cta-hover text-black font-syne font-bold rounded-xl transition-all">
             Mulai Belajar <ArrowRight size={18} />
           </Link>
-          <Link href="/store" className="px-6 py-4 bg-card border border-white/[0.07] rounded-xl text-text-muted hover:text-[#EEEEFF] transition-all text-sm">
+          <Link href="/store" className="px-6 py-4 bg-card border border-slate-200 rounded-xl text-text-muted hover:text-text transition-all text-sm">
             Kembali ke Store
           </Link>
         </div>

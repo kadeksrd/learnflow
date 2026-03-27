@@ -16,7 +16,7 @@ export function MyCourseCard({ course, progress, completedLessons, totalLessons 
 
   return (
     <div className="group">
-      <div className="bg-card border border-white/[0.07] rounded-2xl overflow-hidden hover:border-accent/40 hover:-translate-y-1 transition-all duration-300">
+      <div className="bg-card border border-slate-200 rounded-2xl overflow-hidden hover:border-accent/40 hover:-translate-y-1 transition-all duration-300">
         <div className="relative h-36 overflow-hidden bg-surface flex items-center justify-center">
           {product?.thumbnail
             ? <img src={product.thumbnail} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />

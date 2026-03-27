@@ -5,8 +5,9 @@ import { LessonContent } from "./LessonContent";
 export default async function LessonPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
   const supabase = await createClient();
   const {
     data: { user },
@@ -17,7 +18,7 @@ export default async function LessonPage({
     .select(
       "*, suggestions(*), modules(id, title, course_id, courses(id, title, products(title), modules(id, title, order, lessons(id, title, duration, order))))",
     )
-    .eq("id", params.id)
+    .eq("id", id)
     .single()) as any;
 
   if (!lesson) notFound()
@@ -45,7 +46,7 @@ export default async function LessonPage({
     m.lessons.sort((a: any, b: any) => a.order - b.order),
   );
   const allLessons = modules.flatMap((m: any) => m.lessons);
-  const idx = allLessons.findIndex((l: any) => l.id === params.id);
+  const idx = allLessons.findIndex((l: any) => l.id === id);
   const prevLesson = idx > 0 ? allLessons[idx - 1] : null;
   const nextLesson = idx < allLessons.length - 1 ? allLessons[idx + 1] : null;
 
@@ -55,7 +56,7 @@ export default async function LessonPage({
       course={{ ...course, modules }}
       prevLesson={prevLesson}
       nextLesson={nextLesson}
-      isCompleted={completedSet.has(params.id)}
+      isCompleted={completedSet.has(id)}
       completedLessonIds={Array.from(completedSet)}
     />
   );

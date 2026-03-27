@@ -65,9 +65,10 @@ async function getData(slug: string) {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const d = await getData(params.slug);
+  const { slug } = await params;
+  const d = await getData(slug);
   if (!d) return { title: "Kursus tidak ditemukan" };
 
   const { lp, product } = d;
@@ -84,14 +85,14 @@ export async function generateMetadata({
     robots: lp.robots || "index,follow",
     alternates: {
       canonical:
-        lp.canonical_url || `https://learnflow.id/course/${params.slug}`,
+        lp.canonical_url || `https://learnflow.id/course/${slug}`,
     },
     openGraph: {
       type: "website",
       title: lp.og_title || title,
       description: lp.og_description || description,
       images: ogImage ? [{ url: ogImage }] : [],
-      url: `https://learnflow.id/course/${params.slug}`,
+      url: `https://learnflow.id/course/${slug}`,
     },
     twitter: {
       card: "summary_large_image",
@@ -105,9 +106,10 @@ export async function generateMetadata({
 export default async function CourseLandingPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const d = await getData(params.slug);
+  const { slug } = await params;
+  const d = await getData(slug);
   if (!d) notFound();
 
   const { lp, product, course } = d;

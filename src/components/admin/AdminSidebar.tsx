@@ -25,8 +25,8 @@ const NAV = [
 export function AdminSidebar() {
   const pathname = usePathname()
   return (
-    <aside className="bg-surface border-r border-white/[0.07] sticky top-0 h-screen flex flex-col">
-      <div className="p-5 border-b border-white/[0.07]">
+    <aside className="bg-surface border-r border-slate-200 sticky top-0 h-screen flex flex-col">
+      <div className="p-5 border-b border-slate-200">
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg bg-gradient-accent flex items-center justify-center">
             <Zap size={14} className="text-white" />
@@ -49,7 +49,7 @@ export function AdminSidebar() {
                   'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all border mb-0.5',
                   isActive
                     ? 'bg-accent/10 text-accent-light border-accent/20 font-semibold'
-                    : 'text-text-muted hover:text-[#EEEEFF] hover:bg-white/5 border-transparent'
+                    : 'text-text-muted hover:text-text hover:bg-slate-50 border-transparent'
                 )}>
                 <Icon size={16} />
                 {label}
@@ -63,8 +63,8 @@ export function AdminSidebar() {
           )
         })}
       </nav>
-      <div className="p-3 border-t border-white/[0.07]">
-        <Link href="/store" className="flex items-center gap-2 text-xs text-text-muted hover:text-[#EEEEFF] px-3 py-2 transition-colors">
+      <div className="p-3 border-t border-slate-200">
+        <Link href="/store" className="flex items-center gap-2 text-xs text-text-muted hover:text-text px-3 py-2 transition-colors">
           ← Lihat Website
         </Link>
       </div>

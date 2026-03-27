@@ -43,11 +43,11 @@ export function LessonContent({ lesson, course, prevLesson, nextLesson, isComple
 
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-text-muted mb-4 flex-wrap">
-          <button className="hover:text-[#EEEEFF] transition-colors" onClick={() => router.push(`/dashboard/course/${course.id}`)}>
+          <button className="hover:text-text transition-colors" onClick={() => router.push(`/dashboard/course/${course.id}`)}>
             {course.products?.title || course.title}
           </button>
           <span>/</span><span>{lesson.modules.title}</span>
-          <span>/</span><span className="text-[#EEEEFF] font-medium truncate max-w-[150px]">{lesson.title}</span>
+          <span>/</span><span className="text-text font-medium truncate max-w-[150px]">{lesson.title}</span>
         </div>
 
         <h1 className="font-syne font-extrabold text-xl sm:text-2xl mb-2">{lesson.title}</h1>
@@ -66,7 +66,7 @@ export function LessonContent({ lesson, course, prevLesson, nextLesson, isComple
         </div>
 
         {/* Progress bar */}
-        <div className="flex items-center gap-3 mb-5 p-3 bg-card border border-white/[0.07] rounded-xl">
+        <div className="flex items-center gap-3 mb-5 p-3 bg-card border border-slate-200 rounded-xl">
           <div className="flex-1 h-1.5 bg-surface rounded-full overflow-hidden">
             <div className="h-full bg-gradient-to-r from-accent to-accent-light rounded-full" style={{ width: `${progress}%` }} />
           </div>
@@ -82,7 +82,7 @@ export function LessonContent({ lesson, course, prevLesson, nextLesson, isComple
             {completed ? 'Lesson Selesai ✓' : saving ? 'Menyimpan...' : 'Tandai Selesai'}
           </button>
 
-          <label className="flex items-center gap-2 px-4 py-3 bg-card border border-white/[0.07] rounded-xl cursor-pointer hover:border-accent/30 transition-all select-none">
+          <label className="flex items-center gap-2 px-4 py-3 bg-card border border-slate-200 rounded-xl cursor-pointer hover:border-accent/30 transition-all select-none">
             <input type="checkbox" checked={autoNext} onChange={e => setAutoNext(e.target.checked)} className="w-4 h-4 accent-purple-500" />
             <span className="text-sm text-text-muted">Auto-lanjut</span>
           </label>
@@ -90,7 +90,7 @@ export function LessonContent({ lesson, course, prevLesson, nextLesson, isComple
           {/* Prev/Next inline on mobile too */}
           <div className="flex gap-2 sm:ml-auto">
             <button onClick={() => prevLesson && router.push(`/lesson/${prevLesson.id}`)} disabled={!prevLesson}
-              className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-3 bg-card border border-white/[0.07] rounded-xl text-sm text-text-muted hover:text-[#EEEEFF] hover:border-accent/30 transition-all disabled:opacity-40">
+              className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-4 py-3 bg-card border border-slate-200 rounded-xl text-sm text-text-muted hover:text-text hover:border-accent/30 transition-all disabled:opacity-40">
               <ChevronLeft size={16} /> Prev
             </button>
             <button onClick={() => nextLesson && router.push(`/lesson/${nextLesson.id}`)} disabled={!nextLesson}
@@ -102,7 +102,7 @@ export function LessonContent({ lesson, course, prevLesson, nextLesson, isComple
 
         {/* Description */}
         {lesson.description && (
-          <div className="bg-card border border-white/[0.07] rounded-2xl p-5 mb-5">
+          <div className="bg-card border border-slate-200 rounded-2xl p-5 mb-5">
             <h2 className="font-syne font-bold text-base mb-3">📋 Tentang Lesson Ini</h2>
             <p className="text-text-muted text-sm leading-relaxed whitespace-pre-line">{lesson.description}</p>
           </div>
@@ -128,7 +128,7 @@ export function LessonContent({ lesson, course, prevLesson, nextLesson, isComple
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {lesson.suggestions.map((s: any) => (
                 <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer"
-                  className="flex items-center gap-3 p-4 bg-card border border-white/[0.07] rounded-xl hover:border-accent/40 hover:-translate-y-0.5 transition-all group">
+                  className="flex items-center gap-3 p-4 bg-card border border-slate-200 rounded-xl hover:border-accent/40 hover:-translate-y-0.5 transition-all group">
                   <span className="text-2xl shrink-0">{s.icon || '🔗'}</span>
                   <div className="flex-1 min-w-0">
                     <div className="font-semibold text-sm truncate">{s.title}</div>

@@ -17,7 +17,7 @@ export default async function AdminCoursesPage() {
           const lessons = c.modules?.reduce((s: number, m: any) => s + m.lessons.length, 0) || 0
           return (
             <Link key={c.id} href={`/admin/courses/${c.id}`}
-              className="flex items-center gap-4 p-5 bg-card border border-white/[0.07] rounded-2xl hover:border-accent/40 hover:-translate-y-0.5 transition-all">
+              className="flex items-center gap-4 p-5 bg-card border border-slate-200 rounded-2xl hover:border-accent/40 hover:-translate-y-0.5 transition-all">
               <div className="w-14 h-14 rounded-xl bg-surface flex items-center justify-center overflow-hidden shrink-0">
                 {c.products?.thumbnail ? <img src={c.products.thumbnail} alt="" className="w-full h-full object-cover" /> : <BookOpen size={22} className="text-accent-light" />}
               </div>
@@ -25,7 +25,7 @@ export default async function AdminCoursesPage() {
                 <div className="font-syne font-bold truncate">{c.products?.title || c.title}</div>
                 <div className="text-text-muted text-xs mt-0.5">{c.modules?.length || 0} modul · {lessons} lesson</div>
               </div>
-              <span className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-bold ${c.products?.is_published ? 'bg-green-500/10 text-green-400' : 'bg-white/5 text-text-muted'}`}>
+              <span className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-bold ${c.products?.is_published ? 'bg-green-500/10 text-green-400' : 'bg-slate-50 text-text-muted'}`}>
                 {c.products?.is_published ? 'Published' : 'Draft'}
               </span>
               <span className="text-text-dim text-sm shrink-0">Edit →</span>

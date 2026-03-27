@@ -183,6 +183,21 @@ export function CourseViewer({
     }).catch(console.error);
   }, []);
 
+  // Periodic persistence for "Last Activity"
+  useEffect(() => {
+    if (!activeLessonId) return;
+    
+    const interval = setInterval(() => {
+      fetch("/api/progress/touch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lesson_id: activeLessonId }),
+      }).catch(console.error);
+    }, 30000); // Every 30 seconds
+    
+    return () => clearInterval(interval);
+  }, [activeLessonId]);
+
   const markComplete = useCallback(async () => {
     if (!activeLessonId || completedIds.has(activeLessonId) || saving) return;
     setSaving(true);

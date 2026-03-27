@@ -157,69 +157,78 @@ export default async function DashboardPage() {
           </Link>
         </div>
 
-        {/* ── TODAY'S LESSON WIDGET ── */}
+        {/* ── LAST ACTIVITY WIDGET ── */}
         {nextLesson && nextCourse && (
-          <div className="mb-8">
-            <div className="relative overflow-hidden bg-gradient-to-br from-accent/20 via-accent/10 to-transparent border border-accent/30 rounded-2xl p-5 sm:p-6">
-              {/* Glow */}
-              <div className="absolute top-0 right-0 w-48 h-48 bg-accent/15 rounded-full blur-3xl pointer-events-none" />
+          <div className="mb-10">
+            <div className="relative overflow-hidden bg-card border border-slate-200 rounded-[2.5rem] p-6 sm:p-8 hover:border-accent/30 transition-all group shadow-sm">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl pointer-events-none group-hover:bg-accent/10 transition-colors" />
 
-              <div className="relative grid sm:grid-cols-[1fr_auto] gap-5 items-center">
-                <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="flex items-center gap-1.5 px-2.5 py-1 bg-accent/20 border border-accent/30 rounded-full">
-                      <Target size={12} className="text-accent-light" />
-                      <span className="text-accent-light text-xs font-bold">
-                        Belajar Hari Ini
+              <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-8">
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center gap-2 mb-4">
+                    <div className="flex items-center gap-1.5 px-3 py-1 bg-accent/10 border border-accent/20 rounded-full">
+                      <Clock size={12} className="text-accent" />
+                      <span className="text-accent-light text-[10px] font-bold uppercase tracking-widest">
+                        Aktivitas Terakhir
                       </span>
                     </div>
                     {todayCount > 0 && (
-                      <div className="flex items-center gap-1 px-2.5 py-1 bg-cta/15 border border-cta/25 rounded-full">
-                        <Flame size={12} className="text-cta" />
-                        <span className="text-cta text-xs font-bold">
-                          {todayCount} selesai
+                      <div className="flex items-center gap-1.5 px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-full">
+                        <Flame size={12} className="text-green-500" />
+                        <span className="text-green-500 text-[10px] font-bold uppercase tracking-widest">
+                          {todayCount} Selesai Hari Ini
                         </span>
                       </div>
                     )}
                   </div>
-                  <p className="text-text-muted text-xs mb-1 font-medium">
-                    {nextCourse.products?.title}
-                  </p>
-                  <h2 className="font-syne font-extrabold text-lg sm:text-xl mb-3 leading-tight">
-                    {nextLesson.title}
-                  </h2>
-                  <div className="flex items-center gap-3 text-xs text-text-muted flex-wrap">
+                  
+                  <div className="space-y-1 mb-6">
+                     <p className="text-text-muted text-xs font-bold uppercase tracking-wider opacity-60">
+                      {nextCourse.products?.title || nextCourse.title}
+                    </p>
+                    <h2 className="font-syne font-extrabold text-xl sm:text-2xl text-text leading-tight group-hover:text-accent transition-colors">
+                      {nextLesson.title}
+                    </h2>
+                  </div>
+
+                  <div className="flex items-center gap-6 text-[11px] font-bold text-text-muted uppercase tracking-widest">
                     {nextLesson.duration > 0 && (
-                      <span className="flex items-center gap-1">
-                        <Clock size={11} />{" "}
-                        {Math.floor(nextLesson.duration / 60)} menit
+                      <span className="flex items-center gap-1.5">
+                        <Clock size={14} className="text-accent/40" />{" "}
+                        {Math.floor(nextLesson.duration / 60)} Menit
                       </span>
                     )}
-                    <span className="flex items-center gap-1">
-                      <BookOpen size={11} /> {completedLessons}/{totalLessons}{" "}
-                      lesson selesai
+                    <span className="flex items-center gap-1.5">
+                      <BookOpen size={14} className="text-accent/40" /> {completedLessons}/{totalLessons} Selesai
                     </span>
                   </div>
                 </div>
-                <Link
-                  href={`/dashboard/course/${nextCourse.id}${nextLesson ? `?lesson=${nextLesson.id}` : ''}`}
-                  className="flex items-center gap-2.5 px-5 py-3.5 bg-accent hover:bg-accent-light text-white font-syne font-bold text-sm rounded-xl transition-all hover:-translate-y-0.5 shadow-lg shadow-accent/25 shrink-0"
-                >
-                  <Play size={16} /> Mulai Belajar
-                </Link>
+
+                <div className="shrink-0">
+                  <Link
+                    href={`/dashboard/course/${nextCourse.id}?lesson=${nextLesson.id}`}
+                    className="flex items-center justify-center gap-3 px-8 py-5 bg-accent hover:bg-accent-light text-white font-syne font-extrabold text-sm rounded-[2rem] transition-all hover:-translate-y-1 shadow-2xl shadow-accent/30 active:scale-95 group/btn"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover/btn:scale-110 transition-transform">
+                      <Play size={16} fill="white" />
+                    </div>
+                    <span>Lanjutkan Belajar</span>
+                    <ChevronRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
               </div>
 
-              {/* Overall progress bar */}
-              <div className="relative mt-5 pt-4 border-t border-slate-200">
-                <div className="flex justify-between text-xs text-text-muted mb-2">
-                  <span>Progress keseluruhan</span>
-                  <span className="font-semibold text-accent-light">
-                    {overallProgress}%
+              {/* Course overall progress bar integrated */}
+              <div className="relative mt-8 pt-6 border-t border-slate-100">
+                <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest text-text-muted mb-3">
+                  <span>Progres Belajar Kamu</span>
+                  <span className="text-accent">
+                    {overallProgress}% COMPLETE
                   </span>
                 </div>
                 <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-accent to-accent-light rounded-full transition-all"
+                    className="h-full bg-gradient-to-r from-accent to-accent-light rounded-full transition-all duration-1000"
                     style={{ width: `${overallProgress}%` }}
                   />
                 </div>
@@ -325,17 +334,15 @@ export default async function DashboardPage() {
                         completedLessons={done}
                         totalLessons={total}
                       />
-                      {/* Quick actions: Continue */}
-                      {courseNextLesson && progress < 100 && (
-                        <Link
-                          href={`/dashboard/course/${course.id}${courseNextLesson ? `?lesson=${courseNextLesson.id}` : ''}`}
-                          className="mt-3 flex items-center justify-center gap-2 w-full py-2.5 bg-accent/10 hover:bg-accent/20 text-accent-light text-xs font-semibold rounded-xl transition-all"
-                        >
-                          <Play size={12} /> Lanjut:{" "}
-                          {courseNextLesson.title.slice(0, 28)}
-                          {courseNextLesson.title.length > 28 ? "..." : ""}
-                        </Link>
-                      )}
+                          {courseNextLesson && progress < 100 && (
+                            <Link
+                              href={`/dashboard/course/${course.id}?lesson=${courseNextLesson.id}`}
+                              className="mt-3 flex items-center justify-center gap-2 w-full py-3 bg-accent text-white hover:bg-accent-light text-[11px] font-extrabold rounded-[1.5rem] transition-all shadow-lg shadow-accent/20 active:scale-95 group/resume"
+                            >
+                              <Play size={10} fill="white" className="group-hover/resume:scale-110 transition-transform" /> 
+                              <span>LANJUTKAN: {courseNextLesson.title.slice(0, 20)}{courseNextLesson.title.length > 20 ? "..." : ""}</span>
+                            </Link>
+                          )}
                     </div>
 
                     <div className="p-4 sm:p-5">

@@ -920,19 +920,29 @@ export function CourseBuilderClient({ course }: { course: any }) {
         ))}
 
       {useChapters && (
-        <div className="space-y-3">
-          <div className="flex flex-col sm:flex-row gap-3">
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row gap-4">
             <button
               onClick={addModule}
-              className="flex-1 flex items-center justify-center gap-2 py-4 border-2 border-dashed border-accent/20 rounded-2xl text-sm text-accent-light hover:bg-accent/5 hover:border-accent/40 transition-all font-semibold"
+              className="flex-[2] flex items-center justify-center gap-3 py-6 bg-accent hover:bg-accent-light text-white rounded-[2rem] text-base font-syne font-extrabold transition-all shadow-xl shadow-accent/20 active:scale-[0.98] group"
             >
-              <Plus size={16} /> Tambah Bab Baru
+              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Plus size={20} className="text-white" />
+              </div>
+              <span>Tambah Bab Baru</span>
             </button>
+            
             <button
               onClick={() => setShowPlaylistModal(true)}
-              className="flex-1 flex items-center justify-center gap-2 py-4 border-2 border-dashed border-red-500/20 rounded-2xl text-sm text-red-100 hover:bg-red-500/5 hover:border-red-500/40 transition-all font-semibold"
+              className="flex-[3] flex items-center justify-center gap-3 py-6 bg-red-600 hover:bg-red-700 text-white rounded-[2rem] text-base font-syne font-extrabold transition-all shadow-xl shadow-red-600/20 active:scale-[0.98] group"
             >
-              <Video size={16} /> Impor Playlist YouTube
+              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <Video size={20} className="text-white fill-white" />
+              </div>
+              <div className="text-left">
+                <div className="leading-tight">Impor Playlist YouTube</div>
+                <div className="text-[10px] font-bold text-white/60 tracking-widest uppercase">Otomatis Jadi Materi</div>
+              </div>
             </button>
           </div>
 

@@ -174,6 +174,13 @@ export function CourseViewer({
     setActiveLessonId(lessonId);
     setMobileOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
+    
+    // Track that we "touched" this lesson to resume later
+    fetch("/api/progress/touch", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ lesson_id: lessonId }),
+    }).catch(console.error);
   }, []);
 
   const markComplete = useCallback(async () => {
@@ -261,62 +268,78 @@ export function CourseViewer({
         )}
       </div>
 
-      <div className={cn("flex-1 overflow-y-auto py-4 px-2 scrollbar-hide hover-scrollbar-show transition-all custom-scrollbar", isSidebarCollapsed && "px-1")}>
-        <div className="space-y-1">
-          {allLessons.map((l, idx) => {
-            const done = completedIds.has(l.id);
-            const active = activeLessonId === l.id;
-            return (
-              <button
-                key={l.id}
-                onClick={() => openLesson(l.id)}
-                className={cn(
-                  "w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-left transition-all group relative",
-                  active
-                    ? "bg-slate-50 shadow-lg border border-slate-200"
-                    : "hover:bg-accent/5",
-                  isSidebarCollapsed && "justify-center px-0 py-4 h-12 w-12 mx-auto rounded-xl"
-                )}
-                title={isSidebarCollapsed ? l.title : undefined}
-              >
-                <div className={cn(
-                  "w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold shrink-0 transition-colors",
-                  active 
-                    ? "border-accent bg-accent text-white" 
-                    : done 
-                    ? "border-green-500/50 text-green-400" 
-                    : "border-slate-200 text-text-dim group-hover:border-slate-300",
-                  isSidebarCollapsed && "w-7 h-7"
-                )}>
-                  {idx + 1}
-                </div>
-                
-                {!isSidebarCollapsed && (
-                  <div className="flex-1 min-w-0">
-                    <MarqueeText className={cn(
-                      "text-sm font-bold transition-colors",
-                      active ? "text-accent-light" : done ? "text-green-400/90" : "text-text-muted"
-                    )}>
-                      {l.title}
-                    </MarqueeText>
-                    {done && (
-                      <div className="flex items-center gap-1 mt-0.5">
-                        <CheckCircle size={10} className="text-green-500" />
-                        <span className="text-[10px] text-text-dim">Selesai</span>
-                      </div>
-                    )}
+      <div className={cn("flex-1 overflow-y-auto py-6 px-4 scrollbar-hide hover-scrollbar-show transition-all custom-scrollbar", isSidebarCollapsed && "px-1")}>
+        <div className="space-y-8">
+          {course.modules.map((mod, modIdx) => (
+            <div key={mod.id} className="space-y-3">
+              {!isSidebarCollapsed && (
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-6 h-6 rounded-lg bg-accent/10 flex items-center justify-center text-[10px] font-bold text-accent shrink-0">
+                    {modIdx + 1}
                   </div>
-                )}
+                  <h3 className="text-[11px] font-bold text-text-dim uppercase tracking-[0.2em] truncate">
+                    {mod.title}
+                  </h3>
+                </div>
+              )}
+              
+              <div className="space-y-1">
+                {mod.lessons.map((l, lIdx) => {
+                  const done = completedIds.has(l.id);
+                  const active = activeLessonId === l.id;
+                  const globalIdx = allLessons.findIndex(al => al.id === l.id);
 
-                {!isSidebarCollapsed && !done && !active && (
-                   <ChevronRight size={14} className="text-text-dim group-hover:text-accent-light" />
-                )}
-                {!isSidebarCollapsed && active && (
-                   <div className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
-                )}
-              </button>
-            );
-          })}
+                  return (
+                    <button
+                      key={l.id}
+                      onClick={() => openLesson(l.id)}
+                      className={cn(
+                        "w-full flex items-center gap-4 px-4 py-3 rounded-2xl text-left transition-all group relative",
+                        active
+                          ? "bg-accent/10 shadow-sm border border-accent/20"
+                          : "hover:bg-accent/5",
+                        isSidebarCollapsed && "justify-center px-0 py-4 h-12 w-12 mx-auto rounded-xl"
+                      )}
+                      title={isSidebarCollapsed ? l.title : undefined}
+                    >
+                      <div className={cn(
+                        "w-7 h-7 rounded-full border-2 flex items-center justify-center text-[10px] font-bold shrink-0 transition-colors",
+                        active 
+                          ? "border-accent bg-accent text-white" 
+                          : done 
+                          ? "border-green-500/50 text-green-400" 
+                          : "border-slate-200 text-text-dim group-hover:border-slate-300",
+                        isSidebarCollapsed && "w-7 h-7"
+                      )}>
+                        {globalIdx + 1}
+                      </div>
+                      
+                      {!isSidebarCollapsed && (
+                        <div className="flex-1 min-w-0">
+                          <MarqueeText className={cn(
+                            "text-sm font-bold transition-colors",
+                            active ? "text-accent-light" : done ? "text-green-400" : "text-text-muted"
+                          )}>
+                            {l.title}
+                          </MarqueeText>
+                          {done && (
+                            <div className="flex items-center gap-1 mt-0.5">
+                              <CheckCircle size={10} className="text-green-500" />
+                              <span className="text-[10px] text-green-500/70 font-bold uppercase tracking-widest leading-none">SELESAI</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {!isSidebarCollapsed && active && (
+                         <div className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

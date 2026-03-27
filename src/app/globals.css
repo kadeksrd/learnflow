@@ -137,13 +137,16 @@
   }
 
   @keyframes marquee-bounce {
-    0%, 20% { left: 0; transform: translateX(0); }
-    80%, 100% { left: 100%; transform: translateX(-100%); }
+    0%, 15% { transform: translateX(0); }
+    85%, 100% { transform: translateX(calc(-100% + var(--container-width, 100%))); }
   }
 
-  .animate-marquee-bounce {
-    position: relative;
-    animation: marquee-bounce 10s ease-in-out infinite alternate;
+  .animate-marquee-hover:hover .marquee-content {
+    animation: marquee-bounce 5s ease-in-out infinite alternate;
+  }
+
+  .animate-marquee-auto .marquee-content {
+    animation: marquee-bounce 8s ease-in-out infinite alternate;
   }
 }
 

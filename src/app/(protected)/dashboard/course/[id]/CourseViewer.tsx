@@ -25,6 +25,7 @@ import {
   PanelLeftOpen,
 } from "lucide-react";
 import Link from "next/link";
+import { MarqueeText } from "@/components/ui/MarqueeText";
 
 interface Lesson {
   id: string;
@@ -85,6 +86,7 @@ export function CourseViewer({
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [videoReloadKey, setVideoReloadKey] = useState(0);
   const [activeTab, setActiveTab] = useState<"notes" | "resources">("notes");
+  const [showResumeNotice, setShowResumeNotice] = useState(false);
 
   const youtubeOpts = useMemo(() => ({
     width: '100%',
@@ -106,12 +108,16 @@ export function CourseViewer({
       const savedTime = localStorage.getItem(`progress:${activeLessonId}`);
       if (savedTime) {
         const time = parseFloat(savedTime);
-        player.seekTo(time);
-        
-        // Update percentage immediately
-        const duration = player.getDuration();
-        if (duration > 0) {
-          setWatchProgress(Math.round((time / duration) * 100));
+        if (time > 0) {
+          player.seekTo(time);
+          setShowResumeNotice(true);
+          setTimeout(() => setShowResumeNotice(false), 3000);
+          
+          // Update percentage immediately
+          const duration = player.getDuration();
+          if (duration > 0) {
+            setWatchProgress(Math.round((time / duration) * 100));
+          }
         }
       }
     }
@@ -135,7 +141,6 @@ export function CourseViewer({
     let interval: NodeJS.Timeout;
     if (player && activeLessonId) {
       interval = setInterval(() => {
-        // Cek jika sedang PLAYING (1)
         if (player.getPlayerState?.() === 1) {
           saveProgress();
         }
@@ -148,7 +153,6 @@ export function CourseViewer({
     setWatchProgress(0);
   }, [activeLessonId]);
 
-  const useChapters = course.use_chapters !== false;
   const allLessons: Lesson[] = course.modules.flatMap((m) => m.lessons);
   const progress =
     allLessons.length > 0
@@ -187,7 +191,6 @@ export function CourseViewer({
         return next;
       });
 
-      // Check if all lessons are completed after marking the current one
       if (allLessons.every((l) => l.id === activeLessonId || completedIds.has(l.id))) {
         setShowCompleteModal(true);
       }
@@ -200,21 +203,18 @@ export function CourseViewer({
     } finally {
       setSaving(false);
     }
-  }, [activeLessonId, allLessons, completedIds, setShowCompleteModal, saving, autoNext, nextLesson, openLesson]);
+  }, [activeLessonId, allLessons, completedIds, saving, autoNext, nextLesson, openLesson]);
 
-  // ─── Sidebar Content ──────────────────────────────────────────────────────
   const renderSidebarContent = () => (
     <div className={cn("flex flex-col h-full bg-surface overscroll-contain transition-all duration-300", isSidebarCollapsed ? "w-[80px]" : "w-full")}>
-      {/* Fixed Part */}
       <div className={cn("p-6 border-b border-slate-200 shrink-0", isSidebarCollapsed && "p-4")}>
-        {/* Logo & Brand & Toggle */}
         <div className={cn("flex items-center justify-between gap-3 mb-8", isSidebarCollapsed && "flex-col mb-6")}>
           {!isSidebarCollapsed && (
             <Link href="/" className="flex items-center gap-3 group/logo truncate">
               <div className="w-9 h-9 rounded-xl bg-gradient-accent flex items-center justify-center shadow-lg shadow-accent/30 group-hover/logo:scale-110 transition-transform duration-300">
                 <Zap size={18} className="text-white fill-white" />
               </div>
-              <span className="font-syne font-extrabold text-xl text-white tracking-tight">LearnFlow</span>
+              <span className="font-syne font-extrabold text-xl text-text tracking-tight">LearnFlow</span>
             </Link>
           )}
           {isSidebarCollapsed && (
@@ -261,7 +261,6 @@ export function CourseViewer({
         )}
       </div>
 
-      {/* Scrollable List */}
       <div className={cn("flex-1 overflow-y-auto py-4 px-2 scrollbar-hide hover-scrollbar-show transition-all custom-scrollbar", isSidebarCollapsed && "px-1")}>
         <div className="space-y-1">
           {allLessons.map((l, idx) => {
@@ -275,7 +274,7 @@ export function CourseViewer({
                   "w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-left transition-all group relative",
                   active
                     ? "bg-slate-50 shadow-lg border border-slate-200"
-                    : "hover:bg-white/[0.02]",
+                    : "hover:bg-accent/5",
                   isSidebarCollapsed && "justify-center px-0 py-4 h-12 w-12 mx-auto rounded-xl"
                 )}
                 title={isSidebarCollapsed ? l.title : undefined}
@@ -285,8 +284,8 @@ export function CourseViewer({
                   active 
                     ? "border-accent bg-accent text-white" 
                     : done 
-                      ? "border-green-500/50 text-green-400" 
-                      : "border-slate-200 text-text-dim group-hover:border-slate-300",
+                    ? "border-green-500/50 text-green-400" 
+                    : "border-slate-200 text-text-dim group-hover:border-slate-300",
                   isSidebarCollapsed && "w-7 h-7"
                 )}>
                   {idx + 1}
@@ -294,12 +293,12 @@ export function CourseViewer({
                 
                 {!isSidebarCollapsed && (
                   <div className="flex-1 min-w-0">
-                    <div className={cn(
-                      "text-sm font-bold truncate transition-colors",
+                    <MarqueeText className={cn(
+                      "text-sm font-bold transition-colors",
                       active ? "text-accent-light" : done ? "text-green-400/90" : "text-text-muted"
                     )}>
                       {l.title}
-                    </div>
+                    </MarqueeText>
                     {done && (
                       <div className="flex items-center gap-1 mt-0.5">
                         <CheckCircle size={10} className="text-green-500" />
@@ -310,10 +309,10 @@ export function CourseViewer({
                 )}
 
                 {!isSidebarCollapsed && !done && !active && (
-                   <ChevronRight size={14} className="text-gray-300 group-hover:text-gray-400" />
+                   <ChevronRight size={14} className="text-text-dim group-hover:text-accent-light" />
                 )}
                 {!isSidebarCollapsed && active && (
-                   <div className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(168,85,247,0.6)]" />
+                   <div className="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(99,102,241,0.6)]" />
                 )}
               </button>
             );
@@ -323,14 +322,13 @@ export function CourseViewer({
     </div>
   );
 
-  // ─── Main Content ─────────────────────────────────────────────────────────
   const renderMainContent = () => {
     if (!activeLessonId || !activeLesson) {
       return (
         <div className="flex items-center justify-center p-8 h-full bg-bg">
           <div className="text-center max-w-md animate-in fade-in zoom-in-95 duration-500">
             <div className="text-6xl mb-6">✨</div>
-            <h2 className="font-syne font-extrabold text-2xl text-white mb-3">
+            <h2 className="font-syne font-extrabold text-2xl text-text mb-3">
               Ready to learn?
             </h2>
             <p className="text-text-muted text-sm mb-8 leading-relaxed">
@@ -341,7 +339,7 @@ export function CourseViewer({
             {initialLessonId && (
               <button
                 onClick={() => openLesson(initialLessonId)}
-                className="inline-flex items-center gap-3 px-8 py-4 bg-cta text-black font-syne font-bold rounded-2xl hover:bg-cta-hover transition-all shadow-lg active:scale-95"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-cta text-white font-syne font-bold rounded-2xl hover:bg-cta-hover transition-all shadow-lg active:scale-95"
               >
                 <Play size={18} fill="currentColor" />
                 {completedIds.size > 0 ? "Continue Learning" : "Start Now"}
@@ -358,24 +356,18 @@ export function CourseViewer({
 
     return (
       <div className="flex flex-col h-full bg-bg overflow-y-auto overscroll-contain custom-scrollbar">
-        {/* Anti-Header Hack */}
         <style jsx global>{`
           nav { display: none !important; }
           header.fixed { display: none !important; }
         `}</style>
 
-        {/* Header Section */}
         <header className="px-6 sm:px-10 py-8">
           <div className="max-w-[1200px] mx-auto">
-            <div className="flex items-center justify-between gap-6 pb-2 border-b border-slate-100">
+            <div className="flex items-center justify-between gap-6 pb-2 border-b border-slate-200">
               <div className="flex-1 min-w-0">
-                <div className="flex-1 min-w-0 overflow-hidden relative py-1">
-                  <div className="flex w-max animate-marquee-bounce">
-                    <h1 className="font-syne font-extrabold text-xl sm:text-2xl text-white leading-tight whitespace-nowrap">
-                      {lesson.title}
-                    </h1>
-                  </div>
-                </div>
+                <MarqueeText className="font-syne font-extrabold text-xl sm:text-2xl text-text leading-tight md:truncate">
+                  {lesson.title}
+                </MarqueeText>
               </div>
 
               <div className="flex items-center gap-3 sm:gap-5 shrink-0">
@@ -386,7 +378,7 @@ export function CourseViewer({
                     className={cn(
                       "flex items-center gap-2 px-3 py-1.5 rounded-lg text-[10px] font-bold tracking-wider transition-all border",
                       autoNext 
-                        ? "bg-accent/20 text-accent-light border-accent/30" 
+                        ? "bg-accent/20 text-accent border-accent/30" 
                         : "bg-slate-50 text-text-dim border-slate-200 hover:text-accent"
                     )}
                    >
@@ -434,7 +426,6 @@ export function CourseViewer({
           </div>
         </header>
 
-        {/* Video Player */}
         <section className="px-4 sm:px-10 pb-8">
           <div className="max-w-[1200px] mx-auto">
             <div className="relative w-full bg-black aspect-video rounded-[2rem] overflow-hidden shadow-2xl border border-slate-200">
@@ -472,9 +463,18 @@ export function CourseViewer({
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-[#0A0015] to-[#1A0A2E] flex flex-col items-center justify-center gap-4">
+                <div className="w-full h-full bg-card flex flex-col items-center justify-center gap-4">
                   <div className="w-16 h-16 rounded-3xl bg-slate-50 border border-slate-200 flex items-center justify-center text-3xl">🎬</div>
                   <p className="text-text-muted text-sm font-bold">Video tidak tersedia</p>
+                </div>
+              )}
+
+              {showResumeNotice && (
+                <div className="absolute top-6 left-1/2 -translate-x-1/2 z-[60] animate-in fade-in slide-in-from-top-4 duration-500">
+                  <div className="flex items-center gap-2 px-4 py-2 bg-accent/90 backdrop-blur-md border border-white/20 rounded-full shadow-2xl">
+                    <Play size={12} className="text-white fill-white" />
+                    <span className="text-[10px] font-bold text-white tracking-widest uppercase">Video dilanjutkan dari posisi terakhir</span>
+                  </div>
                 </div>
               )}
 
@@ -496,15 +496,13 @@ export function CourseViewer({
                 </div>
               )}
 
-              {/* Progress Overlay */}
               {player && (
-                <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-slate-100 z-[50]">
+                <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-slate-100/20 z-[50]">
                   <div
-                    className="h-full bg-accent shadow-[0_0_15px_rgba(168,85,247,0.6)] transition-all duration-300 relative"
+                    className="h-full bg-accent shadow-[0_0_15px_rgba(99,102,241,0.6)] transition-all duration-300 relative"
                     style={{ width: `${watchProgress}%` }}
                   >
-                    {/* Percentage Indicator */}
-                    <div className="absolute -top-7 -right-4 flex items-center justify-center px-1.5 py-0.5 bg-accent/90 backdrop-blur-sm text-[10px] font-bold text-white rounded-md shadow-lg border border-slate-200 select-none">
+                    <div className="absolute -top-7 -right-4 flex items-center justify-center px-1.5 py-0.5 bg-accent/90 backdrop-blur-sm text-[10px] font-bold text-white rounded-md shadow-lg border border-slate-100/20 select-none">
                       {Math.round(watchProgress)}%
                     </div>
                   </div>
@@ -514,10 +512,8 @@ export function CourseViewer({
           </div>
         </section>
 
-        {/* Content Tabs & Details */}
         <section className="px-6 sm:px-10 pb-20">
           <div className="max-w-[1200px] mx-auto">
-            {/* Tabs */}
             <div className="flex items-center gap-8 border-b border-slate-200 mb-10 overflow-x-auto no-scrollbar">
               {[
                 { id: "notes", label: "Catatan" },
@@ -528,7 +524,7 @@ export function CourseViewer({
                   onClick={() => setActiveTab(t.id as any)}
                   className={cn(
                     "pb-4 text-sm font-bold transition-all relative whitespace-nowrap",
-                    activeTab === t.id ? "text-accent-light" : "text-text-dim hover:text-accent"
+                    activeTab === t.id ? "text-accent" : "text-text-dim hover:text-accent"
                   )}
                 >
                   {t.label}
@@ -545,7 +541,7 @@ export function CourseViewer({
                   className={cn(
                     "flex items-center gap-2 px-6 py-2 rounded-xl text-xs font-bold transition-all",
                     isDone
-                      ? "bg-green-500/10 text-green-400 border border-green-500/20"
+                      ? "bg-green-500/10 text-green-500 border border-green-500/20"
                       : "bg-accent hover:bg-accent-light text-white shadow-lg shadow-accent/10"
                   )}
                  >
@@ -556,7 +552,7 @@ export function CourseViewer({
             </div>
 
             <div className="flex flex-col lg:flex-row gap-12">
-              <div className="flex-1 space-y-8">
+              <div className="flex-1 space-y-8 text-text">
                 {activeTab === "notes" && (
                   <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
                     <p className="text-text-muted text-sm leading-8 whitespace-pre-line font-medium">
@@ -572,21 +568,20 @@ export function CourseViewer({
                         key={s.id}
                         href={s.url}
                         target="_blank" rel="noopener noreferrer"
-                        className="flex items-center gap-4 p-5 bg-surface border border-slate-200 rounded-2xl hover:border-accent/40 hover:shadow-xl hover:shadow-accent/5 transition-all group"
+                        className="flex items-center gap-4 p-5 bg-card border border-slate-200 rounded-2xl hover:border-accent/40 hover:shadow-xl hover:shadow-accent/5 transition-all group"
                       >
                         <span className="text-3xl shrink-0">{s.icon || "📎"}</span>
                         <div className="flex-1 min-w-0">
-                          <div className="font-bold text-sm text-white truncate">{s.title}</div>
+                          <div className="font-bold text-sm text-text truncate">{s.title}</div>
                           <div className="text-[10px] font-bold text-text-dim uppercase tracking-widest">{s.type}</div>
                         </div>
-                        <ExternalLink size={14} className="text-text-dim group-hover:text-accent-light" />
+                        <ExternalLink size={14} className="text-text-dim group-hover:text-accent" />
                       </a>
                     )) || (
                        <p className="text-text-dim text-sm italic col-span-2">Tidak ada materi tambahan.</p>
                     )}
                   </div>
                 )}
-
               </div>
             </div>
           </div>
@@ -596,23 +591,21 @@ export function CourseViewer({
   };
 
   return (
-    <div className="flex flex-col h-screen bg-bg text-white overflow-hidden font-sans">
-      {/* Mobile Top Bar */}
+    <div className="flex flex-col h-screen bg-bg text-text overflow-hidden font-sans">
       <div className="lg:hidden h-14 bg-surface border-b border-slate-200 flex items-center justify-between px-4 shrink-0 z-50">
         <button
           onClick={() => setMobileOpen(true)}
-          className="p-2 -ml-2 text-accent-light"
+          className="p-2 -ml-2 text-accent"
         >
           <Menu size={20} />
         </button>
-        <span className="font-syne font-bold text-sm truncate flex-1 text-center px-4">
+        <span className="font-syne font-bold text-sm truncate flex-1 text-center px-4 text-text">
           {activeLesson?.title || course.title}
         </span>
-        <div className="w-10" /> {/* Spacer */}
+        <div className="w-10" />
       </div>
 
       <div className="flex flex-1 overflow-hidden relative">
-        {/* Desktop Sidebar (Left) */}
         <aside className={cn(
           "hidden lg:flex flex-col bg-surface border-r border-slate-200 shrink-0 shadow-sm transition-all duration-300 ease-in-out",
           isSidebarCollapsed ? "w-[80px]" : "w-[380px]"
@@ -620,12 +613,10 @@ export function CourseViewer({
           {renderSidebarContent()}
         </aside>
 
-        {/* Shared Main Viewport */}
         <main className="flex-1 flex flex-col min-w-0 h-full relative z-10 bg-bg">
           {renderMainContent()}
         </main>
 
-        {/* Mobile Sidebar Overlay */}
         {mobileOpen && (
           <>
             <div
@@ -634,7 +625,7 @@ export function CourseViewer({
             />
             <div className="fixed top-0 left-0 bottom-0 w-[85%] max-w-[320px] bg-surface z-[70] lg:hidden flex flex-col shadow-2xl animate-in slide-in-from-left duration-300">
               <div className="p-4 border-b border-slate-200 flex items-center justify-between">
-                <span className="font-syne font-extrabold text-white">Menu Materi</span>
+                <span className="font-syne font-extrabold text-text">Menu Materi</span>
                 <button onClick={() => setMobileOpen(false)} className="p-2 text-text-muted hover:text-accent">
                   <X size={22} />
                 </button>
@@ -645,41 +636,41 @@ export function CourseViewer({
             </div>
           </>
         )}
-      {/* Course Completion Modal */}
-      {showCompleteModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          <div
-            className="absolute inset-0 bg-black/80 backdrop-blur-xl animate-in fade-in duration-500"
-            onClick={() => setShowCompleteModal(false)}
-          />
-          <div className="relative bg-gradient-to-br from-indigo-50 to-purple-50 border border-slate-200 rounded-[3rem] p-10 max-w-sm w-full text-center shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-300">
-            <div className="w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-[2rem] mx-auto mb-8 flex items-center justify-center shadow-[0_20px_40px_rgba(234,179,8,0.3)] animate-bounce">
-              <Trophy size={48} className="text-white" />
-            </div>
-            <h2 className="font-syne font-extrabold text-3xl mb-3 text-white leading-tight">
-              Selamat! 🎉
-            </h2>
-            <p className="text-text-muted text-sm mb-10 leading-relaxed font-medium">
-              Kamu telah menyelesaikan semua materi di kursus ini. Kamu bisa mengambil sertifikatmu sekarang.
-            </p>
-            <div className="flex flex-col gap-4">
-              <Link
-                href={`/certificate/${course.id}`}
-                className="flex items-center justify-center gap-2 w-full py-5 bg-accent hover:bg-accent-light text-white font-extrabold rounded-[1.5rem] transition-all shadow-xl shadow-accent/20 active:scale-95"
-              >
-                <Award size={20} />
-                Ambil Sertifikat
-              </Link>
-              <button
-                onClick={() => setShowCompleteModal(false)}
-                className="text-text-dim text-xs font-bold hover:text-accent transition-colors py-2"
-              >
-                Nanti Saja
-              </button>
+
+        {showCompleteModal && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <div
+              className="absolute inset-0 bg-black/80 backdrop-blur-xl animate-in fade-in duration-500"
+              onClick={() => setShowCompleteModal(false)}
+            />
+            <div className="relative bg-card border border-slate-200 rounded-[3rem] p-10 max-w-sm w-full text-center shadow-[0_30px_60px_-15px_rgba(0,0,0,0.5)] animate-in zoom-in-95 duration-300">
+              <div className="w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-[2rem] mx-auto mb-8 flex items-center justify-center shadow-[0_20px_40px_rgba(234,179,8,0.3)] animate-bounce">
+                <Trophy size={48} className="text-white" />
+              </div>
+              <h2 className="font-syne font-extrabold text-3xl mb-3 text-text leading-tight">
+                Selamat! 🎉
+              </h2>
+              <p className="text-text-muted text-sm mb-10 leading-relaxed font-medium">
+                Kamu telah menyelesaikan semua materi di kursus ini. Kamu bisa mengambil sertifikatmu sekarang.
+              </p>
+              <div className="flex flex-col gap-4">
+                <Link
+                  href={`/certificate/${course.id}`}
+                  className="flex items-center justify-center gap-2 w-full py-5 bg-accent hover:bg-accent-light text-white font-extrabold rounded-[1.5rem] transition-all shadow-xl shadow-accent/20 active:scale-95"
+                >
+                  <Award size={20} />
+                  Ambil Sertifikat
+                </Link>
+                <button
+                  onClick={() => setShowCompleteModal(false)}
+                  className="text-text-dim text-xs font-bold hover:text-accent transition-colors py-2"
+                >
+                  Nanti Saja
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import { createAdminClient } from '@/lib/supabase/server'
  */
 export async function checkEmailExists(email: string) {
   try {
-    const supabase = createAdminClient()
+    const supabase = await createAdminClient()
     
     // Auth admin listUsers defaultnya mengambil 50 user, 
     // tapi kita hanya butuh mengecek apakah ada email yang cocok

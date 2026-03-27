@@ -10,11 +10,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id } = await params;
   const supabase = await createClient();
-  const { data: course } = await (supabase
+  const { data: course } = (await supabase
     .from("courses")
     .select("title")
     .eq("id", id)
-    .single() as any);
+    .single()) as any;
 
   return {
     title: course?.title || "Kursus",
@@ -23,10 +23,13 @@ export async function generateMetadata({
 
 export default async function CourseDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ lesson?: string }>;
 }) {
   const { id } = await params;
+  const { lesson: lessonIdFromUrl } = await searchParams;
   const supabase = await createClient();
   const {
     data: { user },
@@ -58,31 +61,47 @@ export default async function CourseDetailPage({
 
   if (!course) notFound();
   course.modules.sort((a: any, b: any) => a.order - b.order);
-  course.modules.forEach((m: any) =>
-    m.lessons.sort((a: any, b: any) => a.order - b.order),
-  );
+  const allLessons = course.modules.flatMap((m: any) => {
+    m.lessons.sort((a: any, b: any) => a.order - b.order);
+    return m.lessons;
+  });
 
-  const allLessonIds = course.modules.flatMap((m: any) =>
-    m.lessons.map((l: any) => l.id),
-  );
+  const allLessonIds = allLessons.map((l: any) => l.id);
+
+  // Get progress to find completed and last touched
   const { data: prog } = await supabase
     .from("progress")
-    .select("lesson_id")
+    .select("lesson_id, status, updated_at")
     .eq("user_id", user!.id)
     .in("lesson_id", allLessonIds);
+
   const completedSet = new Set(
-    (prog as any)?.map((p: any) => p.lesson_id) || [],
+    (prog as any)?.filter((p: any) => p.status === "completed").map((p: any) => p.lesson_id) || [],
   );
-  const firstIncomplete = course.modules
-    .flatMap((m: any) => m.lessons)
-    .find((l: any) => !completedSet.has(l.id));
-  const firstLessonId =
-    firstIncomplete?.id || course.modules[0]?.lessons[0]?.id;
+
+  // Determine initial lesson
+  let initialLessonId = lessonIdFromUrl;
+
+  if (!initialLessonId) {
+    // Priority 1: Last updated/touched lesson
+    const lastTouched = (prog as any[])?.sort(
+      (a, b) =>
+        new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime(),
+    )[0];
+
+    if (lastTouched) {
+      initialLessonId = lastTouched.lesson_id;
+    } else {
+      // Priority 2: First incomplete lesson
+      const firstIncomplete = allLessons.find((l: any) => !completedSet.has(l.id));
+      initialLessonId = firstIncomplete?.id || allLessons[0]?.id;
+    }
+  }
 
   return (
     <CourseViewer
       course={course}
-      initialLessonId={firstLessonId}
+      initialLessonId={initialLessonId!}
       completedLessonIds={Array.from(completedSet) as any[]}
     />
   );

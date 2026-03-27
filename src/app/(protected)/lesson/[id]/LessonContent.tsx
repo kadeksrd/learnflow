@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { ChevronLeft, ChevronRight, CheckCircle, ExternalLink, StickyNote } from 'lucide-react'
 import { cn, getEmbedUrl } from '@/lib/utils'
+import { MarqueeText } from '@/components/ui/MarqueeText'
 
 export function LessonContent({ lesson, course, prevLesson, nextLesson, isCompleted, completedLessonIds }: {
   lesson: any; course: any; prevLesson: any; nextLesson: any; isCompleted: boolean; completedLessonIds: string[]
@@ -50,7 +51,9 @@ export function LessonContent({ lesson, course, prevLesson, nextLesson, isComple
           <span>/</span><span className="text-text font-medium truncate max-w-[150px]">{lesson.title}</span>
         </div>
 
-        <h1 className="font-syne font-extrabold text-xl sm:text-2xl mb-2">{lesson.title}</h1>
+        <MarqueeText className="font-syne font-extrabold text-xl sm:text-2xl mb-2">
+          {lesson.title}
+        </MarqueeText>
         {lesson.duration > 0 && <p className="text-text-muted text-sm mb-4">⏱ {Math.floor(lesson.duration / 60)} menit</p>}
 
         {/* Video */}

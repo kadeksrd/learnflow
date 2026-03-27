@@ -60,7 +60,7 @@ export default async function DashboardPage() {
   let nextCourse: any = null;
 
   // 1. Try to find the most recently active lesson
-  const latestProgress = progressData?.[0];
+  const latestProgress = (progressData as any[])?.[0];
   if (latestProgress) {
     const ucMatch = (enrolled || []).find((uc: any) =>
       uc.courses?.modules?.some((m: any) =>
@@ -69,7 +69,7 @@ export default async function DashboardPage() {
     );
 
     if (ucMatch) {
-      const course = ucMatch.courses;
+      const course = (ucMatch as any).courses;
       const allLessonsInCourse = course.modules
         .sort((a: any, b: any) => a.order - b.order)
         .flatMap((m: any) => m.lessons.sort((a: any, b: any) => a.order - b.order));
@@ -202,7 +202,7 @@ export default async function DashboardPage() {
                   </div>
                 </div>
                 <Link
-                  href={`/dashboard/course/${nextCourse.id}`}
+                  href={`/dashboard/course/${nextCourse.id}${nextLesson ? `?lesson=${nextLesson.id}` : ''}`}
                   className="flex items-center gap-2.5 px-5 py-3.5 bg-accent hover:bg-accent-light text-white font-syne font-bold text-sm rounded-xl transition-all hover:-translate-y-0.5 shadow-lg shadow-accent/25 shrink-0"
                 >
                   <Play size={16} /> Mulai Belajar
@@ -328,7 +328,7 @@ export default async function DashboardPage() {
                       {/* Quick actions: Continue */}
                       {courseNextLesson && progress < 100 && (
                         <Link
-                          href={`/dashboard/course/${course.id}`}
+                          href={`/dashboard/course/${course.id}${courseNextLesson ? `?lesson=${courseNextLesson.id}` : ''}`}
                           className="mt-3 flex items-center justify-center gap-2 w-full py-2.5 bg-accent/10 hover:bg-accent/20 text-accent-light text-xs font-semibold rounded-xl transition-all"
                         >
                           <Play size={12} /> Lanjut:{" "}
@@ -370,7 +370,7 @@ export default async function DashboardPage() {
                           </p>
                           {courseNextLesson && (
                             <Link
-                              href={`/dashboard/course/${course.id}`}
+                              href={`/dashboard/course/${course.id}${courseNextLesson ? `?lesson=${courseNextLesson.id}` : ''}`}
                               className="flex items-center gap-1.5 px-4 py-2 bg-accent rounded-lg text-white text-xs font-semibold hover:bg-accent-light transition-all"
                             >
                               <Play size={12} /> Mulai Lesson Pertama

@@ -13,7 +13,7 @@ async function getAdminUser() {
 const unauthorized = () =>
   NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 
-// 2. Handler untuk Update Course (PATCH)
+// 2. Handler untuk Update Module (PATCH)
 export async function PATCH(req: NextRequest) {
   const admin = await getAdminUser();
   if (!admin) return unauthorized();
@@ -24,14 +24,14 @@ export async function PATCH(req: NextRequest) {
 
     if (!id) {
       return NextResponse.json(
-        { message: "Course ID is required" },
+        { message: "Module ID is required" },
         { status: 400 },
       );
     }
 
     const s = await createAdminClient(); // Admin client untuk bypass RLS
-    const { data, error } = await (s
-      .from("modules") as any)
+    const { data, error } = await (s as any)
+      .from("modules")
       .update(updateData)
       .eq("id", id)
       .select()
@@ -50,7 +50,7 @@ export async function PATCH(req: NextRequest) {
   }
 }
 
-// 3. Handler untuk Tambah Course (POST)
+// 3. Handler untuk Tambah Module (POST)
 export async function POST(req: NextRequest) {
   const admin = await getAdminUser();
   if (!admin) return unauthorized();
@@ -59,14 +59,14 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const s = await createAdminClient();
 
-    const { data, error } = await (s
-      .from("modules") as any)
+    const { data, error } = await (s as any)
+      .from("modules")
       .insert(body)
       .select()
       .single();
 
     if (error) {
-      console.error("Supabase Error Detail:", error); // Muncul di terminal VS Code kamu
+      console.error("Supabase Error Detail:", error);
       return NextResponse.json({ message: error.message }, { status: 500 });
     }
 

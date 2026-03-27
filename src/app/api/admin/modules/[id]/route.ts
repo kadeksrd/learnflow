@@ -16,9 +16,10 @@ export async function PATCH(
 
   try {
     const body = await req.json();
-    const s = await createAdminClient();
+    const s = await createAdminClient(); // Bypass RLS
 
-    const { data, error } = await (s.from("modules") as any)
+    const { data, error } = await (s as any)
+      .from("modules")
       .update(body)
       .eq("id", id)
       .select()

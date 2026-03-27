@@ -24,11 +24,19 @@ export async function PATCH(req: NextRequest) {
     // TRIK SAKTI: Kita keluarkan 'id' untuk pencarian,
     // dan kita keluarkan 'course_id' supaya TIDAK ikut di-update ke tabel 'courses'
     const { id, course_id, ...updateData } = body;
+
+    if (!id) {
+      return NextResponse.json(
+        { message: "Course ID (id) is required" },
+        { status: 400 },
+      );
+    }
+
     const s = await createAdminClient();
 
     // Kita hanya memasukkan 'updateData' yang sudah bersih dari 'course_id'
-    const { data, error } = await (s
-      .from("courses") as any)
+    const { data, error } = await (s as any)
+      .from("courses")
       .update(updateData)
       .eq("id", id)
       .select()

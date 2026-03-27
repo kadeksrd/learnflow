@@ -4,9 +4,19 @@ import { BookOpen, Edit3, Eye, Layers, PlayCircle } from 'lucide-react'
 
 export default async function AdminCoursesPage() {
   const supabase = await createClient()
-  const { data: courses } = await supabase.from('courses')
-    .select('id, title, created_at, products(id, title, thumbnail, is_published, slug), modules(id, lessons(id))')
+  const { data: courses, error } = await supabase.from('courses')
+    .select(`
+      id, 
+      title, 
+      created_at, 
+      products(id, title, thumbnail, is_published, landing_pages(slug)), 
+      modules(id, lessons(id))
+    `)
     .order('created_at', { ascending: false })
+
+  if (error) {
+    console.error('AdminCoursesPage Query Error:', error)
+  }
 
   return (
     <div className="p-4 sm:p-10 space-y-8">
@@ -69,7 +79,7 @@ export default async function AdminCoursesPage() {
                   </Link>
                   
                   <Link 
-                    href={c.products?.slug ? `/course/${c.products.slug}` : `/admin/products/${c.products?.id}`}
+                    href={c.products?.landing_pages?.[0]?.slug ? `/course/${c.products.landing_pages[0].slug}` : `/admin/products/${c.products?.id}`}
                     target="_blank"
                     className="flex-1 lg:flex-none flex items-center justify-center gap-2 px-6 py-3 bg-surface border border-slate-200 text-text-muted hover:text-text hover:bg-slate-50 font-syne font-bold text-sm rounded-2xl transition-all active:scale-95"
                   >
